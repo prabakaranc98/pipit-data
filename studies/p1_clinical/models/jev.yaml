@@ -1,0 +1,8 @@
+name: jev
+id: api.typesafe.ai
+revision: jev-latest            # an alias; every response names the model that answered and the ledger records it
+adapter: pipit.adapters.typesafe:load
+placement: api
+key_env: TYPESAFE_API_KEY
+settings:
+  timeout: 60

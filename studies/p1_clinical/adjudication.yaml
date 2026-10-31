@@ -1,0 +1,13 @@
+# Human adjudication of validator flags, written after reading every flagged case (2026-10-31). The validator's
+# verdict stays in the case set; this file says which flags were real. Executable checks (completeness, a
+# generation stopped on the token limit) exclude on their own and are not overridden here.
+exclude:
+  F10-S1-benign-w0: "case design: amlodipine interacts with clarithromycin, so 'benign' is not benign"
+  F10-S1-benign-w1: "case design: amlodipine interacts with clarithromycin, so 'benign' is not benign"
+keep_when_validator_said:   # (planted condition, validator word) -> why the case is sound despite the flag
+  absent/FALSE: "fact statement wording: 'documents an allergy' is literally false when undocumented"
+  conflict/FALSE: "validator failure: it followed the allergy field and missed the conflicting history"
+  critical/FALSE: "validator error: anaphylaxis to the planned antibiotic is stated twice"
+  critical/UNDETERMINED: "validator knowledge or arithmetic limit, or ambiguous fact wording; note as intended"
+  benign/UNDETERMINED: "validator knowledge or arithmetic limit, or ambiguous fact wording; note as intended"
+  benign/TRUE: "validator arithmetic error: the dose equals the weight-based dose"

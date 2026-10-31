@@ -1,0 +1,25 @@
+{
+  "cases": 120,
+  "sha256": "3635abfc84291c5ec921cc26c4523763f410fc6dbf71b371cac3030f4c796b8e",
+  "paraphraser": "models/paraphraser.yaml",
+  "validator": "models/validator.yaml",
+  "executable_defects": 6,
+  "validator_disagreements": 31,
+  "construction_cost_when_cache_filled": {
+    "paraphraser": {
+      "requests": 64,
+      "tokens_in": 18090,
+      "tokens_out": 38712,
+      "usd": 0.0107,
+      "providers": 14
+    },
+    "validator": {
+      "requests": 120,
+      "tokens_in": 29068,
+      "tokens_out": 369,
+      "usd": 0.0034,
+      "providers": 3
+    }
+  },
+  "note": "Construction calls were made once, on 2026-10-31, and cached; build_cases.py replays the cache and makes no live calls."
+}

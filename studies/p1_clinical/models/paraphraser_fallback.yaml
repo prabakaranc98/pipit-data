@@ -1,0 +1,6 @@
+name: paraphraser_fallback
+id: meta-llama/llama-3.3-70b-instruct
+revision: as-served
+adapter: pipit.adapters.openrouter:load
+placement: api
+key_env: OPENROUTER_API_KEY
