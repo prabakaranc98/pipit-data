@@ -4,7 +4,9 @@ A data-first workbench for measuring and improving AI systems.
 
 Pipit treats data as an experimental instrument. It turns a question about a model into a small, efficient experiment: a constructed set of cases, a budgeted sample, and a claim whose evidence is accounted for, including where the evidence is not enough.
 
-**Status:** M0 open, 2026-10-31. Nothing beyond M0 exists yet.
+**Status:** M0 closed at `v0.0.1` (2026-10-31). The first real study, P1, is in review under M3; M1 and M2 remain open. See `docs/design.md`.
+
+![A Pipit study is a loop](public/assets/loop.svg)
 
 ## The discipline
 
@@ -36,6 +38,22 @@ One question each. A milestone closes with a tagged release and a note on what c
 | M3 | On one 4B candidate with dense prior evidence, does Pipit find a critical limitation with a fraction of the cases a full grid needs, confirmed on a protected split of case families? | one finding, or one documented insufficiency |
 
 First candidates: typed decision models around 4B parameters.
+
+## Studies
+
+A study is a folder under `studies/` with a pre-registration, a hypothesis tree, model manifests, an immutable case
+set, the runs and the report. The first is `studies/p1_clinical/`: ten case families, 120 cases, the Perplexity
+4B decider as candidate, Jev as reference, two lab models for construction.
+
+    uv sync --extra local --extra typesafe            # adapters' libraries; the core needs none of them
+    uv run python studies/p1_clinical/build_cases.py  # reproduces the case set from the cache at no cost
+    uv run python studies/p1_clinical/run.py models/pplx_flash.yaml --role candidate
+    uv run python studies/p1_clinical/run.py models/jev.yaml --role reference
+    uv run python studies/p1_clinical/analyse.py      # report.md
+    uv run python studies/p1_clinical/propose.py      # proposals.md, for human review
+
+Models are registered by YAML manifest (identifier, revision, adapter, placement, device, dtype, the name of the
+environment variable that holds the key) and resolved through an adapter at the edge; see `docs/design.md`.
 
 ## How work moves
 

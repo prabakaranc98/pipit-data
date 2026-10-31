@@ -4,6 +4,13 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Added
+
+- `pipit` core: typed questions, YAML manifests resolved through edge adapters, a request cache, a cost ledger, executable checks (completeness, token-limit stops, severity, Wilson intervals), evidence cells with verdicts and a hypothesis-tree roll-up. The core imports no model library; `local` and `typesafe` extras carry the adapters' dependencies.
+- Adapters: OpenRouter chat (cost from the response, empty content retried and never cached), TypeSafe Jev, and the Perplexity decider run locally in BF16.
+- Study P1 (`studies/p1_clinical/`): pre-registration, hypothesis tree, ten clinical case families, a 120-case set built with two lab models and reproduced from the cache, candidate and reference runs, adjudication, report and proposals.
+- `docs/design.md`: the loop, the instrument, what P1 showed, references and differences.
+
 ## [0.0.1] - 2026-10-31
 
 ### Added
