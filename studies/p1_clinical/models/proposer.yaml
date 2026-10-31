@@ -1,0 +1,6 @@
+name: proposer
+id: openai/gpt-oss-120b
+revision: as-served
+adapter: pipit.adapters.openrouter:load
+placement: api
+key_env: OPENROUTER_API_KEY

@@ -1,0 +1,5 @@
+# Prices for subjects whose responses carry tokens but no cost. Dated; fill from the vendor's page and say so.
+as_of: 2026-10-31
+source: "TypeSafe price not yet looked up; OpenRouter prices itself in the response; local runs cost 0 marginal"
+models:
+  jev-1.14.0: null   # unknown until the vendor's price page is read; rows stay unpriced (*) until then

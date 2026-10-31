@@ -1,0 +1,6 @@
+name: validator
+id: qwen/qwen3-235b-a22b-2507   # a different family from the paraphraser, never the candidate
+revision: as-served
+adapter: pipit.adapters.openrouter:load
+placement: api
+key_env: OPENROUTER_API_KEY
