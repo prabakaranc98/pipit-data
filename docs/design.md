@@ -25,6 +25,12 @@ each node cost, and judged against a threshold set in advance. Sufficient eviden
 opens a deeper study on a protected split; insufficient evidence sends the lab models to propose sharper
 hypotheses, questions and cases, which a person keeps, edits or drops before the next round.
 
+**Studies nest.** A finding does not end a study; it becomes the objective of a child study that Pipit runs on
+the same engine: the parent's manifests, cache and ledger, a new tree under the finding, held-out cases on a
+protected split, its own budget. Studies therefore form a tree as hypotheses do, and the allocation question of
+M2, where to spend the next budget, applies across child studies as it applies across hypotheses. That is how
+one engine scales from one question to a programme without a new pipeline per use case.
+
 ## The loop, step by step, and where it lives
 
 | Step | What happens | Code |
