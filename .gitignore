@@ -129,6 +129,8 @@ celerybeat.pid
 
 # Environments
 .env
+.env.*
+!.env.example
 .venv
 env/
 venv/
@@ -181,3 +183,11 @@ cython_debug/
 .cursorindexingignore
 # macOS
 .DS_Store
+
+# Pipit: request caches hold raw model responses; the case set and runs are the record
+studies/**/cache/
+studies/**/runs/*.log
+
+# Design pages and rendered previews stay out of the repository; the SVG sources are the record
+public/**/*.html
+public/**/*.png
