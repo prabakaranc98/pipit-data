@@ -1,0 +1,27 @@
+name: Task
+description: One piece of work under a milestone
+body:
+  - type: input
+    id: milestone
+    attributes:
+      label: Milestone
+      placeholder: M1
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question this answers or serves
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+    validations:
+      required: true
+  - type: textarea
+    id: kill
+    attributes:
+      label: Kill criterion
+      description: For an experiment. What result would end this line of work?
