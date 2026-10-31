@@ -4,7 +4,7 @@ A data-first workbench for measuring and improving AI systems.
 
 Pipit treats data as an experimental instrument. It turns a question about a model into a small, efficient experiment: a constructed set of cases, a budgeted sample, and a claim whose evidence is accounted for, including where the evidence is not enough.
 
-**Status:** M0 closed at `v0.0.1` (2026-10-31). The first real study, P1, is in review under M3; M1 and M2 remain open. See `docs/design.md`.
+**Status:** `v0.0.2` (2026-10-31): the core and the first real study, P1, are on `main` under M3; M1 and M2 remain open. See `docs/design.md`.
 
 ![A Pipit study is a loop](public/assets/loop.svg)
 
@@ -69,7 +69,7 @@ Three things carry versions, separately.
 
 | Thing | Scheme | Now |
 | --- | --- | --- |
-| Code | SemVer. `0.0.z` while the instrument is unproven on a real model (M0 to M2); `0.1.0` at M3; `1.0.0` when the claim schema is stable | `0.0.1` at M0 |
+| Code | SemVer. `0.0.z` while the instrument is unproven on a real model (M0 to M2); `0.1.0` at M3; `1.0.0` when the claim schema is stable | `0.0.2` |
 | Schemas (case, claim, manifest) | an integer `schema_version` inside every artifact, bumped on any breaking change | not yet defined |
 | Case sets and runs | content hash plus generator seed; immutable once a claim references them | not yet defined |
 

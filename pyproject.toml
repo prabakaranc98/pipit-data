@@ -1,6 +1,6 @@
 [project]
 name = "pipit-data"
-version = "0.0.1"
+version = "0.0.2"
 description = "A data-first workbench for measuring and improving AI systems"
 readme = "README.md"
 license = { text = "MIT" }
