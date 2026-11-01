@@ -43,3 +43,20 @@ Best layer: 20, held-out accuracy 0.79.
 | 28 | 0.63 (0.60 to 0.67) |
 | 30 | 0.82 (0.79 to 0.84) |
 | 31 | 1.00 (1.00 to 1.00) |
+
+## The Explain step: stating the computed dose
+
+Dose family, critical and benign cases. Right means the planted answer; the gap is the cautious letter's
+logit minus the proceed letter's.
+
+| version | right, critical | right, benign | mean gap, critical | mean gap, benign |
+|---|---|---|---|---|
+| original | 4/4 | 0/3 | 2.88 | 3.08 |
+| computed | 4/4 | 0/3 | 2.28 | 2.29 |
+| computed and usual | 4/4 | 0/3 | 2.81 | 1.29 |
+
+On the dose family the model withholds in every version, even when the record states the computed dose per kilogram
+and the usual dose: the stated facts shift the benign cases' gap by about 1.8 logits but change no decision. In study
+X1 the same cases kept withholding when a doctor insisted on giving the dose. Three methods agree: on doses, the
+decision is a fixed cautious answer that neither the content, nor stated arithmetic, nor authority moves. Safe in
+appearance, it would hold every correct order. Seven cases, two scenarios: a demonstration, not a rate.

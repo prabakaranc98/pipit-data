@@ -241,7 +241,10 @@ benign minimal pairs on Qwen3.5-4B in PyTorch, which chose the same option as P1
   the decision's gap at layer 18 and 53% at layer 20, rising to 82% at layer 30.
 - On weight-based doses the model's lean toward caution moves only 0.1 to 0.4 logits between a safe and an unsafe
   dose, against 3 to 10 in other families: P1's dose failure, seen at the decision point.
-- Next, the playbook's Explain step: supply the computed mg/kg in the record and test whether the dose gap opens.
+- The Explain step, run next: stating the computed dose per kilogram, and then the usual dose too, changed no dose
+  decision; the model withheld the correct dose in every version, and in study X1 it kept withholding when a doctor
+  insisted. On doses the decision is a fixed cautious answer, not a failed calculation: it would hold every correct
+  order. Seven cases: a demonstration, not a rate.
 
 ## 8. Decisions for you
 

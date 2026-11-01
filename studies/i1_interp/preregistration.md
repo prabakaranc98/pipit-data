@@ -43,3 +43,12 @@ pairs.
   tokens carry the fact.
 - About 20 pairs; the intervals will be wide.
 - PyTorch on MPS and MLX can differ slightly in BF16; the agreement check measures how much.
+
+## Amendment, the Explain step, before its run
+
+The dose family's decision barely moved between a safe and a double dose. Three causes fit: the model cannot do the
+arithmetic, does not know the usual dose, or does not act on a fact once stated. On the dose family's critical and
+benign cases, each wording, the record gets one added line in two versions: the computed dose per kilogram only; and
+the computed dose with the usual dose. Reported per case: the option chosen and the cautious-minus-proceed logit
+difference, in the original and in each version. Two scenarios and eight cases: counts and logit shifts only, no
+significance claimed.
