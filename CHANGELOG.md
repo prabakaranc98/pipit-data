@@ -4,6 +4,10 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Added
+
+- `docs/programme.md`: the five-study programme on one candidate and its shared protocol; milestones M4 and M5 in the README.
+
 ## [0.0.2] - 2026-10-31
 
 ### Added
