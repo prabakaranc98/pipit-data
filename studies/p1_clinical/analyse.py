@@ -17,6 +17,7 @@ from pipit.checks import mcnemar_exact, wilson  # noqa: E402
 from pipit.costs import PriceList, per_case, per_group, summarize  # noqa: E402
 from pipit.evidence import cases_to_evidence, cells, rollup, unit_share  # noqa: E402
 from pipit.ledger import Ledger  # noqa: E402
+from pipit.viz import tree_svg  # noqa: E402
 
 
 def fmt(lo: float, hi: float) -> str:
@@ -68,6 +69,7 @@ def main() -> None:
         "validator was wrong or the fact statement ambiguous. The validator is calibrated by the planted truth, not trusted.\n"
     )
 
+    rollups: dict[str, dict] = {}
     for name, ans_all in answers.items():
         ans = {k: v for k, v in ans_all.items() if k in adjud}
         prim = {k: v for k, v in ans_all.items() if k in primary}
@@ -93,6 +95,7 @@ def main() -> None:
             "| node | title | fail/n | independent | 95% interval | status | seconds | USD |\n|---|---|---|---|---|---|---|---|"
         )
         agg = rollup(nodes, cell_map, by_cell)
+        rollups[name] = agg
         case_costs = per_case([r for r in Ledger(LEDGER).rows() if r.get("subject") == name], prices)
         # attribute each case's cost to every node on its path
         path_costs: dict[str, dict] = {}
@@ -256,8 +259,84 @@ def main() -> None:
                 f"- {role}: {v['requests']} calls, {v['tokens_in']} in / {v['tokens_out']} out tokens, {v['usd']:.4f} USD, {v['providers']} providers"
             )
         L.append(f"\nCase set sha256 {meta.get('sha256', '')[:12]}.")
+    (HERE / "tree.svg").write_text(draw_tree(cases, adjud, primary, nodes, cell_map, rollups, answers, meta))
+    L.insert(1, "![The hypothesis tree, with every model's evidence on each key question](tree.svg)\n")
     (HERE / "report.md").write_text("\n".join(L) + "\n")
     print("\n".join(L))
+
+
+LABELS = {
+    "pplx_flash": "Perplexity decider",
+    "pplx_flash_grouped": "decider, grouped",
+    "jev": "Jev (reference)",
+    "qwen35_4b": "Qwen3.5-4B instruct",
+    "qwen35_4b_thinking": "Qwen3.5-4B thinking",
+}
+
+
+def draw_tree(cases, adjud, primary, nodes, cell_map, rollups, answers, meta) -> str:
+    """The funnel from hypotheses to answers, and the tree with each model's evidence per key question."""
+    import yaml
+
+    spec = yaml.safe_load((HERE / "hypotheses.yaml").read_text())
+    leaves = {q for h in spec["hypotheses"].values() for q in h["questions"]}
+    per_leaf = {
+        q: sum(1 for k in adjud if cell_map[(cases[k]["family"], cases[k]["condition"])] == q) for q in leaves
+    }
+    families = sorted({c["family"] for c in cases.values()}, key=lambda f: int(f[1:]))
+    order = [k for k in LABELS if k in rollups] + [k for k in rollups if k not in LABELS]
+    subjects = [(k, LABELS.get(k, k)) for k in order]
+    hyps = []
+    findings = 0
+    for hid, h in spec["hypotheses"].items():
+        qs = []
+        for qid, q in h["questions"].items():
+            where = (
+                ", ".join(q.get("families", []))
+                or "every family, " + " and ".join(q.get("conditions", [])) + " cases"
+            )
+            results = {}
+            for key, _label in subjects:
+                node = rollups[key].get(qid)
+                if node is None or node.n == 0:
+                    continue
+                lo, hi = node.interval
+                results[key] = {"fail": node.fail, "n": node.n, "lo": lo, "hi": hi, "status": node.status()}
+                findings += node.status() == "supported"
+            qs.append(
+                {
+                    "id": qid,
+                    "title": q["title"],
+                    "detail": f"{where} · {per_leaf[qid]} cases",
+                    "results": results,
+                }
+            )
+        h_results = {}
+        for key, _label in subjects:
+            node = rollups[key].get(hid)
+            if node is not None and node.n:
+                lo, hi = node.interval
+                h_results[key] = {"fail": node.fail, "n": node.n, "lo": lo, "hi": hi, "status": node.status()}
+        hyps.append({"id": hid, "title": h["title"], "questions": qs, "results": h_results})
+    n_answers = sum(len([k for k in a if k in adjud]) for a in answers.values())
+    funnel = [
+        (str(len(spec["hypotheses"])), "hypotheses"),
+        (str(len(leaves)), "key questions"),
+        (str(len(families)), "case families"),
+        (str(len({(c["family"], c["condition"]) for c in cases.values()})), "family and condition cells"),
+        (str(len(cases)), "cases written"),
+        (str(len(adjud)), "passed checks and review"),
+        (str(len(primary)), "passed every check unaided"),
+        (str(len(subjects)), "model setups"),
+        (str(n_answers), "answers scored"),
+        (str(findings), "limitations found"),
+    ]
+    subtitle = (
+        f"Objective: {spec['objective']['title']} Tree pre-registered on 2026-10-31. Cases written from seeds, "
+        "paraphrased by gpt-oss-120b and checked by code and by qwen3-235b; a person read every flag. "
+        f"Case set {meta.get('sha256', '')[:12]}. Thinking mode ran one case per family and condition."
+    )
+    return tree_svg("Study P1: clinical safety decisions", subtitle, funnel, hyps, subjects)
 
 
 if __name__ == "__main__":

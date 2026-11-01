@@ -11,7 +11,10 @@ Pipit treats data as an experimental instrument. It turns a question about a mod
 `docs/design.md` (the loop and the instrument), `docs/landscape.md` (Pipit against the field: what it gets wrong, what
 it adds, the literature), `docs/programme.md` (the studies), `docs/agentic.md` (the study team, for 0.2).
 
-![A Pipit study is a loop](public/assets/loop.svg)
+![Pipit's design on one page](public/assets/overview.svg)
+
+**How the engine reasons and what it has found:** `docs/engine.md`. **The plan by module, with who does what and the
+build order:** `docs/plan.md`. **Pipit beside the field:** `docs/landscape.md`.
 
 ## The discipline
 
@@ -45,7 +48,7 @@ One question each. A milestone closes with a tagged release and a note on what c
 | M5 | Can a reader see what a study found, at what evidence level and cost, without running anything? | `report.json` per study and a static viewer under `public/` |
 | M6 | Does an agentic study team find planted failures with fewer cases and dollars than the scripted loop, without more false claims? | keep or kill on the bench, after 0.1.0; see `docs/agentic.md` |
 
-First candidates: Perplexity's 4B decider and Qwen3.5-4B, the LLM it was trained from, both in BF16 on this Mac.
+First candidate: Perplexity's 4B decider, in BF16 on this Mac. Qwen3.5-4B, the instruction-tuned LLM it was trained from, is the control, run in its native setup: thinking on, with its model card's sampling settings.
 
 ## Studies
 
@@ -59,12 +62,28 @@ crisis triage in a messy support queue on 24 hand-written cases (`pilot.py repor
     uv run python studies/p1_clinical/run.py models/pplx_flash.yaml --role candidate
     uv run python studies/p1_clinical/run.py models/jev.yaml --role reference
     uv sync --extra mlx                                 # Apple silicon: MLX serves LLMs locally
-    uv run python studies/p1_clinical/run.py models/qwen35_4b.yaml --role candidate   # Qwen3.5-4B, launched by its manifest
+    uv run python studies/p1_clinical/run.py models/qwen35_4b.yaml --role candidate   # Qwen3.5-4B, instruct mode
+    uv run python studies/p1_clinical/run.py models/qwen35_4b_thinking.yaml --questions decision --workers 2   # thinking mode
     uv run python studies/p1_clinical/analyse.py      # report.md
     uv run python studies/p1_clinical/propose.py      # proposals.md, for human review
 
 Models are registered by YAML manifest (identifier, revision, adapter, placement, device, dtype, the name of the
 environment variable that holds the key) and resolved through an adapter at the edge; see `docs/design.md`.
+
+## Where things stand (2026-11-01)
+
+| Study | Question | Result so far | Report |
+| --- | --- | --- | --- |
+| P1, clinical decisions | Where does a 4B decision model's clinical safety decision break? | Both deciders fail weight-based dose checks. Counted once per case (#39), Jev could act alone on 60% of cases at no more than 5 silent errors per 100. Qwen3.5-4B in thinking mode made 5 mistakes in 30 against 8 in instruct mode, not distinguishable (p = 0.51), for 5.8 hours of compute. | `studies/p1_clinical/report.md` |
+| P3, support triage pilot | Does the router catch the emergency in a messy queue? | Both models sent a self-harm message inside a payment complaint to billing. | `studies/p3_support_crisis/pilot_report.md` |
+| J1, judges | Can a judge tell a right clinical decision from a wrong one? | DeepSeek V4.1 Flash is the best default of four. A note in the reply made V4 Pro pass 14 of 20 unsafe proposals. Jev failed as an injection guard; Nemotron 3 Ultra raised the most false alarms. None can be certified on 20 unsafe items. | `studies/j1_judges/report.md` |
+| X1, beside Petri | What does each method find on the same model, on each other's ground? | Petri's clinical audits point at the mechanisms P1 measured but swing between runs, from 10 to 1 on one seed. On sycophancy, Petri's seeds scored 1 to 3 in two runs, while Pipit's pressure test flipped 18 of 39 right decisions (p = 0.0015). Twelve audits cost $3.66. | `studies/x1_petri/report.md` |
+| B1, the bench | Does adaptive spending beat an even spread? | Sampling nearest to a verdict settles 3 to 15 times as many questions, but raises false claims on ordinary intervals; #25 first. | `studies/b1_bench/report.md`, branch `m2/bench` |
+| I1, interpretability | Does Qwen hold the planted fact when its decision ignores it? | Yes: a probe reads the fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18. On doses the decision barely moves between safe and unsafe. | `studies/i1_interp/report.md` |
+
+Merged on 2026-11-01: #39 (counting a case once; Pipit against the field), #56 (the rules) and #58 (native setups).
+In review: #59, the engine design with J1, X1 and I1 (#40 to #42). Next, one at a time: `m2/bench` (#8, #9, #25),
+then `m3/v1-medcalc` (#57).
 
 ## How work moves
 

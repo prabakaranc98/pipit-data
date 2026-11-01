@@ -10,6 +10,7 @@ manifest as `module:function` and loaded on demand.
 from __future__ import annotations
 
 import importlib
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Protocol
@@ -31,6 +32,7 @@ class Manifest:
     device: str | None = None
     dtype: str | None = None
     key_env: str | None = None
+    family: str | None = None  # the model family, such as qwen or deepseek; see family_conflicts
     price_usd_per_million_in: float | None = None
     price_usd_per_million_out: float | None = None
     settings: dict[str, Any] = field(default_factory=dict)
@@ -83,6 +85,23 @@ def load_manifest(path: str | Path) -> Manifest:
     if unknown:
         raise ValueError(f"{p}: unknown manifest fields {sorted(unknown)}")
     return Manifest(source=str(p), **data)
+
+
+def family_conflicts(
+    candidates: Iterable[Manifest], instruments: Iterable[Manifest]
+) -> list[tuple[str, str, str]]:
+    """Every helper, judge or council member that shares a family with a candidate of the same study, as
+    (instrument, candidate, family). A model that filters or grades keeps what its own family reads well, so a
+    study refuses these pairings. Manifests with no family declared are reported by `undeclared`."""
+    cands = [c for c in candidates if c.family]
+    return [
+        (i.name, c.name, i.family) for i in instruments if i.family for c in cands if c.family == i.family
+    ]
+
+
+def undeclared(manifests: Iterable[Manifest]) -> list[str]:
+    """Manifests whose family is not declared, so the family rule cannot be checked for them."""
+    return [m.name for m in manifests if not m.family]
 
 
 def resolve(manifest: Manifest, context: Context) -> Subject:

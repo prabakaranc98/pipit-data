@@ -191,3 +191,6 @@ studies/**/runs/*.log
 # Design pages and rendered previews stay out of the repository; the SVG sources are the record
 public/**/*.html
 public/**/*.png
+
+# I1's hidden states: 12 MB, rebuilt from the model by extract.py
+studies/i1_interp/runs/*.npy
