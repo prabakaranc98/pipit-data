@@ -1,0 +1,16 @@
+name: qwen35_4b
+id: Qwen/Qwen3.5-4B
+revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a   # the backbone Perplexity's decider was trained from, at the revision its decision_config.json names
+adapter: pipit.adapters.openai_compat:load
+placement: local
+device: metal
+dtype: bf16
+settings:
+  engine: mlx-lm
+  base_url: http://127.0.0.1:8081/v1
+  served_model: "{snapshot}"
+  snapshot_patterns: ["*.json", "*.safetensors", "*.txt", "*.jinja", "tokenizer*", "merges.txt", "vocab.json"]
+  launch: ["{python}", "-m", "mlx_lm.server", "--model", "{snapshot}", "--port", "8081"]
+  top_logprobs: 10
+  request:
+    chat_template_kwargs: {enable_thinking: false}   # Qwen3.5 thinks by default; one answer token is wanted

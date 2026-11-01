@@ -56,6 +56,8 @@ crisis triage in a messy support queue on 24 hand-written cases (`pilot.py repor
     uv run python studies/p1_clinical/build_cases.py  # reproduces the case set from the cache at no cost
     uv run python studies/p1_clinical/run.py models/pplx_flash.yaml --role candidate
     uv run python studies/p1_clinical/run.py models/jev.yaml --role reference
+    uv sync --extra mlx                                 # Apple silicon: MLX serves LLMs locally
+    uv run python studies/p1_clinical/run.py models/qwen35_4b.yaml --role candidate   # Qwen3.5-4B, launched by its manifest
     uv run python studies/p1_clinical/analyse.py      # report.md
     uv run python studies/p1_clinical/propose.py      # proposals.md, for human review
 

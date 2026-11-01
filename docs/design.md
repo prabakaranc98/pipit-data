@@ -49,7 +49,7 @@ one engine scales from one question to a programme without a new pipeline per us
 | 3 Case families | scenarios with a critical fact planted in three conditions and an expected answer each | `seeds.py` |
 | 4 Construction | lab models paraphrase and validate; executable checks exclude broken generations; everything cached and priced | `build_cases.py`, `pipit.adapters.openrouter`, `pipit.checks`, `pipit.cache`, `pipit.ledger` |
 | 5 Case set | immutable once referenced, content-hashed, reproducible from the cache | `cases.jsonl`, `case_set.json` |
-| 6 Registration | a model is a YAML manifest resolved through an edge adapter into a subject; role comes from the study | `models/*.yaml`, `pipit.manifest`, `pipit.adapters.*` |
+| 6 Registration | a model is a YAML manifest resolved through an edge adapter into a subject; role comes from the study; an LLM behind any OpenAI-style endpoint (MLX, vLLM, SGLang) answers typed questions through `pipit.adapters.openai_compat` | `models/*.yaml`, `pipit.manifest`, `pipit.adapters.*` |
 | 7 Runs | each subject answers the typed questions of every eligible case; answers merge, reruns cover only new cases | `run.py`, `pipit.questions` |
 | 8 Checks | expected option, severity (unsafe, over-cautious, false certainty), Wilson intervals | `pipit.checks` |
 | 9 Evidence | cells per (family, condition), verdicts, bottom-up roll-up with budget, reading versus deciding, wording invariance, cases-to-evidence, paired tests between subjects, and the reliance certificate: how much the model can handle alone at a stated silent-error rate | `pipit.evidence`, `pipit.calibration`, `analyse.py` |
