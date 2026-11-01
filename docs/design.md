@@ -76,22 +76,23 @@ one engine scales from one question to a programme without a new pipeline per us
 
 ## References and where Pipit differs
 
-The references were collected before the work and are to be read in full before any claim relies on them. The
-right-hand column states what P1 does differently; none of it is a claim of novelty for a single piece.
+`docs/landscape.md` compares Pipit with the field in depth, from six research passes on 2026-11-01; this table is
+the short version. The right-hand column states what Pipit does differently; none of it is a claim of novelty for a
+single piece.
 
 | Reference | Fundamental | Pipit's difference in P1 |
 | --- | --- | --- |
 | CheckList (Ribeiro et al., ACL 2020) | behavioural tests: minimum functionality, invariance, directional | the same three test kinds appear as conditions and wordings, with planted truth so no annotation step is needed |
 | AdaTest (Ribeiro and Lundberg, ACL 2022) | model-generated tests, human in the loop | proposals are generated from evidence and gated by a person; the human reads every validator flag |
 | WEAVER (Findings of EMNLP 2023) | define the investigation space first | the hypothesis tree is written before cases exist and rolls evidence up |
-| tinyBenchmarks (Polo et al., ICML 2024) | estimate a benchmark from few, well-chosen items | Pipit spends budget by hypothesis, reports cases-to-evidence, and will test adaptive allocation against uniform at equal budget (M2) |
+| tinyBenchmarks (Polo et al., ICML 2024) | estimate a benchmark from few, well-chosen items | it needs hundreds of earlier models answering the same items; Pipit has none yet, so adaptive measurement works on difficulty set by construction, tested on the bench (M2) |
 | SubLIME (ACL 2025) | choose subsets by the decision to be made | cells and verdicts are built around one decision: is there a limitation here |
 | FAC2E (EMNLP 2024) | multidimensional capability profiles | the tree gives a profile by mechanism, not one score |
-| NeMo Data Designer, Distilabel | declarative, inspectable construction | construction is code plus manifests, cached, content-hashed, with lineage per case |
-| Inspect AI (UK AISI) | composable datasets, solvers, scorers, logs | Pipit keeps the design and the ledger; an execution backbone could be swapped in later |
+| NeMo Data Designer, Distilabel | declarative, inspectable construction | construction is code plus manifests, cached, content-hashed, with lineage per case; Data Designer (active, Apache-2.0) is the candidate generator for family specs (#22); Distilabel is in maintenance |
+| Inspect AI (UK AISI, Meridian Labs) | composable datasets, solvers, scorers, logs, viewer | the field's default runner: METR moved to it and HELM points to it; Pipit's cases and statistics should run on it or read its logs (`docs/landscape.md`) |
 | METR, Artificial Analysis | task quality, configurations, cost separated from capability | manifests fix configuration; the ledger separates cost by role |
-| Bloom (Anthropic, 2025) | behaviour → scenarios → interactions → judge | planted truth replaces the judge for scoring; the only lab-model judgment is calibrated against the plant |
-| Petri, auditing agents (Anthropic, 2025) | adaptive multi-turn auditing, hypotheses with counterevidence | single-turn typed decisions so far; the tree records support and insufficiency, not yet counterevidence |
+| Bloom (Anthropic, 2025; now petri_bloom at Meridian Labs) | behaviour → scenarios → interactions → judge | planted truth replaces the judge for scoring; the only lab-model judgment is calibrated against the plant |
+| Petri, auditing agents (Anthropic, 2025; now inspect_petri) | adaptive multi-turn auditing, hypotheses with counterevidence | single-turn typed decisions so far; the tree records support and insufficiency, not yet counterevidence |
 | A3 (Anthropic, 2026) | diagnosis → targeted data → fine-tune → evaluate | out of scope until a limitation is confirmed on a protected split |
 
 ## Open problems, in order

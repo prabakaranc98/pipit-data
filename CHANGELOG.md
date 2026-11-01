@@ -4,8 +4,17 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Fixed
+
+- Intervals, replays, paired tests and the reliance certificate now count a case and its rewordings once (`pipit.evidence`, `pipit.calibration`). In P1 the two wordings of a case agreed in 51 to 53 of 53 pairs, so counting both claimed too much: 8 of 68 verdicts move to insufficient, grouping the questions is no longer shown to hurt (p = 0.021 becomes 0.18), and certificates at 5% silent errors shrink (Jev 64% to 60%). Two simulations in `tests/test_units.py` show the old counting covering 88% instead of 95%, and certifying 12% of models that sit at the limit instead of at most 5%.
+
 ### Added
 
+- `docs/landscape.md`: Pipit against the field, from six research passes over about seventy tools and papers: what it gets wrong, ranked; what it adds and what is prior art; the literature by line of work, kept apart as known, open and ours; the loop for automatic data research; why item banks wait for a population of models.
+- `pipit.checks.mcnemar_exact`: the exact paired test, moved from the study scripts into the core.
+
+- `docs/architecture.md`: the components by layer (interfaces, control plane, agent team, core, engines, data, quality), built or planned; three loops at three speeds; how configuration flows from a machine profile to a study file to manifests; memory on a laptop, measured, and the rules that keep a run out of swap; one diagram.
+- `docs/methodology.md`: the playbook. Models write, statistics allocate, code grades, people decide; eight steps from framing to report, each with an owner and a check; how agents carry it through skills, tested prompts, scoped context and coordination through the record; what it enables for research; and three experiments that will show whether it works. `docs/plan.md`: the path to 0.1.0 reordered around it.
 - `pipit.adapters.openai_compat`: any LLM behind an OpenAI-style endpoint (MLX, vLLM, SGLang, llama.cpp, Ollama, OpenRouter) answers typed questions as single-letter multiple choice, with option probabilities from the first answer token's log-probabilities, the share of probability on the letters recorded, a request cache, ledger rows per question, and an optional local server launched from the manifest. An `mlx` extra for Apple silicon. P1 run on Qwen3.5-4B in BF16 through MLX, next to the decider trained from it: 36 mistakes against 19 of 112 (exact paired test p = 0.006); the LLM reads facts about as well but turns them into wrong decisions more often, fails indirect clues (10 of 16 against 0), and shares the decider's weakness on weight-based doses.
 - `docs/plan.md`: the plan to 0.1.0: who Pipit helps, why a few hundred planted cases instead of tens of thousands, any model on any engine, studies as data, the measurement science, the developer experience, ten steps, and what 0.1.0 means. `docs/agentic.md`: the study team, for 0.2. README: a reading order, milestone M6 and the 0.1.0 definition.
 - `docs/programme.md`: the five-study programme on one candidate and its shared protocol; milestones M4 and M5 in the README.
