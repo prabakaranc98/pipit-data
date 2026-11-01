@@ -36,6 +36,8 @@ One question each. A milestone closes with a tagged release and a note on what c
 | M1 | Does the evidence ledger give the right verdict on a synthetic subject with planted limitations, defects and coverage holes? | verdict accuracy and false-claim rate reported |
 | M2 | Does any adaptive sampler beat uniform sampling at equal budget on that subject? | keep or kill, with the budget curve |
 | M3 | On one 4B candidate with dense prior evidence, does Pipit find a critical limitation with a fraction of the cases a full grid needs, confirmed on a protected split of case families? | one finding, or one documented insufficiency |
+| M4 | Can five niche studies on one candidate (clinical, legal, customer support, behavioural science, economics) run one protocol and be read as one programme? | five reports and the programme report, with lab models, costs and findings accounted; see `docs/programme.md` |
+| M5 | Can a reader see what a study found, at what evidence level and cost, without running anything? | `report.json` per study and a static viewer under `public/` |
 
 First candidates: typed decision models around 4B parameters.
 
