@@ -94,7 +94,7 @@ Pipit's answer has three parts.
   estimate a model's accuracy on a full benchmark within a few points.
 - **The right answer is planted, so checking scales.** Each case is built from a spec that says what its answer must
   be, numbers are computed by code, and a second, independent implementation checks the answers (0.0.7). P1 built 120 checked cases
-  for about one and a half cents of helper-model calls.
+  for $0.014 of helper-model calls, the paraphraser's and the validator's.
 
 ## What we take, and what is ours
 
@@ -331,7 +331,7 @@ is measured against the reference problem suite in `docs/suite.md`, whose status
 | Release | The question | The work |
 | --- | --- | --- |
 | 0.0.3 | Can Pipit's numbers be trusted? | counting a case once and the comparison with the field (#39); the rules in code (#56); native setups (#58); the engine design with J1, X1 and I1 (#59); the bench (#60); V1 registered (#61); this plan (#62) |
-| 0.0.4 | Can we trust a run? | V1's results, with the providers that served each model; checks before a run, one time limit per call and results saved per item, in V1's runner; the other runners adopt them when they next run, P1's in 0.0.7 |
+| 0.0.4 | Can we trust a run? | V1's results, with the providers that served each model; one time limit per call and a stop at a refused key, in the OpenRouter adapter, for every study; checks before a run and results saved per item, in V1's runner, which the other runners adopt when they next run, P1's in 0.0.7 |
 | 0.0.5 | Can a report drift from its data? | CI rebuilds every report from its recorded runs; `report.json` with a schema (#18); the study registry (#54), the model inventory (#20) and the programme tables (#17) generated from it; the numbers in the README and docs checked against it |
 | 0.0.6 | Can anyone read the code? | the conventions in `CONTRIBUTING.md`; modules by concept and plain names, below; type checks and docstrings in CI; studies importable without editing `sys.path`; every report regenerates byte-identical |
 | 0.0.7 | Is the dose finding real? | the family spec (#22); the confirm round on fresh dose families (#10), scored with more than one right answer where the record allows it (#11); a second, independent writer for each family, and how much the writer changes the result; P1's planted answers checked by a second, independent implementation and against published reference values |
@@ -376,7 +376,7 @@ Honest gaps, as of 2026-11-01, each with the work that closes it:
 | Studies are small, and rewordings add little | P1 settles one or two of twelve key questions per model; its two wordings agreed on 51 to 53 of 53 cases | new scenarios instead of rewordings (#22), fewer and deeper key questions, and adaptive spending (#9) |
 | Reports and docs can drift from the data | I1's report could not be rebuilt from its script, and the docs overstated B1 | reports rebuilt in CI and the numbers checked (0.0.5) |
 | No judge is certified | where code cannot grade, the number is only as good as the judge | J1 with 30 to 60 more unsafe items, and injection resistance in the bar (#41) |
-| The platform is fragile | a stopped server, a sleeping laptop or one stuck call cost hours | checks before a run, a time limit per call and results saved per item, in V1's runner (0.0.4); the supervisor (0.0.10, #53) |
+| The platform is fragile | a stopped server, a sleeping laptop or one stuck call cost hours | a time limit and a stop at a refused key on every OpenRouter call; checks before a run and results saved per item in V1's runner (0.0.4); the supervisor (0.0.10, #53) |
 
 What moved toward the real world on 2026-11-01: evidence counted once per case, which corrected overclaims;
 judges measured before use; Pipit tested beside Petri on the same model; three methods agreeing on why the dose
@@ -423,7 +423,7 @@ Taken on 2026-11-01:
    most one tutorial per use case.
 10. Until 0.2.5 to 0.3 the scope is instruction following, reasoning, preferences and decisions; agentic tasks come
     then.
-11. The five industries: clinical and biomedical, legal, finance and banking decisions, data and AI work, and
+11. The five industries: clinical and biomedical, finance and banking decisions, legal, data and AI work, and
     human-centred AI.
 12. V1 is reported as run, with the providers that served each model shown, and finished runs are not rerun. The
     calls the API key refused were sent again once its limit was raised, which completes the run.

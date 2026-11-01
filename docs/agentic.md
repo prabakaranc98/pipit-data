@@ -12,7 +12,8 @@ thinking between steps, and the whole case set is built before anything is measu
 The proposal is a study team. A larger model leads: it drafts the hypothesis tree, decides what to test next, and
 writes the cases with specialist helpers. Small decision models such as Jev work as the team's checkers, running
 thousands of cheap, typed checks on every case. Everything the team does goes through Pipit's own tools into one
-shared study record, with a ledger row for every call. A person signs at the gates.
+shared study record, with a ledger row for every call. The gates are rules registered in advance, so no step waits
+for a person.
 
 The team builds and tests in small batches and moves between modes, so measuring starts on day one instead of
 after the dataset is finished. It can plug into a business's own context, such as its policies, products, ticket
@@ -25,14 +26,16 @@ where a test with known answers shows the change helps.
 
 The agents serve the study; they do not replace its rules.
 
-- **The objective comes first.** Every study still starts from a business question and a hypothesis tree that a
-  person signs before anything runs.
+- **The objective comes first.** Every study still starts from a business question, which the study owner chooses
+  before the loop starts, and a hypothesis tree registered before anything runs.
 - **Every study still ends in the reliance dossier:** where the model breaks, how much it can handle alone at a
   stated silent-error rate, which settings change that, what it cost, when it expires, and what is still unknown.
-- **The nuances stay in code and with people.** Expected answers are planted and computed, not judged. Validator
-  flags are read by a person. The certificate is an exact test, not a model's opinion. Results are told in three
-  voices.
-- **No agent can skip a gate.** Pre-registration, adjudication and Confirm need a person; agents can only propose.
+- **The nuances stay in code.** Expected answers are planted and computed, not judged. A validator flag is settled
+  by the planted truth, which a second, independent implementation checks; a flag they cannot settle gets more
+  checks or is reported as unresolved. The certificate is an exact test, not a model's opinion. Results are told
+  in three voices.
+- **No agent can skip a gate.** Pre-registration, adjudication and Confirm follow rules registered in advance,
+  which no agent can change; agents can only propose.
 
 ## The guard: the team has to earn its place
 
@@ -52,7 +55,7 @@ programme's own operating rules weight at about 5% of the effort.
 | Council | three models from different families | review expected answers and findings before they count | decide alone: when they disagree, the case gets more checks or is reported as unresolved |
 | Lab models | as today: paraphraser, validator | rewrite and check cases | judge themselves |
 | Subjects | candidate and reference | answer | see the record or the tree |
-| Person | the study owner | signs the pre-registration, reads flags, keeps or drops proposals, opens and closes Confirm | |
+| Study owner | a person | chooses the question before the loop starts, and makes the decisions listed at the end of this note | stands at a gate: pre-registration, flags, proposals and Confirm follow their registered rules |
 
 The worker rule is new and it matters. A model that filters cases keeps the ones it reads well, so the case set
 tilts in its favour. If Jev checked P1's cases, P1 could not also use Jev as its reference.
@@ -61,13 +64,13 @@ tilts in its favour. If Jev checked P1's cases, P1 could not also use Jev as its
 
 The team does not build the whole dataset and then evaluate. It moves between modes, and each has its own rules.
 
-| Mode | Goal | How cases are made and run | Ends when | Who signs |
+| Mode | Goal | How cases are made and run | Ends when | Gate |
 | --- | --- | --- | --- | --- |
-| Ground | learn the business's world | read its policies, products, ticket samples and ontology through MCP | a one-page context brief exists | person |
+| Ground | learn the business's world | read its policies, products, ticket samples and ontology through MCP | a one-page context brief exists | logged |
 | Explore | find where failures might be | small batches across many families: write, check, run, update the tree, repeat | the explore budget is spent, or every hypothesis has a first signal | logged |
 | Focus | measure the promising cells | spend budget where evidence is thin and stakes are high (M2's allocator) | the stopping rule (#25) says the evidence is sufficient | logged |
 | Confirm | certify | fresh cases on a protected split, frozen before the run; agents see no results until it closes | the fixed size is reached | opened and closed by its registered rules |
-| Explain | find out why | counterfactual pairs, ablations, composition rules, fix tests | a mechanism claim, or "unknown" | person |
+| Explain | find out why | counterfactual pairs, ablations, composition rules, fix tests | a mechanism claim, or "unknown" | its registered rule: a cause is claimed only where an intervention changed the outcome |
 | Watch | keep it true | canary re-runs on a schedule (#23) | a drift alarm, which reopens Confirm | logged |
 
 Explore and Focus interleave building and measuring. Confirm is deliberately not adaptive: that is what keeps the
@@ -96,7 +99,8 @@ certificate honest after an adaptive search.
 - **A data boundary:** the manifest says which models may see which context. A business's data goes only to local
   models or to vendors it has approved, and everything sent is logged. Deep Agents' own documentation says the same
   in its terms: enforce boundaries in the tools, not by trusting the model.
-- **Budget caps per role and mode,** held by the ledger. The lead asks for more; above a cap, a person approves.
+- **Budget caps per role and mode,** held by the ledger. The lead may ask for more within the budget registered for
+  the study; once that is spent, the work stops and the report says so.
 
 ## Any size of model, and scale
 
@@ -137,7 +141,7 @@ Two guards that autoresearch does not need and Pipit does:
 - **Overfitting to the bench.** A team tuned on the same synthetic subjects can learn their quirks. Kept changes are
   re-checked on bench subjects that tuning never sees, and on one real study, before they ship.
 - **Validity.** "More failures found" is the easiest number to fake: write broken cases. Case validity is part of
-  the score, and a person reads a sample of every kept change.
+  the score: code and critics measured on planted items check a sample of every kept change.
 
 **The same loop improves the systems Pipit studies.** The loop that tunes the study team can tune a business's own
 decision pipeline, such as its thresholds, its composition rules and its prompts, against a frozen planted-truth
@@ -185,8 +189,8 @@ without more false claims? If not, Pipit keeps the tools and drops the agents.
 1. The study record and decision log as data, on top of 0.1's study files and `report.json`.
 2. Pipit tools: the 0.1 commands as typed, budgeted tools.
 3. Modes as a state machine with gates, scripted first, with no model involved.
-4. Agent layer v0 on the chosen runtime: lead, case writer, critic and workers, with gates as approvals, run on the
-   P3 screen's Explore mode, and kept or killed on the bench.
+4. Agent layer v0 on the chosen runtime: lead, case writer, critic and workers, with gates as registered rules, run
+   on the P3 screen's Explore mode, and kept or killed on the bench.
 5. A business's context through MCP, with the data boundary; a synthetic energy supplier's policy pack as the demo.
 6. The knowledge graph across studies, starting as a findings registry.
 7. The autoresearch loop with a frozen judge, only after step 4 passes: first on the team's own instructions, then on a business pipeline's thresholds and composition rules.
