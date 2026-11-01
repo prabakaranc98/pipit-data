@@ -73,8 +73,14 @@ model is reached is its manifest's business.
   OpenAI-style interface. Pipit asks a typed question as a multiple-choice prompt and reads the option
   probabilities from the first answer token's log-probabilities. Where an engine returns none, it falls back to a
   constrained choice and repeated sampling, and the report says so.
-- **The same cases, decider and LLM side by side.** The dogfood pair is Perplexity's 4B decider and Qwen3.5-4B, the
-  backbone it was trained from. On the same cases, the difference is what decision training buys at the same size.
+- **Candidates are chosen by the job, in their native setup.** LLM candidates are instruction-tuned or thinking
+  models, run the way their model card recommends: thinking on when that is the default, and the card's sampling
+  settings. A base model appears only as a control for a question about post-training. Two models meet on the same
+  cases only when a business is choosing between them for one job, or when the pair isolates one cause.
+  Qwen3.5-4B and Perplexity's 4B decider share a backbone, so their pair shows what decision training adds.
+- **Confidence depends on the mode.** In instruct mode the option probabilities are read from the first answer
+  token. A reasoned answer is always certain, so in thinking mode each question is asked several times and
+  confidence is how often the answers agree.
 - **On this Mac,** one 4B model in BF16 at a time, about 9 GB of the 24. Placement follows the measured footprint,
   and nothing falls back silently.
 - **On a remote GPU,** you give an SSH host; Pipit uses a vLLM or SGLang server there, its own or yours, through a
@@ -88,8 +94,9 @@ decision-models lab pinned, served by MLX through its OpenAI-style endpoint and 
 about 5 seconds, about 9.4 GB of memory, about 0.4 seconds per question. On every one of P1's 224 questions the answer
 letters carried at least 94% of the first token's probability, so option probabilities are read directly. The
 adapter switches thinking off in the chat template and renormalises the coarse BF16 log-probabilities over the
-options. On P1's 112 cases the LLM made 36 mistakes against its decision-trained sibling's 19 (exact paired test
-p = 0.006); `studies/p1_clinical/report.md` has the breakdown.
+options. On P1's 112 cases the LLM made 36 mistakes against its decision-trained sibling's 19. Counted once per
+independent case (59), the LLM did worse on 15 and better on 5: exact paired test p = 0.04, where counting each
+wording had given 0.006. `studies/p1_clinical/report.md` has the breakdown.
 
 ## Studies as data
 
@@ -156,29 +163,146 @@ autoresearch loop with a frozen judge. The team acts through the commands above 
 neither exists yet. Version 0.1 builds both, so the team has something to act with and something that can rule it
 out.
 
-## The path to 0.1.0, one pull request at a time
+## The plan by module
 
-The order follows `docs/methodology.md`: prove the method on the bench first, then build what makes it easy to use,
-then run real studies under it.
+Pipit is built from four kinds of module. Each pull request delivers one or two of them with their tests and one
+small experiment: one question, one baseline, one change, one evaluation.
 
-1. **Any LLM through one adapter, in its native setup:** instruct mode (#33, done), then thinking mode with
-   confidence from agreement across samples (#35).
-2. **The playbook:** the rules every study and every agent follows (#36).
-3. **The bench:** synthetic subjects with planted failure surfaces, run in CI. (#8)
-4. **Adaptive measurement on the bench:** allocation by evidence and stakes, staircases for difficulty settings, and
-   a stopping rule that stays valid when we look early, each kept only if it beats an even spread at equal budget.
-   (#9, #25)
-5. **The evidence rule, `report.json` and the interactive viewer.** (#18, #19)
-6. **Family specs,** with two independent families per key question. (#22)
-7. **Study configuration:** models per role, parallel workers, budgets, profiles, and a cost estimate before a run.
-   (#12)
-8. **On real models:** the dose-ratio staircase and the replication of the dose finding. (new issue)
-9. **The P3 screen end to end under the playbook,** confirmed on fresh families: the first full reliance dossier,
-   and M3's done-when. (#14)
-10. **The canary** for moved aliases and drifting models (#23); remote engines when a GPU host is available; anchors
-    to public benchmarks.
+**Scientific: what we measure and claim**
+
+| Module | What it holds | State |
+| --- | --- | --- |
+| S1 Question and tolerance | the job question, a tolerance per node, what would refute each hypothesis | built in P1 and P3 |
+| S2 The tree | a partition of the case space by mechanism; every case in exactly one key question | built, and checked in code (#45) |
+| S3 Evaluation aspects | correctness, consistency, robustness, predictability, safety, cost, validity | partly built; see below |
+| S4 Claims | explore, then confirm on held-back families with tests registered first | planned |
+| S5 Experiments on the method | E1 to E4 in `docs/engine.md` | E2 running as study J1 |
+
+**Algorithmic: how evidence becomes a decision**
+
+| Module | What it does | State |
+| --- | --- | --- |
+| A1 Units | a case and its rewordings count once | built (#39) |
+| A2 Intervals and paired tests | Wilson intervals; exact paired tests | built |
+| A3 The certificate | a fixed-sequence exact binomial test over units | built |
+| A4 Allocation | a pilot for every node, then the thresholding rule or active testing | on the bench: an even spread, the thresholding rule, nearest to settle (#9); active testing planned |
+| A5 Stopping | intervals that stay valid when we look early | a confidence sequence the node rule can read (#25); not yet read by `pipit.evidence` |
+| A6 Growing the tree | splits tested on recorded factors, with false discoveries controlled; failure clustering | planned |
+| A7 Thresholds | staircases on difficulty settings | planned |
+| A8 Judged rates | correction for a judge's sensitivity and specificity; prediction-powered inference | planned |
+| A9 Many claims | e-BH across claims; children tested only after their parent | planned |
+
+**Build: what we engineer**
+
+| Module | What it is | State |
+| --- | --- | --- |
+| B1 Models as manifests | adapters for PyTorch, MLX, OpenRouter and TypeSafe; vLLM and SGLang through the OpenAI-style adapter | built |
+| B2 Case families | specs compiled to cases with planted truth and lineage | partly: P1's seeds are code (#22) |
+| B3 Runner | a run script per study; a bridge to Inspect if chosen | built as scripts |
+| B4 Record | cache, ledger, cost per role | built |
+| B5 Report | `report.json` with a schema, and a viewer | planned (#18, #19) |
+| B6 Versions and releases | git; DVC for heavy parts; Hub datasets with tags and a collection, a canary, a fingerprint, confirm held back | planned |
+| B7 Agent team | lead, case writers, critics, workers, council | 0.2 |
+
+**Use: how people work with it**
+
+| Module | What it is | State |
+| --- | --- | --- |
+| U1 Study configuration | one YAML per study: roles and models, tolerances, variants, budgets, machine profile, judge panel | planned (#12) |
+| U2 Dataset styles | the table below | partly built |
+| U3 Examples | walkthroughs that start from released data and end in a decision | planned |
+| U4 Overview and docs | the design page, the playbook, the comparison with the field | built |
+
+## Dataset styles
+
+| Style | Right answer set by | Example | State |
+| --- | --- | --- | --- |
+| Typed decision | a planted fact | P1, medication decisions | built |
+| Routing a messy queue | the planted kind of message | P3, support triage | pilot |
+| Extraction into fields | planted field values | G1, handover notes | built, not yet run |
+| A computed number | code computes it | G1, a child's dose | built, not yet run |
+| Judge items | a proposal whose verdict is planted | J1 | running |
+| A difficulty ladder | a setting whose difficulty is known | the dose-ratio staircase | planned |
+| Multi-turn, fact stated early | a fact given early and needed late | none yet | planned |
+| Agent task, state checked | code checks the final state or a planted secret | none yet | planned |
+| Attack against baseline | the same case with and without an attack | J1's injected note | started |
+| Interpretability pairs | one variable changed, tokens aligned | P1's minimal pairs | planned |
+
+Every style takes the same variants: rewordings, option order, an injected instruction, a different surface or
+persona, and a difficulty setting where the mechanism has one.
+
+## Evaluation aspects
+
+Reliability is split into consistency, robustness, predictability and safety, after "Towards a Science of AI Agent
+Reliability" (Rabanser et al., ICML 2026), and cost is weighed against accuracy, after "AI Agents That Matter"
+(Kapoor et al., 2024), both from Princeton's Science of Agent Evaluation group. Only the abstracts have been read.
+
+| Aspect | Pipit's measure | Where it exists today |
+| --- | --- | --- |
+| Correctness | failure rate per node, per independent case | P1 |
+| Consistency | agreement across repeated samples of one case | P1 in thinking mode |
+| Robustness | change under rewording, option order and perturbation | P1's wording pairs; J1's order flips |
+| Predictability | calibration, and the reliance certificate | P1 |
+| Safety | errors by severity; a certificate on unsafe errors alone | P1 |
+| Cost | dollars, tokens and seconds per case and per claim; accuracy against cost | the ledger |
+| Validity | judges against planted truth and people; realism; transfer to real traffic | J1; #28 |
+
+## Who does what: roles and models
+
+Every role is filled by a model only after that model is measured in that role, on planted items, and its cost is in
+the ledger.
+
+| Role | Does | Model today | Evidence so far | Next test |
+| --- | --- | --- | --- | --- |
+| Candidate | is measured | Perplexity's decider, Qwen3.5-4B in both modes; Jev as reference | P1, P3, X1 | G1 (#47) |
+| Lead | drafts and grows the tree, chooses the next action | not built; DeepSeek V4 Pro proposed | none | E1 on the bench (#8, #9) |
+| Case writer | writes families from specs | gpt-oss-120b paraphrases today | P1: code caught 6 broken paraphrases | family specs (#22) |
+| Validator | checks a planted fact survives a rewrite | qwen3-235b, the same family as P1's candidates | wrong on 25 of its 31 flags; the family rule now flags it (#43) | E3: the same cases checked by another family |
+| Judge | grades where code cannot | DeepSeek V4.1 Flash first; V4 Pro only where replies cannot instruct it | J1 | injection resistance in the bar (#41) |
+| Scorer and ranker | scores, compares and ranks cases, situations and hypotheses at volume: realism, severity, priority | Jev, once measured in each of these roles | J1: 0.1 s per verdict, a little less accurate than DeepSeek | pairwise realism (#50); hypothesis priority on the bench |
+| Guard | keeps instructions written in a reply away from a judge | none yet: Jev, asked one question, flagged plain proposals more often than injected ones | J1 | quote replies as data, then test again (#41) |
+| Council | reviews findings before they count | three families, never the candidate's | none | 0.2 |
+| Person | signs claims and makes the decisions listed below | the study owner | | |
+
+## The build order, one pull request at a time
+
+1. **The comparison with the field, and counting a case once** (#38): merged in #39.
+2. **Thinking mode in its native setup** (#35): merged in #58. 5 mistakes in 30 against 8 in instruct mode,
+   exact paired test p = 0.51, for 5.8 hours of compute.
+3. **The engine design, J1, X1 and I1** (#40, #41, #42; pull request #59): the method as computation, judges
+   measured, Pipit beside Petri on the same model, and what the model holds when its decision ignores a fact.
+4. **Rules the studies exposed:** the family rule (#43), provider pinning (#44), the partition check (#45). Merged
+   in #56.
+5. **The platform under the loop:** the supervisor that owns model servers and resumes jobs (#53), and the study
+   registry (#54).
+6. **Dataset styles and variants:** extraction and a computed number (#47); pressure and injection variants (#48).
+7. **The bench and adaptive measurement** (E1; #8, #9, #25; pull request #60), with a confidence sequence;
+   adaptive spending is adopted only with it.
+8. **The evaluation aspects in `report.json`,** with a schema (#18).
+9. **The first release and the examples** (#51, #52).
+10. **Study configuration** (#12), after the decision on Inspect (#46); remote engines (#55).
+11. **Multi-turn and agent styles** (#49), realism and test awareness (#50), the viewer (#19), and the agent team in
+    0.2.
 
 Then release 0.1.0.
+
+## Where this is still weak against the real world
+
+Honest gaps, as of 2026-11-01, each with the work that closes it:
+
+| Gap | Why it matters | Closed by |
+| --- | --- | --- |
+| Every result is on cases we wrote | a model can pass written cases and fail on real traffic | the transfer study on real complaints from the Hub (#28) |
+| One person set the clinical truth | a planted answer is only as right as its author | a clinician's review of P1's answers before any release |
+| Nothing has been confirmed | every claim so far is exploratory | the first confirm round on held-back families (S4) |
+| Studies are small | P1 settles one of twelve key questions per model | fewer, deeper key questions per budget, and adaptive spending (#9) |
+| No judge is certified | where code cannot grade, the number is only as good as the judge | J1 with 30 to 60 more unsafe items, and injection resistance in the bar (#41) |
+| The platform is fragile | a stopped server or a sleeping laptop cost hours today | the supervisor and resumable jobs (#53) |
+| Work waits on review | building outpaces review, and context drifts | one pull request at a time, against main: #39, #56, #58 and #59 merged on 2026-11-01; #60 and #61 wait |
+
+What moved toward the real world on 2026-11-01: evidence counted once per case, which corrected overclaims;
+judges measured before use; Pipit tested beside Petri on the same model; three methods agreeing on why the dose
+decision fails; and adaptive spending kept honest by intervals valid under early stopping.
 
 ## What 0.1.0 means
 
@@ -189,15 +313,33 @@ Then release 0.1.0.
 - On the bench, adaptive measurement beats an even spread at equal budget, or the report says it does not.
 - One reliance dossier is complete and confirmed on fresh cases: P3, for both the decider and the LLM.
 - Every artifact has a schema version, every case set and run is hashed, and every call is in the ledger.
+- Every report shows the evaluation aspects: correctness, consistency, robustness, predictability, safety and cost.
+- The first Pipit benchmark is on the Hub with its confirm set held back.
 
 ## Not in 0.1
 
 The study team, a business's context through MCP, the knowledge graph and the autoresearch loop (all 0.2); P2, P4
 and P5; the transfer study; repair data; images and multi-turn agents.
 
-## Decisions for the study owner
+## Decisions
 
-1. The agent team in 0.2, as proposed, or pulled into 0.1?
-2. The second candidate: Qwen3.5-4B, the decider's own backbone, as proposed, or another 4B LLM?
-3. A remote GPU: when an SSH host is available, step 2 uses it; until then it is tested on this Mac.
-4. Issue #11: may "avoid" count as right on a conflicting record?
+Taken on 2026-11-01:
+
+1. The agent team is built in 0.2, after the bench and the commands exist.
+2. The LLM is Qwen3.5-4B, the instruction-tuned model Perplexity's decider was trained from, run in its native
+   setup.
+3. Remote GPUs wait: everything is tested on this Mac first, and an SSH host plugs in when one is available.
+4. On a self-contradicting record, asking for more information and refusing both count as right; asking is
+   preferred, and both readings are reported (#11).
+5. DeepSeek V4 Pro and V4.1 Flash are the first judges.
+6. The family rule is in code, merged in #56: no helper, judge or council member shares a family with a candidate
+   (#43).
+
+Open:
+
+1. Runner: run on Inspect with Pipit as the statistics on top, or keep our runner and read Inspect logs.
+2. Case generator: NeMo Data Designer or our own (#22).
+3. The explore split on the Hub: public, or gated behind accepted terms.
+4. The confirm split: run only by us, or shared under agreement.
+5. The lead agent: may it be a model behind an API for studies that touch a business's data?
+6. Examples: notebooks or scripts.

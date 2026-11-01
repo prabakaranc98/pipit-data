@@ -12,6 +12,7 @@ from pipit.checks import severity as _severity
 from pipit.env import load_dotenv
 from pipit.ledger import Ledger
 from pipit.manifest import Context, Manifest, load_manifest, resolve
+from pipit.tree import partition, rules
 
 HERE = Path(__file__).parent
 CASES = HERE / "cases.jsonl"
@@ -64,28 +65,33 @@ def adjudicated(cases: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
     return cases
 
 
+def unit(case: dict[str, Any]) -> tuple[str, str, str]:
+    """The independent unit of a case: its scenario and condition. The two wordings of a case are one unit:
+    they almost always get the same outcome, so they are not two independent tests."""
+    return (case["family"], case["scenario"], case["condition"])
+
+
 def severity(case: dict[str, Any], answer: dict[str, Any]) -> str:
     return _severity(case["expected"], answer.get("choice"), CAUTIOUS, PROCEED)
 
 
 def tree() -> tuple[dict[str, dict[str, Any]], dict[tuple, str]]:
-    """The hypothesis tree as {node: {title, parent}} and the map from (family, condition) cells to leaves."""
+    """The hypothesis tree as {node: {title, parent}} and the map from (family, condition) cells to leaves. Every
+    case must be claimed by exactly one key question, or this raises."""
     spec = yaml.safe_load((HERE / "hypotheses.yaml").read_text())
     nodes: dict[str, dict[str, Any]] = {spec["objective"]["id"]: {"title": spec["objective"]["title"]}}
-    cell_map: dict[tuple, str] = {}
-    by_condition: dict[str, str] = {}
-    by_family: dict[str, str] = {}
     for hid, h in spec["hypotheses"].items():
         nodes[hid] = {"title": h["title"], "parent": spec["objective"]["id"]}
         for qid, q in h["questions"].items():
             nodes[qid] = {"title": q["title"], "parent": hid}
-            for fam in q.get("families", []):
-                by_family[fam] = qid
-            for cond in q.get("conditions", []):
-                by_condition[cond] = qid
-    for c in load_cases().values():
-        key = (c["family"], c["condition"])
-        cell_map[key] = by_condition.get(c["condition"]) or by_family[c["family"]]
+    cases = load_cases()
+    split = partition(cases.values(), rules(spec))
+    if not split.ok:
+        raise ValueError(
+            f"the tree does not partition the cases: {len(split.unclaimed)} unclaimed, "
+            f"{len(split.claimed_twice)} claimed twice, e.g. {list(split.claimed_twice.items())[:2]}"
+        )
+    cell_map = {(c["family"], c["condition"]): split.leaf_of[cid] for cid, c in cases.items()}
     return nodes, cell_map
 
 

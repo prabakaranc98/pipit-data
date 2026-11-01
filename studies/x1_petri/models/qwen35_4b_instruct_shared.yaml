@@ -1,0 +1,17 @@
+# Qwen3.5-4B in instruct mode, P1's exact setup, but sent to the MLX server already serving the thinking run on
+# port 8082: the server switches thinking off per request, so one copy of the weights serves both.
+name: qwen35_4b_instruct_shared
+id: Qwen/Qwen3.5-4B
+revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
+adapter: pipit.adapters.openai_compat:load
+placement: local
+device: metal
+dtype: bf16
+settings:
+  engine: mlx-lm
+  base_url: http://127.0.0.1:8082/v1
+  served_model: "{snapshot}"
+  snapshot_patterns: ["*.json", "*.safetensors", "*.txt", "*.jinja", "tokenizer*", "merges.txt", "vocab.json"]
+  top_logprobs: 10
+  request:
+    chat_template_kwargs: {enable_thinking: false}
