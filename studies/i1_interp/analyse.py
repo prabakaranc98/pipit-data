@@ -98,6 +98,10 @@ def main() -> None:
             boots = sorted(sum(rng.choice(r) for _ in r) / len(r) for _ in range(1000))
             if layer % 2 == 0 or layer == len(kept[0]["ld_patched"]) - 1:
                 L.append(f"| {layer} | {sum(r) / len(r):.2f} ({boots[25]:.2f} to {boots[974]:.2f}) |")
+    # The Explain step's table, written by intervene.py, then the reading that closes the report, written by hand.
+    for part in (HERE / "runs" / "intervene_section.md", HERE / "report_tail.md"):
+        if part.exists():
+            L.extend(["", part.read_text().rstrip("\n")])
     text = "\n".join(L) + "\n"
     (HERE / "report.md").write_text(text)
     print(text)
