@@ -1,8 +1,9 @@
 # Pipit and the field
 
 Written 2026-11-01. We compared Pipit with the tools and papers people already use to write evaluation data, run
-models, attack them, grade them and build training data: six research passes over about seventy sources. The last
-section says how deeply each was read. Everything here is a reading of those sources, except the fix in section 1,
+models, attack them, grade them and build training data: eight research passes over about 160 tools and papers,
+including about 90 papers from CVPR, ICCV, ECCV, ACL, EMNLP, NAACL, NeurIPS, ICLR, ICML and COLM. The last section
+says how deeply each was read. Everything here is a reading of those sources, except the fix in section 1,
 which is measured.
 
 ## In plain words
@@ -267,6 +268,56 @@ models have answered the same Pipit items, an item bank becomes possible, and th
 6. The evidence rule with e-BH and confidence sequences (#25).
 7. `report.json` and a viewer (#18, #19), unless Inspect's viewer serves.
 
+## Related work at the main venues
+
+Two passes on 1 November 2026 read about 90 papers from vision, language and machine-learning venues, each venue
+confirmed on its official proceedings. By approach, with where Pipit stands:
+
+| Approach | Examples | What they do | Where Pipit stands |
+| --- | --- | --- | --- |
+| Truth set by construction | CLEVR (CVPR 2017), HANS (ACL 2019), BLiMP (TACL 2020), ARO (ICLR 2023), PUG (NeurIPS 2023), MedCalc-Bench (NeurIPS 2024) | code, templates, rendering or formulas compute every answer | the same principle; none of these reports intervals, a tree or a certificate |
+| One factor changed, the pair scored together | contrast sets (EMNLP Findings 2020), Winoground (CVPR 2022), ImageNet-E (CVPR 2023), MMVP (CVPR 2024), NaturalBench (NeurIPS 2024), MSSBench (ICLR 2025) | minimal pairs; contrast sets and MMVP credit a pair only if both halves are right | the same unit as section 1; most of these let people set the truth |
+| A fact present or absent fixes the answer | BBQ (ACL Findings 2022), Med-HALT (CoNLL 2023), XSTest (NAACL 2024), MOSSBench (ICLR 2025) | ambiguous against disambiguated contexts; safe prompts that look unsafe | P1's critical, benign and absent conditions follow this design |
+| A difficulty setting | ImageNet-C (ICLR 2019), DyVal, CNS-Bench (ICCV 2025) | severity on a scale; CNS-Bench reports a failure point per image | the closest published version of Pipit's planned staircases |
+| Searching for failures | Domino (ICLR 2022), AdaVision (ICCV 2023), PromptAttack (ICCV 2023), MultiMon (NeurIPS 2023) | find slices where a model fails; Domino and PromptAttack score their search on planted errors | Pipit writes its tree first; scoring a search on planted errors is what Pipit's bench does |
+| Agents and security graded by code | WebArena (ICLR 2024), Tensor Trust (ICLR 2024), AgentDojo (NeurIPS 2024), τ-bench (ICLR 2025), AgentHarm (ICLR 2025) | final state or a planted secret checked by code; τ-bench's pass^k needs all k tries to succeed | the route to planted truth for multi-turn and agent work, which Pipit lacks |
+| Planted variables for interpretability | CEBaB (NeurIPS 2022), RAVEL (ACL 2024), InterpBench (NeurIPS 2024), Geometry of Truth (COLM 2024), MIB (ICML 2025) | counterfactual pairs with known values; MIB scores a hidden test set through an API | Pipit's minimal pairs fit this format; none of these is a decision task |
+| Fewer items | active testing (ICML 2021), dueling bandits for generation (ACL 2022), Fogliato et al. (ECCV 2024), Sort and Search (NeurIPS 2024), LiveXiv (ICLR 2025) | reweighted or stratified samples, bandits, item response theory | most need earlier models or a fixed pool; the bandit work finds a winner, not a rate |
+
+**Statistics in practice.** Only 63 of 180 experimental ACL 2017 long papers tested significance (Dror et al., ACL
+2018). A leave-one-out check found adequate power in 46% of past comparisons (Card et al., EMNLP 2020). Scores moved by
+up to 76 points across prompt formats for one model (Sclar et al., ICLR 2024). None of the 45 vision papers reported a
+correction for multiple tests or a power analysis; MedSafetyBench (NeurIPS 2024) corrected its 45 paired tests with
+Bonferroni.
+
+**Keeping test sets from leaking.** GPQA (COLM 2024) adds a canary string and asks that no example be posted online.
+GSM1k (NeurIPS 2024) stayed private until a set date or until three open models reached 95%, with extra items held back
+in case of leaks through APIs. AgentHarm (ICLR 2025) keeps a 132-item private split, adds a canary string, and limits
+use to safety work in its licence. MIB (ICML 2025) scores a hidden test set through an API. Jacovi et al. (EMNLP 2023)
+propose encrypting public test data under a no-derivatives licence. DataDreamer (ACL 2024) writes a card with the
+licence and citation of every step and a reproducibility hash, and publishes to the Hub.
+
+**Use cases these papers target:**
+
+- **Clinical:** MedCalc-Bench, MedSafetyBench, Med-HALT; in imaging, ProbMed and CARES.
+- **Mental-health crisis:** the CLPsych 2024 shared task; Grabb et al. (COLM 2024) on psychiatric emergencies.
+- **Customer support under policy:** ABCD (NAACL 2021) and τ-bench.
+- **Agent security:** AgentDojo, InjecAgent, Tensor Trust and AgentHarm.
+- **Legal and finance:** LegalBench (NeurIPS 2023) and FinanceBench.
+- **Driving, documents, remote sensing and accessibility:** PromptAttack and DriveBench; CharXiv and LiveXiv; VRSBench
+  and GEOBench-VLM; VizWiz.
+- **Bias and over-refusal:** BBQ, WinoBias, Winogender, CrowS-Pairs and XSTest.
+
+**Open problems these papers state that bear on Pipit:**
+
+- Passing a finite test suite shows no general strength; only a failure shows a weakness (XSTest, after Gardner et al.).
+- Five safe conversations cannot show a model is safe for mental-health use (Grabb et al.).
+- Test items are rarely independent, and testing significance under that dependence is open (Dror et al.).
+- Small sets lack power: GPQA's 448 items detect only large effects.
+- Static security benchmarks are of limited use, because attacks adapt (AgentDojo).
+- Model judges pass answers made up without the image (DriveBench).
+- A fresh test set is only "highly similar, but not identically distributed" to the original (GSM1k).
+
 ## Sources, and how deeply each was read
 
 Research agents working for this project read every source below on 1 November 2026, mostly through a tool that
@@ -291,3 +342,6 @@ them in full, so each stays unverified until someone does.
   JailbreakBench papers; Cosmopedia; AuditBench.
 - **Not read:** Hughes et al. on best-of-N jailbreaking; QUEST and Psi; Data Designer's technical report; the CheckList
   and AdaTest papers.
+- **The venue passes:** for most of the about 90 papers, the abstract plus the method, results and limitations passages
+  found by searching the full text; for some, the abstract only. Venues were confirmed on the CVF open-access site,
+  ecva.net, the ACL Anthology, OpenReview, the NeurIPS proceedings and PMLR.
