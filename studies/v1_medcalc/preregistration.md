@@ -47,3 +47,17 @@ Six of the newest small and medium open models are added, before any result from
 27B (August 2026), Qwen 3.6 35B with 3B active, Gemma 4 31B and Gemma 4 26B with 4B active (April 2026), Granite 4.2
 8B (August 2026) and Liquid LFM 2.5 24B with 2B active (October 2026). With twelve models the permutation test runs
 over 100,000 seeded random orderings instead of every ordering.
+
+## Amendment, before any accuracy was computed
+
+Written while the batches ran, after the ledger showed that 12 of Qwen3.5 9B's first 219 MedCalc-Bench replies and 4
+of Qwen 3.8 27B's first 169 had stopped at the token cap; no reply had been scored yet.
+
+Replies are capped at 4,096 tokens on MedCalc-Bench and 2,048 on P1, and the cap counts any reasoning a provider runs
+by default. A reply cut off at the cap, or a call that still fails after four attempts, counts as wrong, as the code
+already did. Reasoning models reach the cap more often, so the report adds, per model, how many replies hit the cap
+and how many calls failed, and MedCalc-Bench accuracy with those items left out. The rank correlations stay on the
+registered scores.
+
+Found while writing this: the permutation test returned its p-value with a note on how it was computed, and the
+report did not unpack it, so the analysis would have stopped at the correlations. Fixed before the first analysis.
