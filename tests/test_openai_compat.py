@@ -106,3 +106,78 @@ def test_subject_reports_no_answer_when_no_letter_comes_back(tmp_path) -> None:
     assert (
         out["team"]["choice"] is None and out["blocked"]["noul"] is None and out["team"]["letter_mass"] == 0.0
     )
+
+
+def _reasoned(text, finish="stop"):
+    return {
+        "model": "llm",
+        "choices": [{"finish_reason": finish, "message": {"content": text, "reasoning": "18 x 15 = 270"}}],
+        "usage": {"prompt_tokens": 50, "completion_tokens": 900},
+    }
+
+
+def test_reasoned_letter_reads_the_final_answer() -> None:
+    from pipit.adapters.openai_compat import reasoned_letter
+
+    names = ["administer", "withhold", "ask"]
+    assert reasoned_letter(_reasoned("B"), names) == "withhold"
+    assert reasoned_letter(_reasoned("<think>A or C?</think>\n\nAnswer: **C**."), names) == "ask"
+    assert reasoned_letter(_reasoned("I choose A"), names) == "administer"
+    assert reasoned_letter(_reasoned("", finish="length"), names) is None
+    assert reasoned_letter(_reasoned("D"), names) is None
+
+
+def test_thinking_mode_votes_across_samples_in_parallel(tmp_path) -> None:
+    import threading
+
+    replies = iter(["C", "C", "A", "C", ""])
+    lock = threading.Lock()
+    sent = []
+
+    def transport(url, body, headers):
+        with lock:
+            sent.append(body)
+            text = next(replies)
+        assert body["max_tokens"] == 4096 and body["logprobs"] is False and body["temperature"] == 1.0
+        assert body["chat_template_kwargs"] == {"enable_thinking": True}
+        return _reasoned(text, finish="stop" if text else "length")
+
+    m = _manifest()
+    settings = {
+        **m.settings,
+        "answer": "after_reasoning",
+        "max_tokens": 4096,
+        "samples": 5,
+        "concurrency": 3,
+        "sampling": {"temperature": 1.0, "top_p": 0.95},
+        "request": {"chat_template_kwargs": {"enable_thinking": True}},
+    }
+    m = Manifest(**{**m.__dict__, "settings": settings})
+    ctx = Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path)
+    subject = LLMSubject(m, ctx, transport=transport)
+    out = subject("state", {"team": CHOICE}, meta={"case_id": "c1", "subject": "llm"})["team"]
+    assert out["choice"] == "sales" and out["answered"] == 4 and out["agreement"] == 0.75 and not out["tie"]
+    assert out["probabilities"] == {"billing": 0.25, "support": 0.0, "sales": 0.75}
+    assert len(sent) == 5 and subject.answered_by().endswith("thinking, 5 samples")
+    again = subject("state", {"team": CHOICE})["team"]
+    assert again["probabilities"] == out["probabilities"] and len(sent) == 5
+    rows = ctx.ledger.rows()
+    assert sorted(r["sample"] for r in rows[:5]) == [0, 1, 2, 3, 4] and rows[0]["tokens_out"] == 900
+
+
+def test_thinking_mode_split_vote_gives_no_answer(tmp_path) -> None:
+    replies = iter(["A", "C", "B", "B", "A", "C"])
+    m = _manifest()
+    m = Manifest(
+        **{
+            **m.__dict__,
+            "settings": {**m.settings, "answer": "after_reasoning", "samples": 2, "concurrency": 1},
+        }
+    )
+    subject = LLMSubject(
+        m,
+        Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path),
+        transport=lambda u, b, h: _reasoned(next(replies)),
+    )
+    out = subject("state", {"team": CHOICE})["team"]
+    assert out["tie"] and out["choice"] is None and out["agreement"] == 0.5

@@ -1,0 +1,27 @@
+name: qwen35_4b_thinking
+id: Qwen/Qwen3.5-4B
+revision: 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a   # the instruction-tuned model the decider was trained from (its base is Qwen3.5-4B-Base)
+adapter: pipit.adapters.openai_compat:load
+placement: local
+device: metal
+dtype: bf16
+settings:
+  engine: mlx-lm
+  base_url: http://127.0.0.1:8082/v1
+  served_model: "{snapshot}"
+  snapshot_patterns: ["*.json", "*.safetensors", "*.txt", "*.jinja", "tokenizer*", "merges.txt", "vocab.json"]
+  launch: ["{python}", "-m", "mlx_lm.server", "--model", "{snapshot}", "--port", "8082"]
+  answer: after_reasoning      # thinking mode, the model's default: read the answer after the reasoning
+  reasoning_end: "</think>"
+  max_tokens: 8192             # reasoning budget per answer; a run that hits it gives no answer
+  samples: 5                   # a reasoned answer is always certain, so confidence is agreement across samples
+  concurrency: 5               # samples run in parallel; the MLX server batches requests that carry no seed
+  sampling:                    # the model card's thinking-mode settings for general tasks
+    temperature: 1.0
+    top_p: 0.95
+    top_k: 20
+    min_p: 0.0
+    presence_penalty: 1.5
+    repetition_penalty: 1.0
+  request:
+    chat_template_kwargs: {enable_thinking: true}

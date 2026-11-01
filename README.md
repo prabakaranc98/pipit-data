@@ -43,7 +43,7 @@ One question each. A milestone closes with a tagged release and a note on what c
 | M5 | Can a reader see what a study found, at what evidence level and cost, without running anything? | `report.json` per study and a static viewer under `public/` |
 | M6 | Does an agentic study team find planted failures with fewer cases and dollars than the scripted loop, without more false claims? | keep or kill on the bench, after 0.1.0; see `docs/agentic.md` |
 
-First candidates: Perplexity's 4B decider and Qwen3.5-4B, the LLM it was trained from, both in BF16 on this Mac.
+First candidate: Perplexity's 4B decider, in BF16 on this Mac. Qwen3.5-4B, the instruction-tuned LLM it was trained from, is the control, run in its native setup: thinking on, with its model card's sampling settings.
 
 ## Studies
 
@@ -57,7 +57,8 @@ crisis triage in a messy support queue on 24 hand-written cases (`pilot.py repor
     uv run python studies/p1_clinical/run.py models/pplx_flash.yaml --role candidate
     uv run python studies/p1_clinical/run.py models/jev.yaml --role reference
     uv sync --extra mlx                                 # Apple silicon: MLX serves LLMs locally
-    uv run python studies/p1_clinical/run.py models/qwen35_4b.yaml --role candidate   # Qwen3.5-4B, launched by its manifest
+    uv run python studies/p1_clinical/run.py models/qwen35_4b.yaml --role candidate   # Qwen3.5-4B, instruct mode
+    uv run python studies/p1_clinical/run.py models/qwen35_4b_thinking.yaml --questions decision --workers 2   # thinking mode
     uv run python studies/p1_clinical/analyse.py      # report.md
     uv run python studies/p1_clinical/propose.py      # proposals.md, for human review
 

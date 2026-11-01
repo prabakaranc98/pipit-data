@@ -1,11 +1,16 @@
 """Any LLM behind an OpenAI-style endpoint, answering Pipit's typed questions.
 
-MLX's server on Apple silicon, vLLM, SGLang, llama.cpp, Ollama and OpenRouter speak the same interface.
-Each typed question is asked on its own as a multiple-choice prompt, and the option probabilities are read
-from the first answer token's log-probabilities, renormalised over the option letters. Every answer records
-the share of that token's probability that fell on the letters, so a model that wanted to say something else
-is visible, not hidden. With `settings.launch`, the adapter starts a local server for the manifest and stops
-it at exit.
+MLX's server on Apple silicon, vLLM, SGLang, llama.cpp, Ollama and OpenRouter speak the same interface. Each
+typed question is asked on its own as a multiple-choice prompt, in one of two modes, set by the manifest:
+
+- **first_token** (instruct mode): one answer token; the option probabilities are read from its
+  log-probabilities, renormalised over the option letters, and the share on the letters is recorded.
+- **after_reasoning** (thinking mode): the model reasons within a token budget at the sampling settings its
+  card recommends; the answer is read after the reasoning. A reasoned answer is always certain, so each
+  question is sampled several times in parallel and the option probabilities are the shares of the votes. A
+  split vote has no majority and gives no answer.
+
+With `settings.launch`, the adapter starts a local server for the manifest and stops it at exit.
 """
 
 from __future__ import annotations
@@ -15,12 +20,16 @@ import importlib.metadata
 import json
 import math
 import os
+import re
 import subprocess
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
+from collections import Counter
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 from pipit.cache import JsonlCache, request_key
@@ -71,6 +80,23 @@ def option_probabilities(
     return {name: mass.get(letters[i], 0.0) / total for i, name in enumerate(names)}, min(total, 1.0)
 
 
+def reasoned_letter(
+    response: dict[str, Any], names: list[str], reasoning_end: str = "</think>"
+) -> str | None:
+    """The option a reasoning model chose: the first standalone option letter of its final answer. Servers
+    that split the reasoning out (MLX, and vLLM or SGLang with a reasoning parser) return the answer alone;
+    otherwise the text after the end-of-reasoning marker is read."""
+    first = (response.get("choices") or [{}])[0]
+    text = (first.get("message") or {}).get("content") or ""
+    if reasoning_end and reasoning_end in text:
+        text = text.split(reasoning_end)[-1]
+    allowed = LETTERS[: len(names)]
+    for match in re.finditer(r"(?<![A-Za-z])([A-Z])(?![A-Za-z])", text):
+        if match.group(1) in allowed:
+            return names[allowed.index(match.group(1))]
+    return None
+
+
 def _urllib_transport(url: str, body: dict[str, Any], headers: dict[str, str]) -> dict[str, Any]:
     req = urllib.request.Request(
         url, data=json.dumps(body).encode(), headers={**headers, "Content-Type": "application/json"}
@@ -92,6 +118,15 @@ class LLMSubject:
             self.engine_version = None
         self.top_logprobs = int(s.get("top_logprobs", 10))
         self.extra = dict(s.get("request", {}))
+        self.mode = str(s.get("answer", "first_token"))
+        if self.mode not in ("first_token", "after_reasoning"):
+            raise ValueError(f"{manifest.name}: settings.answer must be first_token or after_reasoning")
+        self.max_tokens = int(s.get("max_tokens", 1 if self.mode == "first_token" else 8192))
+        self.reasoning_end = str(s.get("reasoning_end", "</think>"))
+        self.samples = int(s.get("samples", 1))
+        self.concurrency = int(s.get("concurrency", self.samples))
+        self.sampling = dict(s.get("sampling", {}))
+        self._lock = threading.Lock()
         self.transport = transport or _urllib_transport
         self.cache = JsonlCache(context.cache_dir / f"{manifest.name}.jsonl")
         self.calls = 0
@@ -102,7 +137,8 @@ class LLMSubject:
 
     def answered_by(self) -> str:
         engine = f"{self.engine} {self.engine_version}" if self.engine_version else self.engine
-        return f"{self.manifest.id}@{self.manifest.revision[:8]} {self.manifest.dtype} {engine}"
+        mode = f", thinking, {self.samples} samples" if self.mode == "after_reasoning" else ""
+        return f"{self.manifest.id}@{self.manifest.revision[:8]} {self.manifest.dtype} {engine}{mode}"
 
     def _expand(self, value: str) -> str:
         if value == "{python}":
@@ -179,6 +215,129 @@ class LLMSubject:
             ) * m.price_usd_per_million_out / 1e6
         return 0.0 if m.placement == "local" else None
 
+    def _key(self, body: dict[str, Any], sample: int | None = None) -> str:
+        identity = {
+            "id": self.manifest.id,
+            "revision": self.manifest.revision,
+            "dtype": self.manifest.dtype,
+            "engine": self.engine,
+            "body": body,
+        }
+        return request_key(identity if sample is None else {**identity, "sample": sample})
+
+    def _fetch(self, key: str, body: dict[str, Any]) -> tuple[dict[str, Any], bool, float]:
+        with self._lock:
+            hit = self.cache.get(key)
+            if hit is None:
+                if self.context.max_calls is not None and self.calls >= self.context.max_calls:
+                    raise RuntimeError(f"{self.manifest.name}: call ceiling {self.context.max_calls} reached")
+                self.calls += 1
+        if hit is not None:
+            return hit, True, 0.0
+        t0 = time.perf_counter()
+        response = self.transport(f"{self.base_url}/chat/completions", body, self._headers())
+        seconds = time.perf_counter() - t0
+        with self._lock:
+            self.cache.put(key, response)
+        return response, False, seconds
+
+    def _record(
+        self,
+        role: str,
+        response: dict[str, Any],
+        cached: bool,
+        seconds: float,
+        meta: dict[str, Any] | None,
+        **extra: Any,
+    ) -> None:
+        usage = response.get("usage") or {}
+        with self._lock:
+            self.context.ledger.record(
+                role,
+                provider_api=self.engine,
+                model_asked=self.manifest.id,
+                model_answered=self.answered_by(),
+                cached=cached,
+                tokens_in=usage.get("prompt_tokens"),
+                tokens_out=usage.get("completion_tokens"),
+                usd=0.0 if cached else self._usd(usage),
+                seconds=round(seconds, 3),
+                **extra,
+                **(meta or {}),
+            )
+
+    def _first_token(
+        self, prompt: str, names: list[str], question: dict[str, Any], role: str, meta: dict[str, Any] | None
+    ) -> dict[str, Any]:
+        body: dict[str, Any] = {
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 1,
+            "temperature": 0.0,
+            "logprobs": True,
+            "top_logprobs": self.top_logprobs,
+            **self.extra,
+        }
+        key = self._key(body)
+        if self.served_model:
+            body["model"] = self.served_model
+        response, cached, seconds = self._fetch(key, body)
+        first = (response.get("choices") or [{}])[0]
+        content = (first.get("logprobs") or {}).get("content") or []
+        tops = content[0].get("top_logprobs", []) if content else []
+        probs, mass = option_probabilities(tops, names)
+        self._record(role, response, cached, seconds, meta, letter_mass=round(mass, 4))
+        if question["type"] == "noul":
+            return {
+                "type": "noul",
+                "noul": probs.get("yes") if probs else None,
+                "letter_mass": round(mass, 4),
+            }
+        best = max(probs, key=probs.get) if probs else None
+        return {
+            "type": "choice",
+            "choice": best,
+            "probabilities": probs or None,
+            "letter_mass": round(mass, 4),
+        }
+
+    def _after_reasoning(
+        self, prompt: str, names: list[str], question: dict[str, Any], role: str, meta: dict[str, Any] | None
+    ) -> dict[str, Any]:
+        def one(i: int) -> str | None:
+            body: dict[str, Any] = {
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": self.max_tokens,
+                "logprobs": False,
+                **self.sampling,
+                **self.extra,
+            }
+            key = self._key(body, sample=i)
+            if self.served_model:
+                body["model"] = self.served_model
+            response, cached, seconds = self._fetch(key, body)
+            option = reasoned_letter(response, names, self.reasoning_end)
+            finish = (response.get("choices") or [{}])[0].get("finish_reason")
+            self._record(role, response, cached, seconds, meta, sample=i, answer=option, finish_reason=finish)
+            return option
+
+        with ThreadPoolExecutor(max_workers=max(1, self.concurrency)) as pool:
+            options = list(pool.map(one, range(self.samples)))
+        votes = Counter(o for o in options if o is not None)
+        answered = sum(votes.values())
+        probs = {n: votes.get(n, 0) / answered for n in names} if answered else None
+        top = max(probs.values()) if probs else None
+        tie = probs is not None and sum(v == top for v in probs.values()) > 1
+        detail = {
+            "samples": self.samples,
+            "answered": answered,
+            "agreement": round(top, 4) if top else None,
+            "tie": tie,
+        }
+        if question["type"] == "noul":
+            return {"type": "noul", "noul": probs["yes"] if probs else None, **detail}
+        best = None if (probs is None or tie) else max(probs, key=probs.get)
+        return {"type": "choice", "choice": best, "probabilities": probs, **detail}
+
     def __call__(
         self,
         state: Any,
@@ -186,71 +345,11 @@ class LLMSubject:
         role: str = "candidate",
         meta: dict[str, Any] | None = None,
     ) -> dict[str, dict[str, Any]]:
+        ask = self._after_reasoning if self.mode == "after_reasoning" else self._first_token
         answers: dict[str, dict[str, Any]] = {}
         for qid, question in questions.items():
             prompt, names = render(state, question)
-            body: dict[str, Any] = {
-                "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": 1,
-                "temperature": 0.0,
-                "logprobs": True,
-                "top_logprobs": self.top_logprobs,
-                **self.extra,
-            }
-            key = request_key(
-                {
-                    "id": self.manifest.id,
-                    "revision": self.manifest.revision,
-                    "dtype": self.manifest.dtype,
-                    "engine": self.engine,
-                    "body": body,
-                }
-            )
-            if self.served_model:
-                body["model"] = self.served_model
-            hit = self.cache.get(key)
-            t0 = time.perf_counter()
-            if hit is None:
-                if self.context.max_calls is not None and self.calls >= self.context.max_calls:
-                    raise RuntimeError(f"{self.manifest.name}: call ceiling {self.context.max_calls} reached")
-                self.calls += 1
-                response = self.transport(f"{self.base_url}/chat/completions", body, self._headers())
-                self.cache.put(key, response)
-            else:
-                response = hit
-            seconds = time.perf_counter() - t0
-            first = (response.get("choices") or [{}])[0]
-            content = (first.get("logprobs") or {}).get("content") or []
-            tops = content[0].get("top_logprobs", []) if content else []
-            probs, mass = option_probabilities(tops, names)
-            if question["type"] == "noul":
-                answers[qid] = {
-                    "type": "noul",
-                    "noul": probs.get("yes") if probs else None,
-                    "letter_mass": round(mass, 4),
-                }
-            else:
-                best = max(probs, key=probs.get) if probs else None
-                answers[qid] = {
-                    "type": "choice",
-                    "choice": best,
-                    "probabilities": probs or None,
-                    "letter_mass": round(mass, 4),
-                }
-            usage = response.get("usage") or {}
-            self.context.ledger.record(
-                role,
-                provider_api=self.engine,
-                model_asked=self.manifest.id,
-                model_answered=self.answered_by(),
-                cached=hit is not None,
-                tokens_in=usage.get("prompt_tokens"),
-                tokens_out=usage.get("completion_tokens"),
-                usd=0.0 if hit is not None else self._usd(usage),
-                seconds=round(seconds, 3),
-                letter_mass=round(mass, 4),
-                **(meta or {}),
-            )
+            answers[qid] = ask(prompt, names, question, role, meta)
         return answers
 
 
