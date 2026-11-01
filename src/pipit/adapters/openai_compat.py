@@ -97,11 +97,13 @@ def reasoned_letter(
     return None
 
 
-def _urllib_transport(url: str, body: dict[str, Any], headers: dict[str, str]) -> dict[str, Any]:
+def _urllib_transport(
+    url: str, body: dict[str, Any], headers: dict[str, str], timeout: float = 180.0
+) -> dict[str, Any]:
     req = urllib.request.Request(
         url, data=json.dumps(body).encode(), headers={**headers, "Content-Type": "application/json"}
     )
-    with urllib.request.urlopen(req, timeout=180) as r:
+    with urllib.request.urlopen(req, timeout=timeout) as r:
         return json.load(r)
 
 
@@ -127,7 +129,10 @@ class LLMSubject:
         self.concurrency = int(s.get("concurrency", self.samples))
         self.sampling = dict(s.get("sampling", {}))
         self._lock = threading.Lock()
-        self.transport = transport or _urllib_transport
+        timeout = float(s.get("timeout", 180))  # seconds per request; reasoning shares the GPU, so allow long
+        self.transport = transport or (
+            lambda url, body, headers: _urllib_transport(url, body, headers, timeout)
+        )
         self.cache = JsonlCache(context.cache_dir / f"{manifest.name}.jsonl")
         self.calls = 0
         self._server: subprocess.Popen | None = None

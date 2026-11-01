@@ -2,7 +2,8 @@
     uv run python studies/p1_clinical/run.py models/pplx_flash.yaml --role candidate
     uv run python studies/p1_clinical/run.py models/qwen35_4b_thinking.yaml --questions decision --workers 2
 Answers are merged into runs/answers_<name>.jsonl, so a rerun only covers cases not yet answered. --workers runs
-cases in parallel (useful when the subject's server batches requests); --limit runs a pilot of the first N."""
+cases in parallel (useful when the subject's server batches requests); --limit runs a pilot of the first N;
+--per-cell N runs N cases from each family and condition."""
 
 from __future__ import annotations
 
@@ -31,6 +32,9 @@ def main() -> None:
     ap.add_argument(
         "--limit", type=int, default=None, help="run only the first N cases still to do (a pilot)"
     )
+    ap.add_argument(
+        "--per-cell", type=int, default=None, help="run only the first N cases of each family and condition"
+    )
     args = ap.parse_args()
     which = {q.strip() for q in args.questions.split(",") if q.strip()}
     if not which <= {"fact", "decision"}:
@@ -39,7 +43,17 @@ def main() -> None:
     cases = adjudicated(load_cases())
     out_path = RUNS / f"answers_{manifest.name}.jsonl"
     done = {r["id"]: r for r in read_jsonl(out_path)}
-    todo = [c for c in cases.values() if c[args.set] and c["id"] not in done][: args.limit]
+    eligible = sorted((c for c in cases.values() if c[args.set]), key=lambda c: c["id"])
+    if args.per_cell:
+        seen: dict[tuple, int] = {}
+        picked = []
+        for c in eligible:
+            cell = (c["family"], c["condition"])
+            if seen.get(cell, 0) < args.per_cell:
+                seen[cell] = seen.get(cell, 0) + 1
+                picked.append(c)
+        eligible = picked
+    todo = [c for c in eligible if c["id"] not in done][: args.limit]
     print(f"{manifest.name}: {len(todo)} cases to run, {len(done)} already answered", flush=True)
 
     def ask(c: dict) -> dict:

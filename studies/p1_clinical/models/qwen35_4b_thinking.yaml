@@ -14,8 +14,9 @@ settings:
   answer: after_reasoning      # thinking mode, the model's default: read the answer after the reasoning
   reasoning_end: "</think>"
   max_tokens: 8192             # reasoning budget per answer; a run that hits it gives no answer
-  samples: 5                   # a reasoned answer is always certain, so confidence is agreement across samples
-  concurrency: 5               # samples run in parallel; the MLX server batches requests that carry no seed
+  samples: 3                   # a reasoned answer is always certain, so confidence is agreement across samples
+  concurrency: 3               # samples run in parallel; the MLX server batches requests that carry no seed
+  timeout: 1800                # seconds per request: long reasoning shares the GPU with other samples
   sampling:                    # the model card's thinking-mode settings for general tasks
     temperature: 1.0
     top_p: 0.95
