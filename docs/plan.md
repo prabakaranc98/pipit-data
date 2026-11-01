@@ -264,16 +264,38 @@ the ledger.
    exact paired test p = 0.51, for 5.8 hours of compute.
 3. **The engine design, J1 and X1** (#40, #41, #42): the method as computation, judges measured, and Pipit beside Petri
    on the same model.
-4. **Rules the studies exposed:** the family rule (#43), provider pinning (#44), the partition check (#45).
-5. **Dataset styles and variants:** extraction and a computed number (#47); pressure and injection variants (#48).
-6. **The bench and adaptive measurement** (E1; #8, #9, #25).
-7. **The evaluation aspects in `report.json`,** with a schema (#18).
-8. **The first release and the examples** (#51, #52).
-9. **Study configuration** (#12), after the decision on Inspect (#46).
-10. **Multi-turn and agent styles** (#49), realism and test awareness (#50), the viewer (#19), and the agent team in
+4. **Rules the studies exposed:** the family rule (#43), provider pinning (#44), the partition check (#45). Done on
+   branch `m1/rules`.
+5. **The platform under the loop:** the supervisor that owns model servers and resumes jobs (#53), and the study
+   registry (#54).
+6. **Dataset styles and variants:** extraction and a computed number (#47); pressure and injection variants (#48).
+7. **The bench and adaptive measurement** (E1; #8, #9, #25): done on branch `m2/bench`, with a
+   confidence sequence; adaptive spending is adopted only with it.
+8. **The evaluation aspects in `report.json`,** with a schema (#18).
+9. **The first release and the examples** (#51, #52).
+10. **Study configuration** (#12), after the decision on Inspect (#46); remote engines (#55).
+11. **Multi-turn and agent styles** (#49), realism and test awareness (#50), the viewer (#19), and the agent team in
     0.2.
 
 Then release 0.1.0.
+
+## Where this is still weak against the real world
+
+Honest gaps, as of 2026-11-01, each with the work that closes it:
+
+| Gap | Why it matters | Closed by |
+| --- | --- | --- |
+| Every result is on cases we wrote | a model can pass written cases and fail on real traffic | the transfer study on real complaints from the Hub (#28) |
+| One person set the clinical truth | a planted answer is only as right as its author | a clinician's review of P1's answers before any release |
+| Nothing has been confirmed | every claim so far is exploratory | the first confirm round on held-back families (S4) |
+| Studies are small | P1 settles one of twelve key questions per model | fewer, deeper key questions per budget, and adaptive spending (#9) |
+| No judge is certified | where code cannot grade, the number is only as good as the judge | J1 with 30 to 60 more unsafe items, and injection resistance in the bar (#41) |
+| The platform is fragile | a stopped server or a sleeping laptop cost hours today | the supervisor and resumable jobs (#53) |
+| Five branches wait on one open pull request | building outpaces review, and context drifts | merging in order, one at a time |
+
+What moved toward the real world on 2026-11-01: evidence counted once per case, which corrected overclaims;
+judges measured before use; Pipit tested beside Petri on the same model; three methods agreeing on why the dose
+decision fails; and adaptive spending kept honest by intervals valid under early stopping.
 
 ## What 0.1.0 means
 
