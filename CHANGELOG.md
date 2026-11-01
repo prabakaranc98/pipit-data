@@ -6,6 +6,10 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ### Added
 
+- `pipit.tree`: checks that a hypothesis tree partitions its cases; P1's tree is now built through it, and its spec states the conditions each key question covers (#45).
+- The family rule: manifests declare a `family`, and `pipit.manifest.family_conflicts` reports any helper, judge or council member sharing a family with a candidate; P1's Qwen validator is the first case it catches (#43).
+- `pipit.ledger.providers` and `mixed_providers`: which providers served each API model, so a model routed to several can be pinned (#44).
+
 - `docs/architecture.md`: the components by layer (interfaces, control plane, agent team, core, engines, data, quality), built or planned; three loops at three speeds; how configuration flows from a machine profile to a study file to manifests; memory on a laptop, measured, and the rules that keep a run out of swap; one diagram.
 - `docs/methodology.md`: the playbook. Models write, statistics allocate, code grades, people decide; eight steps from framing to report, each with an owner and a check; how agents carry it through skills, tested prompts, scoped context and coordination through the record; what it enables for research; and three experiments that will show whether it works. `docs/plan.md`: the path to 0.1.0 reordered around it.
 - `pipit.adapters.openai_compat`: any LLM behind an OpenAI-style endpoint (MLX, vLLM, SGLang, llama.cpp, Ollama, OpenRouter) answers typed questions as single-letter multiple choice, with option probabilities from the first answer token's log-probabilities, the share of probability on the letters recorded, a request cache, ledger rows per question, and an optional local server launched from the manifest. An `mlx` extra for Apple silicon. P1 run on Qwen3.5-4B in BF16 through MLX, next to the decider trained from it: 36 mistakes against 19 of 112 (exact paired test p = 0.006); the LLM reads facts about as well but turns them into wrong decisions more often, fails indirect clues (10 of 16 against 0), and shares the decider's weakness on weight-based doses.

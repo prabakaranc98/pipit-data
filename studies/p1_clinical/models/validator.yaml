@@ -3,4 +3,5 @@ id: qwen/qwen3-235b-a22b-2507   # a different family from the paraphraser, never
 revision: as-served
 adapter: pipit.adapters.openrouter:load
 placement: api
+family: qwen
 key_env: OPENROUTER_API_KEY
