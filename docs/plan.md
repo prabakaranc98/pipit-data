@@ -158,19 +158,25 @@ out.
 
 ## The path to 0.1.0, one pull request at a time
 
-1. **Any LLM through one adapter:** the OpenAI-interface adapter with option probabilities, and P1 run on
-   Qwen3.5-4B through MLX, which shows what decision training buys at the same size. (new issue)
-2. **Remote engines and parity:** vLLM or SGLang through an endpoint or an SSH tunnel, and `pipit models check`
-   comparing two engines on the same cases. (new issue)
-3. **Family specs** compiled to cases with lineage, with P1 and P3 regenerated from YAML. (#22)
-4. **Study files, the command line and `report.json`,** so a new study is YAML only. (#12, #18)
-5. **The bench:** synthetic subjects with planted failures, run in CI. (#8)
-6. **The stopping rule and adaptive allocation,** each kept only if it beats uniform on the bench. (#25, #9)
-7. **The canary** for moved aliases and drifting models. (#23)
-8. **Anchors to public benchmarks.** (new issue)
-9. **The P3 screen end to end** on the decider and the LLM, confirmed on fresh cases: the first full reliance
-   dossier, and M3's done-when. (#14)
-10. **A minimal viewer.** (#19)
+The order follows `docs/methodology.md`: prove the method on the bench first, then build what makes it easy to use,
+then run real studies under it.
+
+1. **Any LLM through one adapter, in its native setup:** instruct mode (#33, done), then thinking mode with
+   confidence from agreement across samples (#35).
+2. **The playbook:** the rules every study and every agent follows (#36).
+3. **The bench:** synthetic subjects with planted failure surfaces, run in CI. (#8)
+4. **Adaptive measurement on the bench:** allocation by evidence and stakes, staircases for difficulty settings, and
+   a stopping rule that stays valid when we look early, each kept only if it beats an even spread at equal budget.
+   (#9, #25)
+5. **The evidence rule, `report.json` and the interactive viewer.** (#18, #19)
+6. **Family specs,** with two independent families per key question. (#22)
+7. **Study configuration:** models per role, parallel workers, budgets, profiles, and a cost estimate before a run.
+   (#12)
+8. **On real models:** the dose-ratio staircase and the replication of the dose finding. (new issue)
+9. **The P3 screen end to end under the playbook,** confirmed on fresh families: the first full reliance dossier,
+   and M3's done-when. (#14)
+10. **The canary** for moved aliases and drifting models (#23); remote engines when a GPU host is available; anchors
+    to public benchmarks.
 
 Then release 0.1.0.
 
@@ -180,6 +186,7 @@ Then release 0.1.0.
   command.
 - A new study is YAML only: a study file, family specs and manifests.
 - The bench passes in CI: planted failures are found, and false claims stay at or below the stated level.
+- On the bench, adaptive measurement beats an even spread at equal budget, or the report says it does not.
 - One reliance dossier is complete and confirmed on fresh cases: P3, for both the decider and the LLM.
 - Every artifact has a schema version, every case set and run is hashed, and every call is in the ledger.
 
