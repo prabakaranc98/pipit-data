@@ -38,6 +38,75 @@ and when to stop. Code computes every right answer and grades every reply. A per
 | 7. Explain | ablations and fixes on the same minimal pairs, such as supplying the computed mg/kg to see whether the error disappears; the pairs are exported for interpretability, where activation patching and probes need exactly such contrasts | lead and analyst; code | a cause is claimed only where an intervention changed the outcome |
 | 8. Report and keep | the reliance dossier in three voices; datasets versioned with cards; findings, sources and decisions in the record and the knowledge graph | analyst; a person signs | someone else can rebuild every number from the record |
 
+## From a gap to a release
+
+How a study is set up, how deep its tree may go, and what reaches the Hub.
+
+**1. The gap.** A study starts from a job someone wants to hand to a model, and the cost of a mistake in it. It names
+where the gap comes from: the vendor's own stated weakness, an open problem the field has listed, an earlier
+finding, or a failure seen in use. It keeps three things apart: what the field knows, what it lists as open, and what
+is new only to us. It is written as one sentence with its tolerance: can model M do job J alone, with errors of
+severity S below a stated rate, on inputs like these?
+
+**2. Hypotheses, by mechanism.** Each hypothesis is a way the decision can fail, written so that something could
+refute it. Together they partition the cases: every case falls under exactly one. P1's four make a reusable start for
+decision jobs: the model fails to read a fact, fails to compute or compare a value, fails to infer a state from
+indirect evidence, or commits when the record cannot support a decision.
+
+**3. Key questions.** Each hypothesis splits into two to four key questions, each about one factor: a negated
+allergy, a fact buried in a long note, a renal threshold. Each key question gets at least two case families with
+different surfaces and the same mechanism, so that a finding has to replicate.
+
+**4. Depth and width are set by the budget.** A node is settled only with enough independent cases:
+
+| To settle a node | Independent cases for an 80% chance |
+| --- | --- |
+| support a limitation whose true failure rate is 50% | 17 |
+| support one whose true failure rate is 35% | 59 |
+| refute a limitation when the true failure rate is 0% | 22 |
+| refute it when the true failure rate is 5% | 74 |
+| certify silent errors below 5%, with none seen | 59 |
+
+So the number of key questions a study can settle is roughly its budget divided by 30 to 60. A budget of 500
+independent cases settles about a dozen: three or four hypotheses of three or four questions each, a tree of depth
+three. P1 wrote twelve key questions with 59 independent cases in all, three to five each, and eleven of the twelve
+stayed open for Jev. Deeper levels are grown, not written: a node is split only where its evidence divides or where a
+supported finding needs its cause, the split is made on explore data, and it is tested on fresh confirm families.
+
+**5. Cases and splits.** A family crosses scenarios, conditions, difficulty settings and rewordings; the independent
+unit is a scenario under one condition. Before anything runs, each family and scenario goes to explore or confirm by
+a hash of its name, so the split cannot drift. Confirm families are written and frozen, and never run during
+exploration.
+
+**6. Rounds over time.** A round runs explore, lets the tree adapt, then runs confirm once and records the claims.
+The next round publishes the old confirm set, writes new confirm families, and repeats a small anchor set so that
+results link across rounds. The version's first number changes when results stop being comparable, and the second
+when only the interface changes.
+
+**7. What reaches the Hub.** One dataset repository per study, with a tag per round, listed in a "Pipit benchmarks"
+collection:
+
+| Part | Published | Held back |
+| --- | --- | --- |
+| explore cases | the cases, with the tree and the family specs | nothing |
+| retired confirm cases | the cases, checkable against the fingerprint published before their run | nothing |
+| live confirm cases | a fingerprint of the set | the cases |
+| results per model and round | each node's count, interval and status; the certificate; the evaluation aspects; cost; the model's exact setup | per-case answers on live confirm cases |
+| the card | the gap, the tree, how truth is planted, "evaluation only, do not train", the licence, a canary string, how to evaluate, known limits | nothing |
+
+Outputs whose terms restrict reuse, such as Jev's under TypeSafe's terms, are published only as aggregates unless
+their terms allow more.
+
+## Rules checked in code
+
+Three rules came out of the first studies, and each is now a check rather than a promise:
+
+| Rule | Why | Where |
+| --- | --- | --- |
+| A tree must partition its cases: every case claimed by exactly one key question | P1's spec, as written, claimed 40 cases twice, and only the order of the code decided which question got them | `pipit.tree.partition`; P1's `tree()` raises when it fails |
+| No model filters or grades for a candidate of its own family | a validator keeps the cases its family reads well; P1's validator is a Qwen model, like all three of its candidates | `family` in every manifest; `pipit.manifest.family_conflicts` |
+| An API model is pinned to one provider, and mixed routing is flagged | in study J1, OpenRouter served one judge from 18 providers, so its measured accuracy belonged to no single one | `settings.request.provider` in the manifest; `pipit.ledger.mixed_providers` |
+
 ## How agents carry the playbook
 
 - **Each step is a skill.** A skill has instructions, the shape of its inputs and outputs, a checklist, a worked
@@ -71,6 +140,14 @@ and when to stop. Code computes every right answer and grades every reply. A per
 1. **On the bench:** synthetic subjects with planted failure surfaces, failure probability rising with a difficulty
    setting. Do adaptive allocation and staircases recover the planted thresholds with fewer cases than an even
    spread, without more false claims?
+   First result (`studies/b1_bench`, 2026-11-01): on three planted surfaces of twelve questions, sending each next
+   unit to the open question that would settle soonest settles up to fifteen times as many questions as an even
+   spread at the same budget, but on ordinary intervals it claims falsely in up to a quarter of runs. With a
+   confidence sequence instead, which stays valid when a question stops early, it settles 4 to 44 times as many
+   questions as an even spread on the same sequence at 240 units and under twice as many at 60, with a false claim
+   in at most 1.3% of runs. The sequence is stricter, so at 60 units this pair settles fewer questions than an even
+   spread on ordinary intervals. The textbook thresholding rule helped less and erred as often. Adaptive spending is
+   adopted only with the sequence.
 2. **On real models:** a dose-ratio staircase on the Perplexity decider and on Qwen3.5-4B in thinking mode: the ratio
    at which each starts to withhold, and how many cases that took against a grid.
 3. **Replication:** the dose finding re-tested in an independent family with different drugs, units and wording.

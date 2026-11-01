@@ -105,3 +105,54 @@ Engines can live anywhere behind the same interface: a GPU machine reached throu
 The study runner stays where the record is. The record and the case sets move through git; the heavy parts move
 through DVC. Placement chooses an engine by measured footprint and cost, and records the choice, so a result says
 where it ran.
+
+## The platform for a loop that improves itself
+
+A loop that writes, runs, judges and rewrites its own studies is only as trustworthy as what it stands on. Each
+layer below says what holds today, what the first studies showed, and what comes next.
+
+### What broke today, and the fix each needs
+
+| What happened | Effect | Design fix |
+| --- | --- | --- |
+| The model server stopped when the run that launched it exited | a Petri test waited ten minutes on nothing; the pressure arm crashed partway | a supervisor owns model servers; runs connect to them and never launch them |
+| The laptop slept on battery | a research agent died mid-answer; the thinking run crawled for hours | jobs resume from the cache; each run records its own interruptions; long runs only on mains power or a remote host |
+| Twelve long reasoning streams on one model | 17 GB in use and heavy swapping | admission by measured footprint, and stream caps per model |
+| Petri's target ran at the server's default output limit | five replies cut off, read by the judge as contradictions | every role's generation settings written in its manifest |
+| OpenRouter spread one judge over 18 providers | its measured accuracy belonged to no single model | the provider pinned in the manifest; mixed routing flagged (#44) |
+| A shell pipeline hid a crashed run's exit code | the failure looked like success until the output was read | every run writes a status record, and callers check it |
+
+### The layers
+
+| Layer | Holds | Today | Next |
+| --- | --- | --- | --- |
+| The record | every case, answer, verdict, decision and cost as an append-only log | the ledger and each study's run files | one event log per study with typed entries, the single source agents and reports read |
+| Artifacts | case sets, runs, reports, cards, models' exact setups | hashed case sets; reports regenerated from runs | every artifact with a hash, a schema version and a card; lineage from claim back to case, writer and model |
+| Storage | small text in git; caches, raw runs and hidden states in an object store; releases on the Hub | git only; heavy files ignored | DVC for the heavy tier; Hub datasets with a tag per round (#51) |
+| Agent context and memory | what each role may see, and what it remembers between rounds | not built | context scoped by role; the record as shared memory; a knowledge graph of findings, sources and decisions across studies; confirm cases never visible |
+| Scheduling | studies, rounds, batches and calls, within budgets and memory | one script per study; workers set by hand | a job queue with budgets in cases and dollars, batch APIs for cheap judges, resume after any stop |
+| Engines on this Mac | MLX and PyTorch, one model resident at a time on 24 GB | launched by the run that needs them | the supervisor: start, health check, stop, measured footprint, stream caps |
+| Engines elsewhere | vLLM or SGLang on a GPU host, hosted APIs | APIs only | a host reached over SSH behind the same OpenAI-style adapter, cost per hour in the ledger, and a parity check against the local run before results are mixed |
+| Hugging Face | seed datasets in, benchmark releases out, model revisions | revisions pinned by commit; offline mode | licences checked on the way in; releases with a card, canary, fingerprint and gated confirm on the way out; Croissant comes free |
+| Experiment tracking | every study's question, status, result, cost and branch | the README table, kept by hand | a study registry generated from the study folders |
+
+### The flywheel, as computation
+
+| Step | Algorithm | Evidence so far |
+| --- | --- | --- |
+| Frame | a tree that partitions the case space; each node a claim with a tolerance | P1's tree, now checked in code (#45) |
+| Build | family specs compiled to cases with planted truth; helpers scored before use | P1; the validator was wrong on 25 of 31 flags |
+| Spend | a pilot, then the open question nearest a verdict, on a confidence sequence | B1: 4 to 44 times as many questions settled as an even spread at 240 units, under twice as many at 60; false claims at most 1.3% of runs |
+| Grade | code first; a measured judge only where code cannot, resistant to instructions in the reply | J1: the best judge passes most bars but not the injection test unaided |
+| Grow | splits on recorded factors with false discoveries controlled; failures clustered into new nodes | planned |
+| Explain | interventions on the minimal pairs: state a fact, patch a layer, see what moves | I1: the dose decision is a fixed cautious answer |
+| Confirm | fresh held-back families, registered tests, e-BH across claims | planned; nothing has been confirmed yet |
+| Release | explore cases public, confirm held back, fingerprint, canary | planned (#51) |
+| Use | reliance dossiers, benchmarks, interpretability pairs, and training data only from confirmed limits | dossier in part; the rest planned |
+
+### Trust in a dataset, as numbers on its card
+
+A Pipit dataset is the product, so its card carries measured numbers, not adjectives: how its truth was set and
+checked; how often each helper agreed with the planted truth; how many independent cases it holds, and how alike
+rewordings behave; whether its tree partitions it; how realistic people rated it and whether models recognise it as
+a test; its contamination guards; its lineage hashes; and its licences.
