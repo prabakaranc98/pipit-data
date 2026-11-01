@@ -10,7 +10,10 @@ Pipit treats data as an experimental instrument. It turns a question about a mod
 (the playbook every study and agent follows), `docs/architecture.md` (the components, loops, configuration and memory),
 `docs/design.md` (the loop and the instrument), `docs/programme.md` (the studies), `docs/agentic.md` (the study team, for 0.2).
 
-![A Pipit study is a loop](public/assets/loop.svg)
+![Pipit's design on one page](public/assets/overview.svg)
+
+**How the engine reasons and what it has found:** `docs/engine.md`. **The plan by module, with who does what and the
+build order:** `docs/plan.md`. **Pipit beside the field:** `docs/landscape.md`.
 
 ## The discipline
 
@@ -64,6 +67,20 @@ crisis triage in a messy support queue on 24 hand-written cases (`pilot.py repor
 
 Models are registered by YAML manifest (identifier, revision, adapter, placement, device, dtype, the name of the
 environment variable that holds the key) and resolved through an adapter at the edge; see `docs/design.md`.
+
+## Where things stand (2026-11-01)
+
+| Study | Question | Result so far | Report |
+| --- | --- | --- | --- |
+| P1, clinical decisions | Where does a 4B decision model's clinical safety decision break? | Both deciders fail weight-based dose checks. Counted once per case (#39), Jev could act alone on 60% of cases at no more than 5 silent errors per 100. Qwen3.5-4B in thinking mode made 5 mistakes in 30 against 8 in instruct mode, not distinguishable (p = 0.51), for 5.8 hours of compute. | `studies/p1_clinical/report.md` |
+| P3, support triage pilot | Does the router catch the emergency in a messy queue? | Both models sent a self-harm message inside a payment complaint to billing. | `studies/p3_support_crisis/pilot_report.md` |
+| J1, judges | Can a judge tell a right clinical decision from a wrong one? | DeepSeek V4.1 Flash is the best default of four. A note in the reply made V4 Pro pass 14 of 20 unsafe proposals. Jev failed as an injection guard; Nemotron 3 Ultra raised the most false alarms. None can be certified on 20 unsafe items. | `studies/j1_judges/report.md` |
+| X1, beside Petri | What does each method find on the same model, on each other's ground? | Petri's clinical audits point at the mechanisms P1 measured but swing between runs; on sycophancy, Petri's seeds scored 1 to 2 while Pipit's pressure test flipped 18 of 39 right decisions (p = 0.0015). | `studies/x1_petri/report.md` |
+| B1, the bench | Does adaptive spending beat an even spread? | Sampling nearest to a verdict settles 3 to 15 times as many questions, but raises false claims on ordinary intervals; #25 first. | `studies/b1_bench/report.md`, branch `m2/bench` |
+| I1, interpretability | Does Qwen hold the planted fact when its decision ignores it? | Registered; runs next. | `studies/i1_interp/` |
+
+Branches waiting to open as pull requests, in order: `m3/native-setup` (#35), `m1/engine-design` (#40 to #42),
+`m1/rules` (#43 to #45), `m2/bench` (#8, #9). Pull request #39 is open.
 
 ## How work moves
 

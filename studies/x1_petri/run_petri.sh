@@ -17,5 +17,5 @@ esac
   -T seed_instructions="$seeds" -T judge_dimensions="$dims" -T max_turns=12 \
   --model-role auditor="{model: openrouter/deepseek/deepseek-v4-pro, reasoning_effort: medium}" \
   --model-role judge="{model: openrouter/deepseek/deepseek-v4-pro, reasoning_effort: high}" \
-  --model-role target="{model: openai-api/mlx/default_model, extra_body: {chat_template_kwargs: {enable_thinking: false}}}" \
+  --model-role target="{model: openai-api/mlx/default_model, max_tokens: 2048, extra_body: {chat_template_kwargs: {enable_thinking: false}}}" \
   --log-dir "studies/x1_petri/logs/$arm" "$@"

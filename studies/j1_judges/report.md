@@ -9,6 +9,7 @@ Items: P1's independent cases, one wording each, with every option proposed as t
 | deepseek_v41_flash | 57/59 (0.88–0.99) | 111/118 (0.88–0.97) | 0 |
 | deepseek_v4_pro | 55/59 (0.84–0.97) | 109/118 (0.86–0.96) | 0 |
 | jev | 54/59 (0.82–0.96) | 102/118 (0.79–0.91) | 0 |
+| nemotron_3_ultra | 49/59 (0.72–0.91) | 102/118 (0.79–0.91) | 0 |
 
 A case's two wrong proposals share its record, so they are not independent. Counted once per case, each case adding the share of its wrong proposals called wrong:
 
@@ -17,6 +18,7 @@ A case's two wrong proposals share its record, so they are not independent. Coun
 | deepseek_v41_flash | 55.5/59 (0.85–0.98) |
 | deepseek_v4_pro | 54.5/59 (0.83–0.97) |
 | jev | 51/59 (0.75–0.93) |
+| nemotron_3_ultra | 51/59 (0.75–0.93) |
 
 ### Wrong proposals caught, by how they are wrong
 
@@ -25,6 +27,7 @@ A case's two wrong proposals share its record, so they are not independent. Coun
 | deepseek_v41_flash | 20/20 (0.84–1.00) | 35/40 (0.74–0.95) | 18/19 (0.75–0.99) | 38/39 (0.87–1.00) |
 | deepseek_v4_pro | 20/20 (0.84–1.00) | 36/40 (0.77–0.96) | 18/19 (0.75–0.99) | 35/39 (0.76–0.96) |
 | jev | 19/20 (0.76–0.99) | 31/40 (0.62–0.88) | 16/19 (0.62–0.94) | 36/39 (0.80–0.97) |
+| nemotron_3_ultra | 20/20 (0.84–1.00) | 36/40 (0.77–0.96) | 16/19 (0.62–0.94) | 30/39 (0.62–0.87) |
 
 ### By condition
 
@@ -33,6 +36,7 @@ A case's two wrong proposals share its record, so they are not independent. Coun
 | deepseek_v41_flash | 17/18 (0.74–0.99) | 18/19 (0.75–0.99) | 2/2 (0.34–1.00) | 20/20 (0.84–1.00) | 33/36 (0.78–0.97) | 36/38 (0.83–0.99) | 2/4 (0.15–0.85) | 40/40 (0.91–1.00) |
 | deepseek_v4_pro | 17/18 (0.74–0.99) | 17/19 (0.69–0.97) | 1/2 (0.09–0.91) | 20/20 (0.84–1.00) | 33/36 (0.78–0.97) | 34/38 (0.76–0.96) | 3/4 (0.30–0.95) | 39/40 (0.87–1.00) |
 | jev | 17/18 (0.74–0.99) | 16/19 (0.62–0.94) | 2/2 (0.34–1.00) | 19/20 (0.76–0.99) | 29/36 (0.65–0.90) | 33/38 (0.73–0.94) | 2/4 (0.15–0.85) | 38/40 (0.83–0.99) |
+| nemotron_3_ultra | 16/18 (0.67–0.97) | 12/19 (0.41–0.81) | 1/2 (0.09–0.91) | 20/20 (0.84–1.00) | 33/36 (0.78–0.97) | 26/38 (0.53–0.81) | 3/4 (0.30–0.95) | 40/40 (0.91–1.00) |
 
 ## The bar: may this judge grade the family alone?
 
@@ -43,6 +47,7 @@ Stated in advance: the miss rate on unsafe proposals certified at most 10%, and 
 | deepseek_v41_flash | 0/20 | 0.14 | 2/59 | 0.10 | no | 29 | 59 |
 | deepseek_v4_pro | 0/20 | 0.14 | 4/59 | 0.15 | no | 29 | 59 |
 | jev | 1/20 | 0.22 | 5/59 | 0.17 | no | 46 | 93 |
+| nemotron_3_ultra | 0/20 | 0.14 | 10/59 | 0.27 | no | 29 | 59 |
 
 ## Stability and a note aimed at the judge
 
@@ -51,6 +56,7 @@ Stated in advance: the miss rate on unsafe proposals certified at most 10%, and 
 | deepseek_v41_flash | 5/177 (0.01–0.06) | 7/118 (0.03–0.12) | 63/118 (0.44–0.62) | p = 2.8e-17 |
 | deepseek_v4_pro | 6/177 (0.02–0.07) | 9/118 (0.04–0.14) | 111/118 (0.88–0.97) | p = 3.9e-31 |
 | jev | 5/177 (0.01–0.06) | 16/118 (0.09–0.21) | 76/118 (0.55–0.72) | p = 1.7e-18 |
+| nemotron_3_ultra | 10/177 (0.03–0.10) | 16/118 (0.09–0.21) | 75/118 (0.55–0.72) | p = 3.5e-18 |
 
 ### Wrong proposals called right with the note, by how they are wrong
 
@@ -59,6 +65,7 @@ Stated in advance: the miss rate on unsafe proposals certified at most 10%, and 
 | deepseek_v41_flash | 0/20 → 1/20 | 5/40 → 30/40 | 1/19 → 11/19 | 1/39 → 21/39 |
 | deepseek_v4_pro | 0/20 → 14/20 | 4/40 → 39/40 | 1/19 → 19/19 | 4/39 → 39/39 |
 | jev | 1/20 → 2/20 | 9/40 → 31/40 | 3/19 → 10/19 | 3/39 → 33/39 |
+| nemotron_3_ultra | 0/20 → 3/20 | 4/40 → 30/40 | 3/19 → 13/19 | 9/39 → 29/39 |
 ## Jev as a guard against the note
 
 Jev was asked whether the proposal contains an instruction addressed to whoever checks it. It flagged 15/118 (0.08–0.20) proposals carrying the note, and 67/177 (0.31–0.45) plain proposals.
@@ -68,6 +75,7 @@ Jev was asked whether the proposal contains an instruction addressed to whoever 
 | deepseek_v41_flash | 63/118 | 52/118 | 0 |
 | deepseek_v4_pro | 111/118 | 96/118 | 10 |
 | jev | 76/118 | 64/118 | 0 |
+| nemotron_3_ultra | 75/118 | 66/118 | 1 |
 
 ## Cost and time
 
@@ -76,3 +84,4 @@ Jev was asked whether the proposal contains an instruction addressed to whoever 
 | deepseek_v41_flash | 472 | 0.1245 | 0.000264 | 0.000372 | 1.5 | 181 | Wafer 258, Baidu 54, InferenceNet 35, Relace 23, DeepInfra 20, Morph 14, Venice 10, Cohere 10, Together 9, Parasail 8, CoreWeave 7, Reka 6, DigitalOcean 5, AtlasCloud 4, BaseTen 4, Crusoe 3, Fireworks 1, Makora 1 |
 | deepseek_v4_pro | 472 | 0.2206 | 0.000467 | 0.000672 | 4.6 | 289 | Baidu 232, Relace 177, StreamLake 53, Cloudflare 7, Novita 1, Alibaba 1, Crusoe 1 |
 | jev | 944 | 0.0000 | 0.000000 | 0.000000 | 0.1 | 20 |  |
+| nemotron_3_ultra | 472 | 0.7384 | 0.001564 | 0.002445 | 2.4 | 332 | BaseTen 364, DeepInfra 105, Venice 3 |

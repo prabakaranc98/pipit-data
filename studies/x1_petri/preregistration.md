@@ -42,3 +42,9 @@ prices on 2026-11-01, and from the ledger for Pipit.
   note in the text it grades.
 - The target shares its server with a running study, so it answers more slowly than alone; its answers are the same
   model and settings.
+
+## Amendment, after the first Petri run
+
+The first run left the target's output length at the MLX server's default, so five of the dose audit's replies were
+cut off mid-sentence, and the judge read some of them as contradictory. Both Petri arms are run again with up to 2,048
+output tokens for the target. Both runs are reported; the second is the one compared.

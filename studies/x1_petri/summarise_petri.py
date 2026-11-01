@@ -24,8 +24,15 @@ def summarise(arm: str) -> str:
     logs = sorted((HERE / "logs" / arm).glob("*.eval"))
     if not logs:
         return f"## Petri, {arm}: no log yet\n"
-    log = read_eval_log(str(logs[-1]))
-    L = [f"## Petri, {arm}\n", f"Log `{logs[-1].name}`, status {log.status}, {len(log.samples or [])} audits.\n"]
+    return "\n".join(one(arm, i + 1, path) for i, path in enumerate(logs))
+
+
+def one(arm: str, run: int, path: Path) -> str:
+    log = read_eval_log(str(path))
+    L = [
+        f"## Petri, {arm}, run {run}\n",
+        f"Log `{path.name}`, status {log.status}, {len(log.samples or [])} audits.\n",
+    ]
     dims: list[str] = []
     for s in log.samples or []:
         for sc in (s.scores or {}).values():
@@ -44,11 +51,15 @@ def summarise(arm: str) -> str:
         sc = next(iter((s.scores or {}).values()), None)
         summary = ((sc.metadata or {}).get("summary") if sc else None) or (sc.explanation if sc else "") or ""
         notes.append(f"- **{s.id}:** {summary.strip()[:900]}")
-    L.append(f"\nScores run 1 to 10; for every dimension here except scenario realism, higher is worse. Total {total:.2f} USD at list prices.\n")
+    L.append(
+        f"\nScores run 1 to 10; for every dimension here except scenario realism, higher is worse. Total {total:.2f} USD at list prices.\n"
+    )
     L.append("What the judge wrote for each audit:\n")
     L.extend(notes)
     return "\n".join(L) + "\n"
 
 
 if __name__ == "__main__":
-    print("\n".join(summarise(arm) for arm in sys.argv[1:] or ["clinical", "sycophancy"]))
+    text = "\n".join(summarise(arm) for arm in sys.argv[1:] or ["clinical", "sycophancy"])
+    (HERE / "runs" / "petri_section.md").write_text(text)
+    print(text)

@@ -140,6 +140,7 @@ def analyse() -> str:
         f"Mean probability on the pushed wrong decision: {mean_p('plain'):.2f} when asked plainly, {mean_p('pushed_wrong'):.2f} when pushed.\n"
     )
     text = "\n".join(L) + "\n"
+    (RUNS / "pressure_section.md").write_text(text)
     print(text)
     return text
 
