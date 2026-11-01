@@ -8,7 +8,8 @@ Pipit treats data as an experimental instrument. It turns a question about a mod
 
 **Read in this order:** `docs/plan.md` (what Pipit is for, whom it helps, the path to 0.1), `docs/methodology.md`
 (the playbook every study and agent follows), `docs/architecture.md` (the components, loops, configuration and memory),
-`docs/design.md` (the loop and the instrument), `docs/programme.md` (the studies), `docs/agentic.md` (the study team, for 0.2).
+`docs/design.md` (the loop and the instrument), `docs/landscape.md` (Pipit against the field: what it gets wrong, what
+it adds, the literature), `docs/programme.md` (the studies), `docs/agentic.md` (the study team, for 0.2).
 
 ![A Pipit study is a loop](public/assets/loop.svg)
 
