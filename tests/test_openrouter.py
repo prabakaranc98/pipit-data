@@ -55,3 +55,22 @@ def test_persistent_empty_content_raises_and_ceiling_holds(tmp_path, monkeypatch
         chat("x", retries=2)
     with pytest.raises(RuntimeError, match="ceiling"):
         chat("y")
+
+
+def test_a_system_message_is_sent_first_and_keys_its_own_cache_entry(tmp_path, monkeypatch) -> None:
+    monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
+    bodies = []
+
+    def transport(body, headers):
+        bodies.append(body)
+        return _response("ok")
+
+    ctx = Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path)
+    chat = OpenRouterChat(_manifest(), ctx, transport=transport)
+    chat("the task", system="the rules")
+    assert bodies[0]["messages"] == [
+        {"role": "system", "content": "the rules"},
+        {"role": "user", "content": "the task"},
+    ]
+    chat("the task")  # without a system message: a different request, not a cache hit
+    assert len(bodies) == 2 and bodies[1]["messages"] == [{"role": "user", "content": "the task"}]
