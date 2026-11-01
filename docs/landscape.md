@@ -318,6 +318,41 @@ licence and citation of every step and a reproducibility hash, and publishes to 
 - Model judges pass answers made up without the image (DriveBench).
 - A fresh test set is only "highly similar, but not identically distributed" to the original (GSM1k).
 
+## The five uses, as the field defines them
+
+Read on 2026-11-01 at abstract or named-section level, by research agents; quotes are verbatim.
+
+| Use | The field's definition | Open problems the field states | Sources |
+| --- | --- | --- | --- |
+| Data for post-training and distillation | examples used after pre-training to change behaviour: demonstrations, better-and-worse pairs, prompts with a checker or a rubric; in distillation a stronger teacher writes or scores them | correct labels at scale; rewards beyond checkable answers; reworded test items leaking into training; forgetting | Lambert et al., 2024 (Tülu 3); Gunjal et al., 2025 (Rubrics as Rewards); Xu et al., 2024; Liu et al., 2024 |
+| Evaluation | "scenarios (i.e. use cases) and metrics (i.e. desiderata)"; "Fundamentally, evaluations are experiments"; held to construct validity | validity; missing statistics, with 16% of 445 benchmarks running any test; contamination; cost | Liang et al., 2022 (HELM); Miller, 2024; Bean et al., 2025; Alaa et al., 2025, for medicine |
+| Auditing | "a systematic and independent process of obtaining and evaluating evidence regarding an entity's actions or properties and communicating the results of that evaluation to relevant stakeholders" | conclusions from outputs alone mislead; realism and test awareness; inconsistent judges | Mökander et al., 2023; Raji et al., 2020; Casper et al., 2024; Petri, 2025 |
+| Alignment, interpretability, safety | aligned when "'trying' to behave as intended"; interpretability seeks "the computational mechanisms underlying neural networks' capabilities" | hidden goals; explanations that misstate the real reason; checking interpretability methods | Anwar et al., 2024; Sharkey et al., 2025; Hendrycks et al., 2021; Marks et al., 2025 |
+| Reliability and routing | "ability of an item to perform as required, without failure, for a given time interval, under given conditions"; selective prediction "rejects instances as needed, to grant the desired risk" | checking LLM confidence; guarantees when cases change; repeatability; handing cases to imperfect receivers | NIST AI RMF 1.0, 2023; Guo et al., 2017; Geifman and El-Yaniv, 2017; Dvijotham et al., 2023 (CoDoC) |
+
+**Borders.** Post-training data and evaluation are split by held-out data. Evaluation gives an average; reliability
+gives the error rate among the cases a model decides alone. Auditing looks from outside, for whoever approves a
+deployment, usually with outputs only; alignment, interpretability and safety look inside, for the developer, with
+weights. NIST lists "safe" apart from "valid and reliable".
+
+**MedCalc-Bench, which study V1 uses:** Krohn-Grimberghe (2026, arXiv 2603.02222) reports fixing over 20 errors in
+the code behind its calculators and names 19 calculators.
+
+## The loop as others have built it, 2025 and 2026
+
+| Step | Systems | What their builders say is missing |
+| --- | --- | --- |
+| Generate cases with known answers | Reasoning Gym (Stojanovski et al., 2025); RLVE (Zeng et al., 2025); AutoBencher (Li et al., 2025); LiveBench (White et al., 2025) | domains that need deep knowledge; about 5% wrong labels in AutoBencher |
+| Find where the model fails | EvalTree (Zeng et al., 2025); task elicitation (Brown et al., 2025); investigator agents (Li et al., 2025); Petri and Bloom (2025); AuditBench (Sheshadri et al., 2026) | ground truth for failure explanations on real models; judges that cannot check correctness or change one word; better tools do not make better auditors |
+| Decide when the evidence is enough | Fluid Benchmarking (Hofmann et al., 2025); CELEUS (Zhou et al., 2026); adaptive auditing with anytime-valid guarantees (S. Zhou et al., 2026) | a cold start without earlier models; adaptive picking often barely beats uniform sampling for one average |
+| Turn failures into training data | SwS (Liang et al., 2025); failure-driven synthesis (Rajbahadur et al., 2026); LIMO and s1 (2025); Rubrics as Rewards and checklists (2025) | what the data fixed and what it broke; rubric rewards gamed during training; what a rejected answer teaches |
+
+What Pipit can add, as experiments for the releases ahead: failure profilers and auditors scored against known
+causes; Petri with and without Pipit's code checker; how far discovered failure rates shrink on fresh cases; the
+hypothesis tree as an anytime-valid auditor with generated cases; and training data checked on its twins. Not to be
+rebuilt: generators with difficulty dials, trees with a test at each node, intervals that survive early stopping, and
+the recipe that turns failures into training data.
+
 ## Sources, and how deeply each was read
 
 Research agents working for this project read every source below on 1 November 2026, mostly through a tool that
