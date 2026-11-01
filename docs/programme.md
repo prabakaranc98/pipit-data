@@ -6,8 +6,9 @@ Before a business switches on a small decision model, it has to answer one quest
 regulator will ask it again afterwards: on which cases can the model act alone, how often will it be wrong without
 anyone noticing, how many cases still need a person, and how long does that answer stay true?
 
-Pipit answers that question for one model, Perplexity's 4B decider, on five jobs these models are actually sold
-for. Each study ends in a **reliance dossier**: where the model breaks, how much it can handle alone at a stated
+Pipit answers that question for Perplexity's 4B decider and, from 0.1, for Qwen3.5-4B, the general LLM it was
+trained from, on five jobs these models are actually sold for. Running both on the same cases shows what decision
+training changes. Each study ends in a **reliance dossier**: where the model breaks, how much it can handle alone at a stated
 error rate, which settings change that, what finding it out cost, and the check that says when the answer expires.
 
 ## What the first tests showed (2026-11-01)
