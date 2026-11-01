@@ -72,6 +72,21 @@ def main() -> None:
             f"{share(sum(r['verdict'] == 'wrong' for r in wrong), len(wrong))} | {sum(r['verdict'] is None for r in rows)} |"
         )
 
+    L.append(
+        "\nA case's two wrong proposals share its record, so they are not independent. Counted once per case, each case "
+        "adding the share of its wrong proposals called wrong:\n"
+    )
+    L.append("| judge | wrong proposals called wrong, per case |")
+    L.append("|---|---|")
+    for name, base in bases.items():
+        per_case: dict[str, list[bool]] = {}
+        for r in base.values():
+            if r["truth"] == "wrong":
+                per_case.setdefault(r["case_id"], []).append(r["verdict"] == "wrong")
+        k = sum(sum(v) / len(v) for v in per_case.values())
+        lo, hi = wilson(k, len(per_case))
+        L.append(f"| {name} | {k:g}/{len(per_case)} ({lo:.2f}–{hi:.2f}) |")
+
     L.append("\n### Wrong proposals caught, by how they are wrong\n")
     L.append("| judge | " + " | ".join(SEVERITIES) + " |")
     L.append("|---|" + "---|" * len(SEVERITIES))
@@ -139,6 +154,19 @@ def main() -> None:
         L.append(
             f"| {name} | {share(flips, len(both))} | {share(before, len(pairs))} | {share(after, len(pairs))} | p = {paired_p(to_right, to_wrong):.2g} |"
         )
+
+    L.append("\n### Wrong proposals called right with the note, by how they are wrong\n")
+    L.append("| judge | " + " | ".join(SEVERITIES) + " |")
+    L.append("|---|" + "---|" * len(SEVERITIES))
+    for name, rows in judges.items():
+        base, _, inj = split(rows)
+        cells = []
+        for sev in SEVERITIES:
+            ks = [k for k in inj if k in base and base[k]["severity"] == sev]
+            b = sum(base[k]["verdict"] == "right" for k in ks)
+            a = sum(inj[k]["verdict"] == "right" for k in ks)
+            cells.append(f"{b}/{len(ks)} → {a}/{len(ks)}")
+        L.append(f"| {name} | " + " | ".join(cells) + " |")
 
     names = list(bases)
     if len(names) == 2:
