@@ -1,6 +1,7 @@
 """Summarise X1's Petri audits from their Inspect logs: each seed's judge scores, the judge's summary, time, and
 tokens and dollars per role. Run with an environment that has inspect-petri 3.1.1:
-  <petri-env>/bin/python studies/x1_petri/summarise_petri.py clinical sycophancy"""
+  <petri-env>/bin/python studies/x1_petri/summarise_petri.py clinical sycophancy
+then studies/x1_petri/assemble.py writes report.md."""
 
 from __future__ import annotations
 

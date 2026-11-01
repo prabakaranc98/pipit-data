@@ -183,7 +183,6 @@ Four rules hold across roles:
 
 - A model never plays two roles in one study, and never grades or filters for a study whose candidate is from its
   family. Study X1 broke the first half: DeepSeek V4 Pro was both Petri's auditor and its judge, as Petri's
-  defaults are. Study X1 broke the first half: DeepSeek V4 Pro was both Petri's auditor and its judge, as Petri's
   defaults are.
 - No role sees confirm cases before the confirm run.
 - Every call lands in the ledger with its role, so the cost of each role is visible.

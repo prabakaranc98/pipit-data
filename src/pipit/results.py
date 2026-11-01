@@ -23,7 +23,11 @@ __all__ = ["Results"]
 
 class Results:
     """One JSON-lines file of result rows, one per item, keyed by `key`. Rows are appended as they arrive and
-    a later row for the same item replaces an earlier one, so the file is safe to read at any moment."""
+    a later row for the same item replaces an earlier one, so the file can be read at any moment.
+
+    Opening it repairs a last line that a stop left without its newline: a whole row is kept and given its
+    newline, a half-written one is dropped. Only then is the file rewritten, so open it while no other run is
+    writing to it."""
 
     def __init__(self, path: str | Path, key: str):
         self.path = Path(path)
@@ -31,16 +35,20 @@ class Results:
         self._lock = threading.Lock()
         self._rows: dict[Any, dict[str, Any]] = {}
         if self.path.exists():
-            lines = [x for x in self.path.read_text().splitlines() if x.strip()]
+            text = self.path.read_text()
+            lines = [x for x in text.splitlines() if x.strip()]
+            repair = bool(text) and not text.endswith("\n")  # a run stopped before the last row's newline
             for i, line in enumerate(lines):
                 try:
                     row = json.loads(line)
                 except json.JSONDecodeError:
                     if i < len(lines) - 1:
                         raise
-                    self._write(list(self._rows.values()))  # a run stopped mid-row; drop the partial row
+                    repair = True  # a run stopped mid-row; drop the partial row
                     break
                 self._rows[row[key]] = row
+            if repair:
+                self._write(list(self._rows.values()))
 
     def get(self, item: Any) -> dict[str, Any] | None:
         """The latest row recorded for an item, or None."""

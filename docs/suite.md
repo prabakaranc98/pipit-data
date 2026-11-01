@@ -14,8 +14,8 @@ Status: **reproduced** (Pipit's cases show the documented effect), **agrees** (m
 **not yet**, **regressed** (was passing, now is not).
 
 How the sources were read: by research agents on 2026-11-01, at abstract level or by keyword search of the full
-text, never end to end by a person. Every quote below was checked by script as an exact substring of its source
-(135 of 135). A venue marked † comes only from Semantic Scholar's record.
+text, never end to end by a person. Every quote in the reading list, 127 over 125 references, was checked by
+script as an exact substring of its source. A venue marked † comes only from Semantic Scholar's record.
 
 ## Status at 0.0.4
 

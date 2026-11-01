@@ -232,12 +232,13 @@ distillation data only for a limitation that has been confirmed.
    elsewhere (TDG).
 8. Data is judged by its effect under a fixed recipe on planted-truth evaluation, with paired tests on every cell,
    not only the target.
-9. Synthetic data is added, never substituted for real data; signed seed families stay as anchors; everything is
+9. Synthetic data is added, never substituted for real data; frozen seed families stay as anchors; everything is
    checked for near-duplicates of the confirm set.
 10. The improvement loop edits recipes, never the bench. It keeps a change only beyond seed-to-seed noise, and accepts
     once, on an untouched split.
 11. Graders and planted truth are hashed and hidden from agents; any edit to them is rejected; logs are screened.
-12. A person opens and closes the confirm split and signs every dataset release.
+12. The confirm split is opened and closed by its registered rules, and a dataset is released only when it passes
+    the release gate in `CONTRIBUTING.md`.
 
 ## Sample-efficient evaluation without a population of earlier models
 

@@ -154,5 +154,5 @@ layer below says what holds today, what the first studies showed, and what comes
 
 A Pipit dataset is the product, so its card carries measured numbers, not adjectives: how its truth was set and
 checked; how often each helper agreed with the planted truth; how many independent cases it holds, and how alike
-rewordings behave; whether its tree partitions it; how realistic people rated it and whether models recognise it as
-a test; its contamination guards; its lineage hashes; and its licences.
+rewordings behave; whether its tree partitions it; how often a classifier tells it from real records, and whether
+models recognise it as a test; its contamination guards; its lineage hashes; and its licences.

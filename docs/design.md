@@ -33,7 +33,7 @@ right answer is known by construction and scoring needs no judge. Registered mod
 gives them, every call cached and priced. Evidence is computed in code, rolled up the hypothesis tree with what
 each node cost, and judged against a threshold set in advance. Sufficient evidence becomes an audit finding and
 opens a deeper study on a protected split; insufficient evidence sends the lab models to propose sharper
-hypotheses, questions and cases, which a person keeps, edits or drops before the next round.
+hypotheses, questions and cases, which enter the next round only through its pre-registration.
 
 **Studies nest.** A finding does not end a study; it becomes the objective of a child study that Pipit runs on
 the same engine: the parent's manifests, cache and ledger, a new tree under the finding, held-out cases on a
@@ -54,7 +54,7 @@ one engine scales from one question to a programme without a new pipeline per us
 | 7 Runs | each subject answers the typed questions of every eligible case; answers merge, reruns cover only new cases | `run.py`, `pipit.questions` |
 | 8 Checks | expected option, severity (unsafe, over-cautious, false certainty), Wilson intervals | `pipit.checks` |
 | 9 Evidence | cells per (family, condition), verdicts, bottom-up roll-up with budget, reading versus deciding, wording invariance, cases-to-evidence, paired tests between subjects, and the reliance certificate: how much the model can handle alone at a stated silent-error rate | `pipit.evidence`, `pipit.calibration`, `analyse.py` |
-| 10 Adjudication | a person reads every validator flag; primary and adjudicated analyses are both reported | `adjudication.yaml` |
+| 10 Adjudication | a validator flag is settled by the planted truth, which a second, independent implementation checks (0.0.7), and the validator is scored against it; primary and adjudicated analyses are both reported. In P1 a person read every flag | `adjudication.yaml` |
 | 11 Report | one document with sets, tree, cells, agreement, ledger | `report.md` |
 | 12 Proposals | a lab model proposes sharper questions, families and predictions; a proposal enters round two only through its pre-registration | `propose.py`, `proposals.md` |
 
@@ -72,19 +72,19 @@ one engine scales from one question to a programme without a new pipeline per us
   across many providers), two of which the validator had passed.
 - Both deciders failed the same way on weight-based doses: near chance on a double dose, "withhold" on a correct
   one. Their confidence carried no information about dose safety. That is the finding worth the next round.
-- Cost of the whole study: about 0.015 USD of lab-model calls plus 60k Jev tokens; the candidate ran locally at
-  2 s per case with a 9.5 GB peak.
+- Cost: $0.014 of lab-model calls to build the cases (the paraphraser and the validator), plus 60k Jev tokens; the
+  candidate ran locally at 2 s per case with a 9.5 GB peak.
 
 ## References and where Pipit differs
 
-`docs/landscape.md` compares Pipit with the field in depth, from six research passes on 2026-11-01; this table is
+`docs/landscape.md` compares Pipit with the field in depth, from eight research passes on 2026-11-01; this table is
 the short version. The right-hand column states what Pipit does differently; none of it is a claim of novelty for a
 single piece.
 
 | Reference | Fundamental | Pipit's difference in P1 |
 | --- | --- | --- |
 | CheckList (Ribeiro et al., ACL 2020) | behavioural tests: minimum functionality, invariance, directional | the same three test kinds appear as conditions and wordings, with planted truth so no annotation step is needed |
-| AdaTest (Ribeiro and Lundberg, ACL 2022) | model-generated tests, human in the loop | proposals are generated from evidence and gated by a person; the human reads every validator flag |
+| AdaTest (Ribeiro and Lundberg, ACL 2022) | model-generated tests, human in the loop | proposals are generated from evidence and enter a round only through its pre-registration; validator flags are settled by the planted truth, not by a person |
 | WEAVER (Findings of EMNLP 2023) | define the investigation space first | the hypothesis tree is written before cases exist and rolls evidence up |
 | tinyBenchmarks (Polo et al., ICML 2024) | estimate a benchmark from few, well-chosen items | it needs hundreds of earlier models answering the same items; Pipit has none yet, so adaptive measurement works on difficulty set by construction, tested on the bench (M2) |
 | SubLIME (ACL 2025) | choose subsets by the decision to be made | cells and verdicts are built around one decision: is there a limitation here |

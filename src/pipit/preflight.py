@@ -34,8 +34,11 @@ class PreflightError(RuntimeError):
 
 
 def provider_varies(manifest: Manifest) -> bool:
-    """Whether the service behind the adapter picks a provider for each call. Today that is OpenRouter; a
-    vendor's own API, such as TypeSafe's, serves every call itself, so it has nothing to pin."""
+    """Whether the service behind the adapter picks a provider for each call. Today that is OpenRouter,
+    through its own adapter or through `openai_compat` with an openrouter.ai `base_url`; a vendor's own API,
+    such as TypeSafe's, serves every call itself, so it has nothing to pin."""
+    if manifest.adapter.startswith("pipit.adapters.openai_compat"):
+        return "openrouter.ai" in str(manifest.settings.get("base_url", ""))
     return manifest.adapter.startswith("pipit.adapters.openrouter")
 
 
@@ -58,7 +61,10 @@ def problems(
 ) -> list[Problem]:
     """Every rule the models of a run break: a family not declared; a model whose provider varies per call
     that is not pinned to one (unless `allow_unpinned`, which the run must record) or has no prices to
-    estimate its cost; and a helper or judge sharing a candidate's family."""
+    estimate its cost; and a helper or judge sharing a candidate's family.
+
+    A known limit: the price rule also stops a run that would replay every reply from the cache, which costs
+    nothing; give the manifest its prices to run it."""
     candidates, helpers = list(candidates), list(helpers)
     found = []
     for m in candidates + helpers:

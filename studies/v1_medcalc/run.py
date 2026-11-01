@@ -2,7 +2,7 @@
 Usage: uv run python studies/v1_medcalc/run.py studies/v1_medcalc/models/*.yaml [--limit N] [--allow-unpinned]
 
 Before the first call the run checks every model's family and provider pin, and that the key's budget covers an
-upper bound on the cost. V1's models were run unpinned, so running them again needs --allow-unpinned, and the
+estimate of the cost. V1's models were run unpinned, so running them again needs --allow-unpinned, and the
 report says so. Each result is saved as it finishes. A run keeps every recorded result and asks only the items not
 yet answered or refused by the key (the pre-registration's --resume is this default); --fresh starts over. Once the
 key refuses a call, no further calls are sent and the run stops."""
@@ -38,7 +38,7 @@ RUNS = HERE / "runs"
 # What the runner records when the key refuses a call, and for the items it then holds back. Neither is the model's
 # answer, so a later run asks them again.
 REFUSED = ("HTTP Error 403", "KeyRefused", "not sent: the API key's limit was reached")
-# Upper bounds for the cost check: tokens in per request, and the reply caps used below.
+# What the cost estimate assumes: tokens in per request, and the reply caps used below.
 TOKENS = {"medcalc": (1000, 4096), "p1": (300, 2048)}
 
 
@@ -194,7 +194,8 @@ def main() -> None:
         )
     if stop.is_set():
         sys.exit(
-            "Stopped: the API key refused a call, most likely its spending limit. Raise it and run again."
+            "Stopped: the API refused the key, either a wrong key or one at its spending limit. Fix the key or "
+            "raise its limit, and run again."
         )
 
 

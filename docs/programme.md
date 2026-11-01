@@ -61,7 +61,7 @@ The evidence is in `studies/p1_clinical/report.md` and `studies/p3_support_crisi
    ones only, and the human-review load per 10,000 cases.
 3. **Which settings matter:** the vendor's knobs (grouped or one question at a time, input length, option order)
    and composition rules, as paired comparisons on the same cases.
-4. **What it cost:** cases, model time, helper-model dollars and human review time.
+4. **What it cost:** cases, model time and helper-model dollars.
 5. **When it expires:** a canary set that detects a moved alias or a changed model; the certificate is re-run when
    it fires.
 6. **What is still unknown,** in plain words, and the deeper study a finding opens.
@@ -99,8 +99,8 @@ buyers, so:
   answer costs them. "A pharmacist checking a child's dose before the nurse gives it."
 - **Every case reads like a real record.** A ticket a customer would send, a note a clinician would write, a
   contract clause a lawyer would recognise, a tool catalogue an engineer would ship. No placeholders, no codes in
-  the text, no synthetic filler. The lab models paraphrase into the voice of that workplace, and a person reads a
-  sample before the study runs.
+  the text, no synthetic filler. The lab models paraphrase into the voice of that workplace, and before the study
+  runs, realism is measured by whether a classifier can tell the cases from real records.
 - **Every result is told three ways.** One line for a student (what the model got wrong and why it matters), one
   for an engineer (which condition, how often, with what confidence), one for a leader (what it means for relying
   on the model, and what it cost to find out).
@@ -113,7 +113,7 @@ buyers, so:
 | Cases are hand-written Python | NeMo Data Designer, Distilabel | a declarative family spec (slots, conditions, expected answers, validators) compiled to cases with lineage | P1's 120 cases regenerate byte for byte from the spec |
 | The loop stops when evidence looks sufficient, but its intervals assume a fixed sample | anytime-valid confidence sequences (Howard et al.), the lab's e-values | a stopping rule that stays valid however often the loop checks | on M1's synthetic subject, the false-claim rate holds at the stated level |
 | The focus stage spends budget by judgment | tinyBenchmarks, SubLIME | choose the next cases by how much they would change the estimate, against uniform at equal budget | M2's keep-or-kill curve |
-| Scenario ideas come from one prompt | Bloom, AdaTest, Petri | behaviour-first ideation with diversity control, scored by planted truth, gated by a person; multi-turn for P3 and P5 | the share of proposals a person keeps |
+| Scenario ideas come from one prompt | Bloom, AdaTest, Petri | behaviour-first ideation with diversity control, scored by planted truth, gated by pre-registration; multi-turn for P3 and P5 | the share of proposals that survive the gates |
 | Graders live inside study scripts | OpenAI evals, Inspect | graders as code in `pipit.checks`; a study is a spec plus manifests | a new study needs no new Python |
 | Confidence was reported, not certified | the vendors' own threshold advice, Learn-then-Test, the lab's E17 | built: `pipit.calibration`, an exact binomial certificate tested from the strictest cut-off down (#24) | first results on P1 above |
 | Hosted models drift and the API echoes the alias | Perplexity and TypeSafe docs; our Jev run moved from 16 to 15 failures | a canary set run at the start of every study | it catches a version change before a study runs on it |

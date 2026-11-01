@@ -23,7 +23,8 @@ the claims the pull request makes, never the author's reasoning.
 1. CI passes: lint, format, tests and the docstring examples.
 2. Every study report rebuilds byte-identical from its recorded runs: run the study's script, then `git diff` is
    empty. I1 also needs its activations file, `runs/hidden_last.npy`, which `extract.py` makes on the local model
-   and git ignores.
+   and git ignores. X1's report is put together by `assemble.py`; rebuilding its Petri section needs an
+   environment with inspect-petri.
 3. Every number in the README, the changelog and the docs is traced to the report it comes from, and matches.
 4. Every capability the release notes claim has been exercised, not only found to exist.
 5. The planted answers behind any claim in the release are checked by a second, independent implementation or
