@@ -8,8 +8,10 @@ typed question is asked on its own as a multiple-choice prompt, in one of two mo
 - **after_reasoning** (thinking mode): the model reasons within a token budget at the sampling settings its
   card recommends; the answer is read after the reasoning. A reasoned answer is always certain, so each
   question is sampled several times in parallel. Each option's probability is its share of all samples,
-  so a sample cut off at the token budget counts against confidence. The answer is the most common one; an
-  exact tie gives no answer.
+  so a sample cut off at the token budget counts against confidence. A yes/no answer is one number, the
+  probability of yes, and the probability of no is read as the rest; so there a cut-off sample counts half
+  yes and half no, pulling the answer toward 0.5 rather than toward no. The answer is the most common one;
+  an exact tie gives no answer.
 
 With `settings.launch`, the adapter starts a local server for the manifest and stops it at exit.
 """
@@ -86,10 +88,12 @@ def reasoned_letter(
 ) -> str | None:
     """The option a reasoning model chose: the first standalone option letter of its final answer. Servers
     that split the reasoning out (MLX, and vLLM or SGLang with a reasoning parser) return the answer alone;
-    otherwise the text after the end-of-reasoning marker is read. Reasoning that opens and never closes
-    was cut off, so it gives no answer. A capital letter used as a word, such as the article "A", can still
-    be misread."""
+    otherwise the text after the end-of-reasoning marker is read. A reply stopped at the token budget
+    (finish_reason "length"), or reasoning that opens and never closes, was cut off, so it gives no answer.
+    A capital letter used as a word, such as the article "A", can still be misread."""
     first = (response.get("choices") or [{}])[0]
+    if first.get("finish_reason") == "length":
+        return None
     text = (first.get("message") or {}).get("content") or ""
     if reasoning_end and reasoning_end in text:
         text = text.split(reasoning_end)[-1]
@@ -344,7 +348,9 @@ class LLMSubject:
             "tie": tie,
         }
         if question["type"] == "noul":
-            return {"type": "noul", "noul": probs["yes"] if probs else None, **detail}
+            # P(no) is read as 1 - P(yes), so an unanswered sample counts half each way rather than as a no.
+            p_yes = (votes.get("yes", 0) + (self.samples - answered) / 2) / self.samples if answered else None
+            return {"type": "noul", "noul": p_yes, **detail}
         best = None if (probs is None or tie) else max(probs, key=probs.get)
         return {"type": "choice", "choice": best, "probabilities": probs, **detail}
 

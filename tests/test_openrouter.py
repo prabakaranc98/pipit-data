@@ -120,7 +120,9 @@ def test_a_reply_that_never_finishes_hits_the_time_limit() -> None:
     assert _read_within(Whole(), deadline_s=600) == b'{"ok": 1}'
 
 
-def test_a_slow_call_is_tried_again_while_its_time_lasts(tmp_path, monkeypatch) -> None:
+def test_too_slow_with_time_left_is_tried_again(tmp_path, monkeypatch) -> None:
+    # A stand-in that raises TooSlow at once, with time left. The real transport raises it only once the
+    # call's time is spent, so a stalled reply is never tried again: see the test after this one.
     monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
     served = [TooSlow("slow"), _response("ok")]
 
@@ -138,6 +140,47 @@ def test_a_slow_call_is_tried_again_while_its_time_lasts(tmp_path, monkeypatch) 
 
     with pytest.raises(TooSlow):
         OpenRouterChat(_manifest(), ctx, always_slow)("y")
+
+
+def _quick(deadline_s):
+    m = _manifest()
+    return type(m)(**{**m.__dict__, "settings": {"deadline_s": deadline_s}})
+
+
+def test_a_stalled_reply_uses_the_whole_time_and_is_not_tried_again(tmp_path, monkeypatch) -> None:
+    import time
+
+    monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
+    attempts = []
+
+    def stalls_to_the_end(body, headers):  # what the real transport does with a reply that never finishes
+        attempts.append(1)
+        time.sleep(0.11)
+        raise TooSlow("no complete reply within 0 s")
+
+    chat = OpenRouterChat(
+        _quick(0.1), Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path), stalls_to_the_end
+    )
+    with pytest.raises(TooSlow, match="within 0 s"):
+        chat("x")
+    assert len(attempts) == 1
+
+
+def test_a_call_that_runs_out_of_time_names_the_last_error(tmp_path, monkeypatch) -> None:
+    import time
+
+    monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
+
+    def overloaded(body, headers):
+        time.sleep(0.03)
+        raise urllib.error.HTTPError("u", 503, "Service Unavailable", {}, None)  # type: ignore[arg-type]
+
+    chat = OpenRouterChat(
+        _quick(0.05), Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path), overloaded
+    )
+    with pytest.raises(TooSlow, match="HTTP Error 503") as stopped:
+        chat("x")  # the wait after the 503 uses up the time
+    assert isinstance(stopped.value.__cause__, urllib.error.HTTPError) and stopped.value.__cause__.code == 503
 
 
 def test_the_budget_left_on_a_key(monkeypatch) -> None:

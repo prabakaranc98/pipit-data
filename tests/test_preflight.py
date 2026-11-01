@@ -1,7 +1,7 @@
 import pytest
 
 from pipit.manifest import Manifest
-from pipit.preflight import PreflightError, estimated_usd, pinned, problems, require
+from pipit.preflight import PreflightError, estimated_usd, pinned, problems, provider_varies, require
 
 
 def _model(
@@ -64,3 +64,13 @@ def test_pinning_means_one_provider_and_applies_only_where_the_provider_varies()
     assert problems([jev]) == []  # a vendor's own API serves every call itself
     unpriced = _model(provider=PIN, prices=(None, None))
     assert [p.rule for p in problems([unpriced])] == ["price"]
+
+
+def test_openrouter_reached_through_openai_compat_varies_by_provider_too() -> None:
+    def compat(base_url):
+        m = _model(adapter="pipit.adapters.openai_compat:load")
+        return Manifest(**{**m.__dict__, "settings": {"base_url": base_url}})
+
+    assert provider_varies(compat("https://openrouter.ai/api/v1"))
+    assert [p.rule for p in problems([compat("https://openrouter.ai/api/v1")])] == ["provider"]
+    assert not provider_varies(compat("http://gpu-box:8000/v1"))  # a server that serves every call itself

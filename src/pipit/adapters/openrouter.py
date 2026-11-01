@@ -4,7 +4,9 @@ as a failure: reasoning models return it when the token budget is spent on reaso
 
 A refused key stops at once: retrying cannot raise a spending limit or fix a wrong key. Each call has one
 time limit across all its attempts, `settings.deadline_s` in the manifest (600 seconds unless set), because
-OpenRouter keeps a slow connection alive with padding and the socket's own timeout never fires."""
+OpenRouter keeps a slow connection alive with padding and the socket's own timeout never fires. A reply that
+stalls uses up the call's whole time, so it is not tried again. When waiting between attempts after an error
+uses up the time instead, the call ends with TooSlow, raised from the last error and naming it."""
 
 from __future__ import annotations
 
@@ -28,7 +30,7 @@ class EmptyContent(RuntimeError):
 
 
 class KeyRefused(RuntimeError):
-    """The API refused the key (HTTP 402 or 403), usually because its spending limit is reached."""
+    """The API refused the key: HTTP 401 for a wrong key, 402 or 403 usually for a spending limit reached."""
 
 
 class TooSlow(TimeoutError):
@@ -146,13 +148,17 @@ class OpenRouterChat:
         self.calls += 1
         delay = 2.0
         response: dict[str, Any] | None = None
+        last_error: Exception | None = None  # named if the time runs out, so the record keeps it
         attempts = 0
         t0 = time.perf_counter()
         for attempt in range(retries):
             attempts = attempt + 1
             left = self.deadline_s - (time.perf_counter() - t0)
             if left <= 0:
-                raise TooSlow(f"{self.manifest.id}: no complete reply within {self.deadline_s:.0f} s")
+                message = f"{self.manifest.id}: no complete reply within {self.deadline_s:.0f} s"
+                if last_error is not None:
+                    message += f"; the last error was {type(last_error).__name__}: {last_error}"
+                raise TooSlow(message) from last_error
             try:
                 response = self._send(body, left)
                 if "error" in response:
@@ -163,9 +169,10 @@ class OpenRouterChat:
                     finish = (response.get("choices") or [{}])[0].get("finish_reason")
                     raise EmptyContent(f"{self.manifest.id} returned empty content (finish_reason={finish})")
                 break
-            except EmptyContent:
+            except EmptyContent as e:
                 if attempt == retries - 1:
                     raise
+                last_error = e
             except urllib.error.HTTPError as e:
                 if e.code in (401, 402, 403):
                     why = "the key was rejected" if e.code == 401 else "its spending limit may be reached"
@@ -174,14 +181,17 @@ class OpenRouterChat:
                     ) from e
                 if attempt == retries - 1:
                     raise
+                last_error = e
                 time.sleep(min(delay, max(0.0, self.deadline_s - (time.perf_counter() - t0))))
                 delay *= 2
             except TooSlow:
-                if attempt == retries - 1:  # tried again only while the call's time lasts
-                    raise
-            except (urllib.error.URLError, TimeoutError):
+                # The real transport raises this only once the call's time is spent, so the next pass stops.
                 if attempt == retries - 1:
                     raise
+            except (urllib.error.URLError, TimeoutError) as e:
+                if attempt == retries - 1:
+                    raise
+                last_error = e
                 time.sleep(min(delay, max(0.0, self.deadline_s - (time.perf_counter() - t0))))
                 delay *= 2
         assert response is not None

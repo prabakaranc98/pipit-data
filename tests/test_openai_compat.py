@@ -191,3 +191,46 @@ def test_reasoning_cut_off_before_its_end_gives_no_answer() -> None:
     assert reasoned_letter(cut, ["proceed", "hold", "ask"]) is None
     whole = {"choices": [{"message": {"content": "<think>Weighing A against C</think>\nC"}}]}
     assert reasoned_letter(whole, ["proceed", "hold", "ask"]) == "ask"
+
+
+def _thinking(tmp_path, replies):
+    """A thinking-mode subject whose samples reply in turn; None is a reply cut off at the token budget."""
+    queue = iter(replies)
+    m = _manifest()
+    settings = {**m.settings, "answer": "after_reasoning", "samples": len(replies), "concurrency": 1}
+    m = Manifest(**{**m.__dict__, "settings": settings})
+
+    def transport(url, body, headers):
+        text = next(queue)
+        return _reasoned(text or "", finish="length" if text is None else "stop")
+
+    return LLMSubject(
+        m, Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path), transport=transport
+    )
+
+
+def test_thinking_mode_yes_no_counts_a_cut_off_sample_half_each_way(tmp_path) -> None:
+    # A yes/no answer is one number, P(yes), and readers take P(no) as the rest, so a cut-off must not count
+    # as a no.
+    expected = {
+        ("A", None, None): 2 / 3,  # yes, cut, cut: still yes, less sure
+        ("B", None, None): 1 / 3,  # no, cut, cut
+        ("A", "B", None): 0.5,  # a tie stays a tie
+        ("A", "A", "B"): 2 / 3,
+        ("B", "B", "B"): 0.0,
+    }
+    for i, (replies, p_yes) in enumerate(expected.items()):
+        out = _thinking(tmp_path / str(i), replies)("state", {"blocked": NOUL})["blocked"]
+        assert out["noul"] == pytest.approx(p_yes) and out["tie"] == (p_yes == 0.5)
+    out = _thinking(tmp_path / "cut", (None, None, None))("state", {"blocked": NOUL})["blocked"]
+    assert out["noul"] is None and out["answered"] == 0
+
+
+def test_a_reply_stopped_at_the_token_budget_gives_no_answer() -> None:
+    from pipit.adapters.openai_compat import reasoned_letter
+
+    # A chat template that opens <think> in the prompt leaves cut-off text with neither marker in it, and its
+    # first standalone letter would be read as the answer.
+    text = "Weighing A against C, the dose per kilogram"
+    assert reasoned_letter(_reasoned(text, finish="stop"), ["proceed", "hold", "ask"]) == "proceed"
+    assert reasoned_letter(_reasoned(text, finish="length"), ["proceed", "hold", "ask"]) is None
