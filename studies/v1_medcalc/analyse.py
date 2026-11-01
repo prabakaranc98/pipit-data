@@ -7,7 +7,7 @@ import itertools
 import json
 import random
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -199,6 +199,19 @@ def main() -> None:
         L.append(
             f"| {name} | {share(*t['medcalc'])} | {share(*t['medcalc_unaudited'])} | {share(*t['medcalc_audited'])} |"
         )
+    L.append("\n## Providers that served each model\n")
+    L.append(
+        "OpenRouter routed each call to a provider of its choosing; no model was pinned. A model's score mixes "
+        "every provider that served it.\n"
+    )
+    L.append("| model | providers | the one that served the most calls |")
+    L.append("|---|---|---|")
+    for name in names:
+        served = Counter(
+            r.get("provider") for r in ledger if r.get("subject") == name and not r.get("cached")
+        )
+        top, n = served.most_common(1)[0]
+        L.append(f"| {name} | {len(served)} | {top}, {n} of {sum(served.values())} calls |")
     L.append("\n## MedCalc-Bench by category\n")
     L.append("| model | " + " | ".join(CATEGORIES) + " |")
     L.append("|---|" + "---|" * len(CATEGORIES))
@@ -250,6 +263,10 @@ def main() -> None:
             f"- MedCalc-Bench without the 19 audited calculators against P1 overall: {spearman(kept, pp):.2f}, "
             f"p = {p_kept:.3f}.\n"
         )
+    # The reading that closes the report, written by hand after the analysis ran.
+    tail = HERE / "report_tail.md"
+    if tail.exists():
+        L.extend(["", tail.read_text().rstrip("\n")])
     text = "\n".join(L) + "\n"
     (HERE / "report.md").write_text(text)
     print(text)

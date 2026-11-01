@@ -5,6 +5,7 @@ id: ibm-granite/granite-4.2-8b
 revision: as-served
 adapter: pipit.adapters.openrouter:load
 placement: api
+family: granite
 key_env: OPENROUTER_API_KEY
 price_usd_per_million_in: 0.06
 price_usd_per_million_out: 0.15

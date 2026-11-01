@@ -55,6 +55,25 @@ Krohn-Grimberghe (2026) reports fixing errors in the code of 19 of MedCalc-Bench
 | qwen36_35b_a3b | 75% (69%–81%) | 81% (74%–87%) | 64% (53%–74%) |
 | qwen38_27b | 72% (66%–77%) | 80% (73%–86%) | 57% (45%–67%) |
 
+## Providers that served each model
+
+OpenRouter routed each call to a provider of its choosing; no model was pinned. A model's score mixes every provider that served it.
+
+| model | providers | the one that served the most calls |
+|---|---|---|
+| deepseek_v41_flash | 18 | Wafer, 171 of 325 calls |
+| deepseek_v4_pro | 11 | Relace, 239 of 329 calls |
+| gemma4_26b_a4b | 15 | Darkbloom, 166 of 332 calls |
+| gemma4_31b | 3 | CoreWeave, 171 of 332 calls |
+| granite42_8b | 2 | CoreWeave, 172 of 232 calls |
+| lfm25_24b_a2b | 1 | Liquid, 268 of 268 calls |
+| llama31_70b | 2 | Amazon Bedrock, 178 of 332 calls |
+| qwen35_27b | 6 | DeepInfra, 103 of 328 calls |
+| qwen35_397b | 10 | StreamLake, 176 of 292 calls |
+| qwen35_9b | 6 | PrimeIntellect, 292 of 321 calls |
+| qwen36_35b_a3b | 7 | DekaLLM, 92 of 316 calls |
+| qwen38_27b | 10 | ModelRun, 79 of 307 calls |
+
 ## MedCalc-Bench by category
 
 | model | lab test | physical | dosage | date | risk | severity | diagnosis |
@@ -89,3 +108,32 @@ Spearman's correlation across 12 models, with a one-sided permutation test over 
 - MedCalc-Bench lab and dosage against P1's computing hypothesis: 0.61, p = 0.020.
 - MedCalc-Bench without the 19 audited calculators against P1 overall: 0.13, p = 0.345.
 
+
+## Reading
+
+Written by hand after the analysis ran. The tables above are the record; this section says what they show.
+
+**Overall, the two do not rank the models alike.** Across twelve models, P1's 59 written clinical cases and
+MedCalc-Bench's 220 items from published case reports give a Spearman correlation of 0.21 (one-sided p = 0.25), the
+registered primary test. P1 is mostly reading a planted fact and deciding, which small models do well; MedCalc-Bench
+is mostly calculation. Granite 4.2 8B shows the difference: 90% on P1, 22% on MedCalc-Bench.
+
+**Where the two measure the same mechanism, they agree.** MedCalc-Bench's lab and dosage calculations against P1's
+computing questions give 0.61 (p = 0.020), the registered secondary test. A written case set can stand in for a real
+benchmark at the level of one mechanism, not as one overall score.
+
+**The token caps shape two results.** Granite 4.2 8B failed or was cut off on 105 of its 220 MedCalc-Bench items, and
+Qwen3.5 397B on 39 of its 112 P1 cases, so the registered score partly measures whether a model finishes within the
+cap. Not registered, and decided after seeing the results: with cut-off and failed replies set aside on both sides,
+the correlation is 0.47 (p = 0.064). Providers did not apply the caps alike; one reply used 12,210 tokens against a
+cap of 4,096.
+
+**The reproduction holds overall.** Llama 3.1 70B scores 39% against the paper's 36% for Llama 3 70B, on a different
+model and data version. Categories with 8 to 16 items do not reproduce.
+
+**The answer key matters.** Every model scores lower on the 19 calculators whose code Krohn-Grimberghe (2026)
+corrected, by 8 to 38 points. Wrong answers in the key and harder calculators cannot be told apart here.
+
+**Limits.** Twelve models and one-sided tests; exploratory, with nothing confirmed; P1's cases have one author; no
+model was pinned to a provider, and one was served by 18; the key's spending limit refused 1,385 calls, which were sent
+again once it was raised, with every other recorded result kept. The study cost $6.90.
