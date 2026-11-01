@@ -4,7 +4,8 @@ A data-first workbench for measuring and improving AI systems.
 
 Pipit treats data as an experimental instrument. It turns a question about a model into a small, efficient experiment: a constructed set of cases, a budgeted sample, and a claim whose evidence is accounted for, including where the evidence is not enough.
 
-**Status:** `v0.0.2` (2026-10-31). Working toward 0.1.0, the first version others can use: see `docs/plan.md`.
+**Status:** `v0.0.3` (2026-11-01). Working toward 0.1.0, the first version others can use, through small releases
+that each answer one question: see `docs/plan.md`.
 
 **Read in this order:** `docs/plan.md` (what Pipit is for, whom it helps, the path to 0.1), `docs/methodology.md`
 (the playbook every study and agent follows), `docs/architecture.md` (the components, loops, configuration and memory),
@@ -14,7 +15,7 @@ it adds, the literature), `docs/programme.md` (the studies), `docs/agentic.md` (
 ![Pipit's design on one page](public/assets/overview.svg)
 
 **How the engine reasons and what it has found:** `docs/engine.md`. **The plan by module, with who does what and the
-build order:** `docs/plan.md`. **Pipit beside the field:** `docs/landscape.md`.
+releases to 0.1.0:** `docs/plan.md`. **Pipit beside the field:** `docs/landscape.md`. **How to contribute:** `CONTRIBUTING.md`.
 
 ## The discipline
 
@@ -36,7 +37,8 @@ Both are reached through the same contract: a subject is a callable from a case 
 
 ## Milestones
 
-One question each. A milestone closes with a tagged release and a note on what changed in understanding.
+One question each; a milestone groups the issues that answer it. Releases are smaller and come more often: the road
+to 0.1.0 in `docs/plan.md`, one question per release.
 
 | | Question | Done when |
 | --- | --- | --- |
@@ -81,9 +83,9 @@ environment variable that holds the key) and resolved through an adapter at the 
 | B1, the bench | Does adaptive spending beat an even spread? | On a confidence sequence, which keeps early stopping honest, sampling nearest to a verdict settled 4 to 44 times as many questions as an even spread at 240 units, but under twice as many at 60, where it settled fewer than an even spread on ordinary intervals. A false claim appeared in at most 1.3% of runs; on ordinary intervals, in up to a quarter. | `studies/b1_bench/report.md` |
 | I1, interpretability | Does Qwen hold the planted fact when its decision ignores it? | Yes: a probe reads the fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18. On doses the decision barely moves between safe and unsafe. | `studies/i1_interp/report.md` |
 
-Merged on 2026-11-01: #39 (counting a case once; Pipit against the field), #56 (the rules), #58 (native setups),
-#59 (the engine design with J1, X1 and I1) and #61 (study V1, registered before its runs). In review: #60, the bench
-and adaptive spending (#8, #9, #25). Next: V1's results, once its runs finish (#57).
+Released as 0.0.3: #39 (counting a case once; Pipit against the field), #56 (the rules), #58 (native setups), #59
+(the engine design with J1, X1 and I1), #60 (the bench), #61 (study V1, registered before its runs) and #62 (the
+plan and the conventions). Next: 0.0.4, starting with V1's results (#57).
 
 ## How work moves
 
@@ -92,6 +94,7 @@ issue → branch → pull request → CI → review → merge → release
 - Every change starts as an issue under a milestone and ends as one small pull request that references it. Nothing is pushed to `main`.
 - A change to behaviour ships with a test. CI runs lint and tests on every pull request. Nothing merges red.
 - Docs change in the same pull request as the code they describe. Branch names: `m<N>/<topic>`.
+- Names, code, studies, reports and data follow `CONTRIBUTING.md`.
 
 ## Versioning
 
@@ -99,7 +102,7 @@ Three things carry versions, separately.
 
 | Thing | Scheme | Now |
 | --- | --- | --- |
-| Code | SemVer. `0.0.z` while the instrument is unproven on a real model (M0 to M2); `0.1.0` when someone else can register any model, declare a study in YAML and get a confirmed reliance dossier (`docs/plan.md`); `1.0.0` when the claim schema is stable | `0.0.2` |
+| Code | SemVer. Small `0.0.z` releases, one question each, on the road to `0.1.0` (`docs/plan.md`); `0.1.0` when someone else can register any model, declare a study in YAML and get a confirmed reliance dossier; `1.0.0` when the claim schema is stable | `0.0.3` |
 | Schemas (case, claim, manifest) | an integer `schema_version` inside every artifact, bumped on any breaking change | not yet defined |
 | Case sets and runs | content hash plus generator seed; immutable once a claim references them | not yet defined |
 

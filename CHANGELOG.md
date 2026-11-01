@@ -4,12 +4,15 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-11-01
+
 ### Fixed
 
 - Intervals, replays, paired tests and the reliance certificate now count a case and its rewordings once (`pipit.evidence`, `pipit.calibration`). In P1 the two wordings of a case agreed in 51 to 53 of 53 pairs, so counting both claimed too much: 8 of 68 verdicts move to insufficient, grouping the questions is no longer shown to hurt (p = 0.021 becomes 0.18), and certificates at 5% silent errors shrink (Jev 64% to 60%). Two simulations in `tests/test_units.py` show the old counting covering 88% instead of 95%, and certifying 12% of models that sit at the limit instead of at most 5%.
 
 ### Added
 
+- `CONTRIBUTING.md`: how work moves, plain names, code, studies and reports, data, and a glossary of Pipit's words (#62).
 - `pipit.allocate`: where the next cases go. An even spread, the thresholding rule, and a rule that samples the open question nearest to a verdict (#9).
 - `pipit.sequential`: a confidence sequence for a failure rate, valid at every sample size, so a question may stop as soon as its evidence clears; the node rule reads it with `sequential=True` (#25).
 - Study B1 (`studies/b1_bench`): the bench, synthetic subjects with planted failure rates (#8). Sampling nearest to a verdict on ordinary intervals settles up to 15 times as many questions as an even spread but claims falsely in up to 25% of runs. On the confidence sequence it settles 4 to 44 times as many as an even spread on the same sequence at 240 units and under twice as many at 60, with a false claim in at most 1.3% of runs; at 60 units it settles fewer than an even spread on ordinary intervals.
@@ -34,6 +37,10 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 - `pipit.calibration`: calibration error, Brier score, the review band, an exact binomial reliance certificate tested from the strictest cut-off down, and the number of cases a certificate needs. The P1 report gains the certificate, an exact paired test between subjects, a ledger by subject, and the Perplexity model run with its two questions grouped.
 - Study P3 pilot (`studies/p3_support_crisis/`): crisis triage in a messy support queue, 24 hand-written cases in four families (danger inside a complaint, account takeover under pressure, a customer in crisis, someone else's data exposed), each clear, buried and look-alike; both subjects run; the report counts missed crises, false alarms and wrong crisis teams, checks the two answers against each other, and tests combining them in code.
 
+### Changed
+
+- `docs/plan.md` (#62): the road to 0.1.0 as small releases, one question each; Pipit's five uses, with data as the central artifact; what Pipit makes for each post-training step (it makes the data and measures the result, the training runs elsewhere); NeMo Data Designer as a comparison, not a dependency; agentic tasks at 0.2.5 to 0.3; five industries; the gaps found on 2026-11-01; the decisions taken and open; plain names proposed for 0.0.6.
+
 ## [0.0.2] - 2026-10-31
 
 ### Added
@@ -50,6 +57,7 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 - M0, the repository contract: the `pipit` package skeleton at version 0.0.1, lint and tests in CI, issue and pull-request templates, and the README with the discipline, the two model roles, the milestone ladder and the versioning scheme.
 - Lab models reach Pipit through hosted APIs: TypeSafe for decision models, OpenRouter for LLMs of every size.
 
-[Unreleased]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.3...HEAD
+[0.0.3]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/prabakaranc98/pipit-data/releases/tag/v0.0.1
