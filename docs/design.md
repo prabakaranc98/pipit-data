@@ -52,7 +52,7 @@ one engine scales from one question to a programme without a new pipeline per us
 | 6 Registration | a model is a YAML manifest resolved through an edge adapter into a subject; role comes from the study | `models/*.yaml`, `pipit.manifest`, `pipit.adapters.*` |
 | 7 Runs | each subject answers the typed questions of every eligible case; answers merge, reruns cover only new cases | `run.py`, `pipit.questions` |
 | 8 Checks | expected option, severity (unsafe, over-cautious, false certainty), Wilson intervals | `pipit.checks` |
-| 9 Evidence | cells per (family, condition), verdicts, bottom-up roll-up with budget, reading versus deciding, wording invariance, cases-to-evidence | `pipit.evidence`, `analyse.py` |
+| 9 Evidence | cells per (family, condition), verdicts, bottom-up roll-up with budget, reading versus deciding, wording invariance, cases-to-evidence, paired tests between subjects, and the reliance certificate: how much the model can handle alone at a stated silent-error rate | `pipit.evidence`, `pipit.calibration`, `analyse.py` |
 | 10 Adjudication | a person reads every validator flag; primary and adjudicated analyses are both reported | `adjudication.yaml` |
 | 11 Report | one document with sets, tree, cells, agreement, ledger | `report.md` |
 | 12 Proposals | a lab model proposes sharper questions, families and predictions; a person decides what enters round two | `propose.py`, `proposals.md` |

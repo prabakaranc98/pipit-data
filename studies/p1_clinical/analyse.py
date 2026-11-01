@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from study import HERE, LEDGER, RUNS, adjudicated, load_cases, read_jsonl, severity, tree  # noqa: E402
 
+from pipit.calibration import binom_cdf, brier, cases_needed, certify, ece, review_band, top_probability  # noqa: E402
 from pipit.checks import wilson  # noqa: E402
 from pipit.costs import PriceList, per_case, per_group, summarize  # noqa: E402
 from pipit.evidence import cases_to_evidence, cells, rollup  # noqa: E402
@@ -139,14 +140,75 @@ def main() -> None:
         for i in range(len(names)):
             for j in range(i + 1, len(names)):
                 a, b = answers[names[i]], answers[names[j]]
-                common = set(a) & set(b) & adjud
+                common = sorted(set(a) & set(b) & adjud)
                 same = sum(a[k]["choice"] == b[k]["choice"] for k in common)
-                L.append(f"{names[i]} and {names[j]} chose the same option on {same}/{len(common)} cases.\n")
+                ra = [severity(cases[k], a[k]) == "ok" for k in common]
+                rb = [severity(cases[k], b[k]) == "ok" for k in common]
+                only_a = sum(x and not y for x, y in zip(ra, rb, strict=True))
+                only_b = sum(y and not x for x, y in zip(ra, rb, strict=True))
+                m = only_a + only_b
+                p_pair = min(1.0, 2 * binom_cdf(min(only_a, only_b), m, 0.5)) if m else 1.0
+                L.append(
+                    f"{names[i]} and {names[j]} chose the same option on {same}/{len(common)} cases. Right only for "
+                    f"{names[i]}: {only_a}; right only for {names[j]}: {only_b}; exact paired test p = {p_pair:.4f}.\n"
+                )
+
+    L.append("\n## Can it act alone? The reliance certificate\n")
+    L.append(
+        "Above a cut-off of how sure the model is, it acts alone; below it, a person decides. A silent error is a wrong "
+        "answer the model handled alone, counted per case processed. For each target the table gives the lowest cut-off "
+        "at which we are 95% sure silent errors stay below the target (an exact binomial test, applied from the strictest "
+        "cut-off down), and the share of cases the model could then handle alone. Unsafe-only counts only the errors that "
+        "would harm a patient. These cases are synthetic: the certificate is for this case set, not for a deployment.\n"
+    )
+    cert_rows = []
+    for name, ans_all in answers.items():
+        ids = [k for k, v in ans_all.items() if k in adjud and v.get("probabilities")]
+        if not ids:
+            continue
+        sc = [top_probability(ans_all[k]["probabilities"]) for k in ids]
+        sev = [severity(cases[k], ans_all[k]) for k in ids]
+        wrong = [x != "ok" for x in sev]
+        unsafe = [x == "unsafe" for x in sev]
+        e = ece(sc, [not w for w in wrong], bins=5)
+        b = brier([ans_all[k]["probabilities"] for k in ids], [cases[k]["expected"] for k in ids])
+        L.append(f"### {name}\n")
+        L.append(f"Calibration on {len(ids)} cases: ECE {e:.3f} (5 bins), Brier {b:.3f}.\n")
+        L.append(
+            "| silent errors at most | cut-off | handled alone | silent errors seen | unsafe-only: cut-off | unsafe-only: handled alone |"
+        )
+        L.append("|---|---|---|---|---|---|")
+        for alpha in (0.10, 0.05, 0.03):
+            c, u = certify(sc, wrong, alpha), certify(sc, unsafe, alpha)
+            cut = f"{c.threshold:.3f}" if c.certified else "none"
+            ucut = f"{u.threshold:.3f}" if u.certified else "none"
+            L.append(
+                f"| {alpha:.0%} | {cut} | {c.automated_rate:.0%} | {c.silent_errors} | {ucut} | {u.automated_rate:.0%} |"
+            )
+            cert_rows.append((name, alpha, c.automated_rate, u.automated_rate))
+        L.append("\n| cut-off | handled alone | silent errors | of which unsafe |\n|---|---|---|---|")
+        band = review_band(sc, wrong, unsafe)
+        for t in (0.5, 0.7, 0.9, 0.97):
+            row = next((r for r in reversed(band) if r.threshold >= t), None)
+            if row:
+                L.append(f"| {t:.2f} | {row.automated}/{row.n} | {row.silent_errors} | {row.silent_unsafe} |")
+        L.append("")
+    L.append("### How many cases a certificate needs\n")
+    L.append(
+        "If the model makes no silent error at all, this many cases certify a silent-error rate below the target, at 95% confidence:\n"
+    )
+    L.append("| target | cases needed |\n|---|---|")
+    for alpha in (0.05, 0.02, 0.01, 0.005, 0.001):
+        L.append(f"| {alpha:.1%} | {cases_needed(alpha)} |")
+    L.append(
+        f"\nThis study has {len(adjud)} cases, so the best rate it can ever certify is about {3 / len(adjud):.1%} even with no errors.\n"
+    )
 
     L.append(
-        "\n## Ledger\n| role | requests | replayed | tokens in | tokens out | USD | unpriced rows | seconds |\n|---|---|---|---|---|---|---|---|"
+        "\n## Ledger\n| subject or role | requests | replayed | tokens in | tokens out | USD | unpriced rows | seconds |\n|---|---|---|---|---|---|---|---|"
     )
-    for role, t in summarize(Ledger(LEDGER).rows(), prices).items():
+    who_rows = [{**r, "who": r.get("subject") or r["role"]} for r in Ledger(LEDGER).rows()]
+    for role, t in summarize(who_rows, prices, by="who").items():
         L.append(
             f"| {role} | {t['requests']} | {t['replayed']} | {t['tokens_in']} | {t['tokens_out']} | {t['usd']:.4f} | {t['unpriced']} | {t['seconds']:.0f} |"
         )
