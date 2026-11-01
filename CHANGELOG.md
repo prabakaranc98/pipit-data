@@ -8,6 +8,7 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 - `docs/programme.md`: the five-study programme on one candidate and its shared protocol; milestones M4 and M5 in the README.
 - `pipit.calibration`: calibration error, Brier score, the review band, an exact binomial reliance certificate tested from the strictest cut-off down, and the number of cases a certificate needs. The P1 report gains the certificate, an exact paired test between subjects, a ledger by subject, and the Perplexity model run with its two questions grouped.
+- Study P3 pilot (`studies/p3_support_crisis/`): crisis triage in a messy support queue, 24 hand-written cases in four families (danger inside a complaint, account takeover under pressure, a customer in crisis, someone else's data exposed), each clear, buried and look-alike; both subjects run; the report counts missed crises, false alarms and wrong crisis teams, checks the two answers against each other, and tests combining them in code.
 
 ## [0.0.2] - 2026-10-31
 
