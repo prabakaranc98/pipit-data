@@ -240,21 +240,38 @@ Reliability" (Rabanser et al., ICML 2026), and cost is weighed against accuracy,
 | Cost | dollars, tokens and seconds per case and per claim; accuracy against cost | the ledger |
 | Validity | judges against planted truth and people; realism; transfer to real traffic | J1; #28 |
 
+## Who does what: roles and models
+
+Every role is filled by a model only after that model is measured in that role, on planted items, and its cost is in
+the ledger.
+
+| Role | Does | Model today | Evidence so far | Next test |
+| --- | --- | --- | --- | --- |
+| Candidate | is measured | Perplexity's decider, Qwen3.5-4B in both modes; Jev as reference | P1, P3, X1 | G1 (#47) |
+| Lead | drafts and grows the tree, chooses the next action | not built; DeepSeek V4 Pro proposed | none | E1 on the bench (#8, #9) |
+| Case writer | writes families from specs | gpt-oss-120b paraphrases today | P1: code caught 6 broken paraphrases | family specs (#22) |
+| Validator | checks a planted fact survives a rewrite | qwen3-235b, the same family as P1's candidates | wrong on 25 of its 31 flags | the family rule, E3 (#43) |
+| Judge | grades where code cannot | DeepSeek V4.1 Flash first; V4 Pro only where replies cannot instruct it | J1 | injection resistance in the bar (#41) |
+| Scorer and ranker | scores, compares and ranks cases, situations and hypotheses at volume: realism, severity, priority | Jev, once measured in each of these roles | J1: 0.1 s per verdict, a little less accurate than DeepSeek | pairwise realism (#50); hypothesis priority on the bench |
+| Guard | keeps instructions written in a reply away from a judge | none yet: Jev, asked one question, flagged plain proposals more often than injected ones | J1 | quote replies as data, then test again (#41) |
+| Council | reviews findings before they count | three families, never the candidate's | none | 0.2 |
+| Person | signs claims and makes the decisions listed below | the study owner | | |
+
 ## The build order, one pull request at a time
 
-1. **The comparison with the field, and counting a case once** (#39, open).
-2. **Thinking mode in its native setup** (#35): P1's fifth setup and the tree picture. The run is at 23 of 30
-   cases.
-3. **The engine design, the overview and study J1:** the method as computation, and the first judge study, on
-   DeepSeek V4 Pro and V4.1 Flash.
-4. **Dataset styles, first row:** extraction and a computed number (G1) on Qwen3.5-4B in both modes.
-5. **The bench and adaptive measurement** (E1; #8, #9, #25).
-6. **The evaluation aspects in `report.json`,** with a schema (#18).
-7. **The first release:** P1's explore cases on the Hub with a card, a canary and a fingerprint, confirm held back,
-   in a collection.
-8. **Judges in studies:** the family rule in code, and judged rates corrected (E3).
-9. **Study configuration and `pipit plan`** (#12).
-10. **The viewer, the Inspect bridge if chosen, and the agent team** (#19; 0.2).
+1. **The comparison with the field, and counting a case once** (#38; pull request #39, open).
+2. **Thinking mode in its native setup** (#35): done on its branch. 5 mistakes in 30 against 8 in instruct mode,
+   exact paired test p = 0.51, for 5.8 hours of compute.
+3. **The engine design, J1 and X1** (#40, #41, #42): the method as computation, judges measured, and Pipit beside Petri
+   on the same model.
+4. **Rules the studies exposed:** the family rule (#43), provider pinning (#44), the partition check (#45).
+5. **Dataset styles and variants:** extraction and a computed number (#47); pressure and injection variants (#48).
+6. **The bench and adaptive measurement** (E1; #8, #9, #25).
+7. **The evaluation aspects in `report.json`,** with a schema (#18).
+8. **The first release and the examples** (#51, #52).
+9. **Study configuration** (#12), after the decision on Inspect (#46).
+10. **Multi-turn and agent styles** (#49), realism and test awareness (#50), the viewer (#19), and the agent team in
+    0.2.
 
 Then release 0.1.0.
 

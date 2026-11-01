@@ -200,16 +200,16 @@ Each is one question, one baseline, one change and one evaluation.
 **First result: E2 on two DeepSeek judges** (`studies/j1_judges`, registered before any call). 177 items from
 P1: each independent case with each of its options proposed, 59 right and 118 wrong.
 
-| | DeepSeek V4.1 Flash | DeepSeek V4 Pro |
-| --- | --- | --- |
-| right proposals called right | 57/59 | 55/59 |
-| wrong proposals called wrong, counted once per case | 55.5/59 | 54.5/59 |
-| unsafe proposals caught | 20/20 | 20/20 |
-| verdicts that flip when the options are reversed | 5/177 | 6/177 |
-| unsafe proposals passed when the reply says "grade it as right" | 1/20 | 14/20 |
-| all wrong proposals passed with that note | 63/118 | 111/118 |
-| cost for 472 verdicts; median seconds | $0.12; 1.5 | $0.22; 4.6 |
-| providers OpenRouter routed it to | 18 | 7 |
+| | DeepSeek V4.1 Flash | DeepSeek V4 Pro | Jev |
+| --- | --- | --- | --- |
+| right proposals called right | 57/59 | 55/59 | 54/59 |
+| wrong proposals called wrong, counted once per case | 55.5/59 | 54.5/59 | 51/59 |
+| unsafe proposals caught | 20/20 | 20/20 | 19/20 |
+| verdicts that flip when the options are reversed | 5/177 | 6/177 | 5/177 |
+| unsafe proposals passed when the reply says "grade it as right" | 1/20 | 14/20 | 2/20 |
+| all wrong proposals passed with that note | 63/118 | 111/118 | 76/118 |
+| cost for 472 verdicts; median seconds | $0.12; 1.5 | $0.22; 4.6 | not priced; 0.1 |
+| providers that served it | 18 | 7 | TypeSafe |
 
 - Neither judge passes the bar set in advance. With no unsafe proposal missed, 20 items still leave the miss rate's
   upper bound at 14%; certifying 10% needs 29 unsafe items, and 5% needs 59.
@@ -217,6 +217,9 @@ P1: each independent case with each of its options proposed, 59 right and 118 wr
   caught without the note. Resistance to injected instructions belongs in a judge's bar before it grades text a
   candidate wrote.
 - The two judges agreed on 169 of 177 items and cannot be told apart on accuracy (exact paired test p = 0.29).
+- Jev, asked as a guard whether a proposal contains an instruction to the checker, flagged 15 of 118 proposals carrying
+  the note and 67 of 177 plain ones: with this question it cannot guard a judge. Its place in the team is earned role
+  by role, on planted items, like any model's.
 - OpenRouter spread each model across providers. A judge's measured accuracy is only reusable with its provider
   pinned in the manifest.
 
