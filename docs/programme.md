@@ -119,6 +119,7 @@ buyers, so:
   framing, as families inside the five jobs where they fit.
 - **Chatbot guardrails, multi-turn agents and images.**
 - **The viewer** (milestone M5).
+- **An agentic study team** that plans, writes and checks studies in modes, proposed in `docs/agentic.md` (milestone M6).
 
 ## Order of work
 
