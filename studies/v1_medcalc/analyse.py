@@ -67,7 +67,7 @@ def permutation_p(x: list[float], y: list[float], draws: int = 100_000) -> tuple
     observed = spearman(x, y)
     if len(y) <= 8:
         perms = list(itertools.permutations(y))
-        return sum(spearman(x, list(p)) >= observed - 1e-12 for p in perms) / len(perms), "exact"
+        return sum(spearman(x, list(p)) >= observed - 1e-12 for p in perms) / len(perms), "every ordering"
     rng = random.Random("pipit-v1-permutations")
     hits = 0
     for _ in range(draws):
@@ -75,6 +75,15 @@ def permutation_p(x: list[float], y: list[float], draws: int = 100_000) -> tuple
         rng.shuffle(shuffled)
         hits += spearman(x, shuffled) >= observed - 1e-12
     return (hits + 1) / (draws + 1), f"{draws:,} random orderings"
+
+
+def capped(ledger: list[dict], name: str, arm: str, key: str) -> set:
+    """Items whose last call for this model stopped at the token cap."""
+    last = {}
+    for r in ledger:
+        if r.get("subject") == name and r.get("arm") == arm and not r.get("cached"):
+            last[r.get(key)] = r.get("finish_reason")
+    return {k for k, v in last.items() if v == "length"}
 
 
 def main() -> None:
@@ -103,6 +112,9 @@ def main() -> None:
                 u[0] += ok
                 u[1] += 1
         usd = sum(r.get("usd") or 0.0 for r in ledger if r.get("subject") == name and not r.get("cached"))
+        cut = capped(ledger, name, "medcalc", "row") & {r["row"] for r in calc}
+        cut_p1 = capped(ledger, name, "p1", "case_id") & {r["case_id"] for r in dec}
+        clean = [r for r in calc if r["row"] not in cut and r.get("error") is None]
         table[name] = {
             "medcalc": (sum(r["correct"] for r in calc), len(calc)),
             "by_cat": {k: (sum(v), len(v)) for k, v in by_cat.items()},
@@ -110,6 +122,12 @@ def main() -> None:
             "p1_h2": (unit_share(units_h2), len(units_h2)),
             "unparsed": sum(r["choice"] is None for r in dec),
             "usd": usd,
+            "cut": (len(cut), len(cut_p1)),
+            "failed": (
+                sum(r.get("error") is not None for r in calc),
+                sum(r.get("error") is not None for r in dec),
+            ),
+            "medcalc_clean": (sum(r["correct"] for r in clean), len(clean)),
         }
     L = ["# Study V1: do Pipit's written cases rank models the way MedCalc-Bench's real notes do?\n"]
     L.append(
@@ -121,6 +139,21 @@ def main() -> None:
         t = table[name]
         L.append(
             f"| {name} | {share(*t['medcalc'])} | {share(*t['p1'])} | {share(*t['p1_h2'])} | {t['unparsed']} | {t['usd']:.2f} |"
+        )
+    L.append("\n## Replies cut off at the cap, and failed calls\n")
+    L.append(
+        "Both count as wrong above. The cap counts any reasoning the provider runs by default: 4,096 tokens on "
+        "MedCalc-Bench, 2,048 on P1. A failed call failed four times.\n"
+    )
+    L.append(
+        "| model | MedCalc-Bench cut off | failed | MedCalc-Bench right without them | P1 cut off | failed |"
+    )
+    L.append("|---|---|---|---|---|---|")
+    for name in names:
+        t = table[name]
+        L.append(
+            f"| {name} | {t['cut'][0]} | {t['failed'][0]} | {share(*t['medcalc_clean'])} | {t['cut'][1]} | "
+            f"{t['failed'][1]} |"
         )
     L.append("\n## MedCalc-Bench by category\n")
     L.append("| model | " + " | ".join(CATEGORIES) + " |")
@@ -158,14 +191,14 @@ def main() -> None:
         ]
         h2 = [table[n]["p1_h2"][0] / table[n]["p1_h2"][1] for n in names]
         L.append("\n## Do the two rank the models alike?\n")
+        (p_all, how), (p_h2, _) = permutation_p(mc, pp), permutation_p(lab, h2)
         L.append(
-            f"Spearman's correlation across {len(names)} models, with an exact one-sided permutation test:\n"
+            f"Spearman's correlation across {len(names)} models, with a one-sided permutation test over {how}:\n"
         )
+        L.append(f"- MedCalc-Bench overall against P1 overall: {spearman(mc, pp):.2f}, p = {p_all:.3f}.")
         L.append(
-            f"- MedCalc-Bench overall against P1 overall: {spearman(mc, pp):.2f}, p = {permutation_p(mc, pp):.3f}."
-        )
-        L.append(
-            f"- MedCalc-Bench lab and dosage against P1's computing hypothesis: {spearman(lab, h2):.2f}, p = {permutation_p(lab, h2):.3f}.\n"
+            f"- MedCalc-Bench lab and dosage against P1's computing hypothesis: {spearman(lab, h2):.2f}, "
+            f"p = {p_h2:.3f}.\n"
         )
     text = "\n".join(L) + "\n"
     (HERE / "report.md").write_text(text)
