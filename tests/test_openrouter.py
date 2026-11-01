@@ -1,6 +1,15 @@
+import urllib.error
+
 import pytest
 
-from pipit.adapters.openrouter import EmptyContent, OpenRouterChat
+from pipit.adapters.openrouter import (
+    EmptyContent,
+    KeyRefused,
+    OpenRouterChat,
+    TooSlow,
+    _read_within,
+    budget_left,
+)
 from pipit.ledger import Ledger
 from pipit.manifest import Context, Manifest
 
@@ -74,3 +83,71 @@ def test_a_system_message_is_sent_first_and_keys_its_own_cache_entry(tmp_path, m
     ]
     chat("the task")  # without a system message: a different request, not a cache hit
     assert len(bodies) == 2 and bodies[1]["messages"] == [{"role": "user", "content": "the task"}]
+
+
+def test_a_refused_key_stops_at_once_without_retries(tmp_path, monkeypatch) -> None:
+    monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
+    calls = []
+
+    def transport(body, headers):
+        calls.append(body)
+        raise urllib.error.HTTPError("u", 403, "Forbidden", {}, None)  # type: ignore[arg-type]
+
+    chat = OpenRouterChat(
+        _manifest(), Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path), transport
+    )
+    with pytest.raises(KeyRefused, match="HTTP 403"):
+        chat("x")
+    assert len(calls) == 1
+
+
+def test_a_reply_that_never_finishes_hits_the_time_limit() -> None:
+    class Padding:  # a connection kept alive with whitespace that never ends
+        def read1(self, n):
+            return b" "
+
+    ticks = iter(range(0, 10_000, 30))
+    with pytest.raises(TooSlow, match="within 600 s"):
+        _read_within(Padding(), deadline_s=600, clock=lambda: next(ticks))
+
+    class Whole:
+        def __init__(self):
+            self.parts = [b'{"ok":', b" 1}", b""]
+
+        def read1(self, n):
+            return self.parts.pop(0)
+
+    assert _read_within(Whole(), deadline_s=600) == b'{"ok": 1}'
+
+
+def test_a_slow_call_is_tried_once_more_then_fails(tmp_path, monkeypatch) -> None:
+    monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
+    served = [TooSlow("slow"), _response("ok")]
+
+    def transport(body, headers):
+        item = served.pop(0)
+        if isinstance(item, Exception):
+            raise item
+        return item
+
+    ctx = Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path)
+    assert OpenRouterChat(_manifest(), ctx, transport)("x")["text"] == "ok"
+
+    def always_slow(body, headers):
+        raise TooSlow("slow")
+
+    with pytest.raises(TooSlow):
+        OpenRouterChat(_manifest(), ctx, always_slow)("y")
+
+
+def test_the_budget_left_on_a_key(monkeypatch) -> None:
+    monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
+    seen = {}
+
+    def fetch(url, headers):
+        seen.update(url=url, auth=headers["Authorization"])
+        return {"data": {"limit": 25, "limit_remaining": 14.85}}
+
+    assert budget_left("PIPIT_TEST_OR_KEY", fetch=fetch) == 14.85
+    assert seen == {"url": "https://openrouter.ai/api/v1/key", "auth": "Bearer k"}
+    assert budget_left("PIPIT_TEST_OR_KEY", fetch=lambda u, h: {"data": {"limit_remaining": None}}) is None
