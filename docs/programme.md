@@ -1,53 +1,87 @@
-# Programme P: five studies on one model
+# Programme P: can a business let this model act alone?
 
 ## In plain words
 
-We take one small decision model, Perplexity's 4B decider, and test it on the jobs these models are actually sold
-for. We read the vendors' own documentation to find those jobs, and the vendors' own lists of known weak spots.
-Then we pick, for each job, one narrow thing that is easy to get wrong, matters when it is wrong, and has not
-already been measured by the decision-models lab. For each we build cases where the right answer is known in
-advance, run the model, count the mistakes, say how sure we are, say what it cost, and let a finding open a deeper
-study. Five studies, one protocol, one report across them.
+Before a business switches on a small decision model, it has to answer one question, and its risk team and its
+regulator will ask it again afterwards: on which cases can the model act alone, how often will it be wrong without
+anyone noticing, how many cases still need a person, and how long does that answer stay true?
 
-## What the reading showed (2026-10-31)
+Pipit answers that question for one model, Perplexity's 4B decider, on five jobs these models are actually sold
+for. Each study ends in a **reliance dossier**: where the model breaks, how much it can handle alone at a stated
+error rate, which settings change that, what finding it out cost, and the check that says when the answer expires.
 
-**What the models are for.** TypeSafe's use-case map and cookbooks, and Perplexity's Decisions API docs, describe
-the same five jobs: routing and labelling at volume; verifying another model's work (extractions, citations,
-tool-call traces); guardrails and moderation; scoring retrieved passages before they reach an answering model;
-choosing and filling tools or skills for an agent. Perplexity says the Flash model is for "routing, labeling, or
-filtering" at volume and that it answers each question separately. Both vendors say: keep thresholds in your code,
-set them on your own labelled data, and send uncertain cases to a person.
+## What the first tests showed (2026-11-01)
 
-**What the vendors admit.** TypeSafe's own page on Jev 1.13's rough edges lists: literal reading of scoping words
-and negation; arithmetic, counting and dates; double negatives and multi-hop; large state full of irrelevant
-detail; adversarial content in the state; contradictory criteria; a lean toward the first option. Perplexity's
-card says grouped questions influence each other, long inputs beyond 32k tokens are only spot-checked, held-out
-calibration error is about 0.05, and the API's response echoes the model name you sent, not the version that
-served it, so aliases can move under you.
+- **How much it can do alone, on the clinical cases.** Allowing at most 5 silent errors per 100 cases, Jev could
+  handle 64% of P1's cases alone, Perplexity asked one question at a time 36%, and Perplexity with its two
+  questions grouped 29%. A silent error is a wrong answer nobody reviewed.
+- **The setting matters as much as the model.** Grouping the two questions, an option the vendor offers, raised
+  Perplexity's mistakes from 19 to 29 of 112 and its calibration error from 0.02 to 0.17 (paired test p = 0.02).
+  Jev and Perplexity one-at-a-time are not distinguishable overall on these cases (p = 0.39).
+- **Well calibrated on average does not mean safe to automate.** Perplexity's average calibration error is lower
+  than Jev's, yet it can be trusted alone on far fewer cases, because its few mistakes are made with high
+  confidence.
+- **Certificates need cases.** 112 cases can never certify better than about 3 silent errors per 100. One in 100
+  needs about 300 clean cases; one in 1,000 about 3,000. The candidate runs a case in about 1.3 seconds on this
+  laptop, so the cost of a certificate is in building enough valid cases, not in running them.
+- **In a messy support queue** (24-case pilot), both models caught every gas leak, overheating battery, account
+  takeover and data exposure, even buried in an angry complaint. Both failed on the most dangerous message: a
+  customer who writes "I don't see the point of going on anymore" inside a payment complaint was sent to the
+  vulnerability team, not the emergency protocol. Perplexity's own danger answer gave that message 0.07. Both also
+  sent a verified customer's urgent request to the fraud team, ignoring the account notes showing the identity
+  check had passed.
+- **Combining narrow answers in code, as the vendors advise, is not a free fix.** Sending anything the danger
+  answer flags to the emergency team fixed one miss for each model; for Jev it also sent two customers under a
+  partner's control to the emergency team instead of the specialist team.
 
-**What the lab already measured on 15 models, this one included.** Rule application and date arithmetic on a
-return-window policy; the spike at the policy's number; abstention on missing and on conflicting records (this
-model never abstains on conflicts, Jev does 60% of the time); forged evidence and nine attack families; option
-order and yes/no against three-way; calibration (this model 0.052); recognition against decision; the Decision
-Index against its own measures; an agent's shell-command gate; and when a model can be left alone at a stated
-error rate. P1's conflict result reproduces the lab's. Pipit does not repeat any of this; it cites it.
+The evidence is in `studies/p1_clinical/report.md` and `studies/p3_support_crisis/pilot_report.md`.
 
-**Where that leaves the five.** Each study below is a job the vendors sell, a weakness they admit or a limit they
-flag, and a question the lab has not asked.
+## The five jobs, as business questions
 
-## The five studies
+| Study | The question a business asks | Where it bites |
+| --- | --- | --- |
+| P1 clinical medication check (screen done) | Can a hospital let the model clear routine medication orders and send only risky ones to a pharmacist? | a double dose cleared; a conflicting allergy record decided without asking |
+| P2 document verification | Can a finance team let the checker pass extracted invoice and contract fields without a person? | payment on an invented or misread number |
+| P3 support crisis triage (pilot done) | Can a contact centre let the model sort the queue without missing an emergency, a takeover or a customer at risk? | a risk of self-harm filed as a payment query; verified customers blocked as fraud |
+| P4 retrieval gating for regulated answers | Can an insurer's or a bank's assistant rely on the gate to keep contradicting passages out of its answers? | a confident answer built on a passage that says the opposite |
+| P5 agent tools in operations | Can an operations agent pick and fill tools from a large catalogue without guessing? | the wrong action run, or an argument nobody gave filled in |
 
-| Study | The job | The narrow question | Example case |
-| --- | --- | --- | --- |
-| P1 clinical, done | routing a safety decision | reading, computing, inferring, calibrating on a clinical record | 18 kg child, 540 mg on the chart: give, hold, or ask? |
-| P2 verification | checking another model's extraction or citation | does the checker catch answers that look right but are wrong: a schema-valid field that was invented, a quote that exists but whose context contradicts the claim, a field wrongly left blank | the invoice total "1,250.00" was copied from a different line; the quote is verbatim but the section says the opposite |
-| P3 guardrails | screening messages in and out of an LLM | does the guard decide on the words or on the intent: scary words with benign intent, polite words with harmful intent, the same request obfuscated, code-switched or spread over turns | a novelist asks how a detective would describe a poisoning; a user asks the same thing without the frame |
-| P4 retrieval gating | scoring passages before they reach the answering model | does relevance track support for the claim or topical overlap: passages that support, contradict, only share the topic, or are irrelevant, alone and grouped with competitors, short and long | a passage names every term in the question and then says the opposite |
-| P5 agent tools | choosing and filling a tool from a catalogue | with many near-duplicate tools, does it pick the right one and leave unmentioned arguments at their defaults instead of guessing, alone and grouped, as the catalogue grows | "show nvda for the last hour": which of 60 chart tools, and is the window stated? |
+## The reliance dossier: what every study delivers
 
-Each study keeps the four hypotheses of P1 (misread, cannot compute, cannot infer, commits when it should ask)
-and adds the two knobs the vendors flag: grouped against one question per request, and state length from a few
-hundred to 32k tokens with the deciding fact at a known position.
+1. **Where it breaks:** the failure map by mechanism (misreads, cannot compute, cannot infer, commits when it
+   should ask), with intervals.
+2. **How much it can do alone:** the certificate at stated silent-error targets, for all errors and for harmful
+   ones only, and the human-review load per 10,000 cases.
+3. **Which settings matter:** the vendor's knobs (grouped or one question at a time, input length, option order)
+   and composition rules, as paired comparisons on the same cases.
+4. **What it cost:** cases, model time, helper-model dollars and human review time.
+5. **When it expires:** a canary set that detects a moved alias or a changed model; the certificate is re-run when
+   it fires.
+6. **What is still unknown,** in plain words, and the deeper study a finding opens.
+
+## The biggest risk, stated plainly
+
+Every number above is on cases we wrote. A business runs on real traffic. A certificate transfers only if the
+cases are drawn like the traffic, and written cases are not. Two ways to close the gap: run the same engine on a
+real stream with known outcomes and compare; and let a business run Pipit on its own labelled traffic, with the
+written cases as the stress test that real traffic rarely contains. Until then a certificate is about the case set,
+and every report says so. The transfer study has its own issue.
+
+## What is known, what is open, what is ours
+
+- **Known in the field:** finite-sample guarantees for a threshold on data drawn like the calibration data, from
+  conformal prediction and risk control (Angelopoulos and Bates; Learn-then-Test; conformal risk control) and
+  selective prediction. The decision-models lab applied split conformal to one world (its E17); Pipit does not
+  repeat it.
+- **Open in the field:** guarantees that survive drift and the move from test cases to real traffic; evaluation as
+  a measurement science (Weidinger et al., 2025, position paper); error bars on evaluations (Miller, 2024).
+- **Ours:** what a reliance certificate costs for a typed decision model, how far a vendor setting moves it, and
+  whether written cases predict real traffic.
+- **Standards a business will hold this to:** model risk management (US supervisory guidance SR 11-7), the EU AI
+  Act's requirements on human oversight and accuracy for high-risk systems, the NIST AI Risk Management Framework,
+  and, for P3, the UK FCA's guidance on vulnerable customers.
+
+None of these sources has been read in full for this project yet; each is read before a claim relies on it.
 
 ## Cases anyone can read
 
@@ -67,27 +101,33 @@ buyers, so:
 
 ## What the references add to the engine
 
-These are the pieces the method lacks today, each taken from a named reference and each with a test.
-
-| Gap in Pipit today | Taken from | What we build | How we know it works |
+| Gap in Pipit | Taken from | What we build | How we know it works |
 | --- | --- | --- | --- |
-| Cases are hand-written Python | NeMo Data Designer, Distilabel | a declarative family spec (slots, conditions, expected answers, validators) that a generator compiles to cases with lineage | P1's 120 cases regenerate byte for byte from the spec |
-| The stop rule uses fixed-sample intervals, but the loop stops when evidence looks sufficient | anytime-valid confidence sequences (Howard et al.), the lab's e-values | a sufficiency gate that stays valid under optional stopping; Wilson stays for reporting cells | on M1's synthetic subject, the false-claim rate stays at the stated level however often we peek |
-| The focus stage spends budget by gut | tinyBenchmarks, SubLIME | choose the next cases by how much they would change the estimate (IRT or anchor cases), against uniform at equal budget | M2's keep-or-kill curve |
-| Scenario ideation is one prompt | Bloom, AdaTest, Petri | behaviour-first ideation with diversity control, scored by planted truth, gated by a person; multi-turn and simulated tools for P3 and P5 | the accepted-proposal rate after review, per study |
-| Graders live inside study scripts | OpenAI evals, Inspect | graders as code in `pipit.checks`, separate from samples; a study is a spec plus manifests | a new study needs no new Python |
-| Confidence is reported, not certified | the vendors' own threshold guidance, the lab's E17 | a calibration certificate per study: error against confidence, and the review-band curve (how many cases go to a person for a stated residual error) | the curve is the number an operator asks for |
-| As-served models drift and the API echoes the alias | Perplexity and TypeSafe docs; our Jev run moved from 16 to 15 failures between runs | a canary set re-run at the start of every study; drift is a recorded fact, and a threshold is revalidated when it moves | the canary catches a version change before a study runs on it |
+| Cases are hand-written Python | NeMo Data Designer, Distilabel | a declarative family spec (slots, conditions, expected answers, validators) compiled to cases with lineage | P1's 120 cases regenerate byte for byte from the spec |
+| The loop stops when evidence looks sufficient, but its intervals assume a fixed sample | anytime-valid confidence sequences (Howard et al.), the lab's e-values | a stopping rule that stays valid however often the loop checks | on M1's synthetic subject, the false-claim rate holds at the stated level |
+| The focus stage spends budget by judgment | tinyBenchmarks, SubLIME | choose the next cases by how much they would change the estimate, against uniform at equal budget | M2's keep-or-kill curve |
+| Scenario ideas come from one prompt | Bloom, AdaTest, Petri | behaviour-first ideation with diversity control, scored by planted truth, gated by a person; multi-turn for P3 and P5 | the share of proposals a person keeps |
+| Graders live inside study scripts | OpenAI evals, Inspect | graders as code in `pipit.checks`; a study is a spec plus manifests | a new study needs no new Python |
+| Confidence was reported, not certified | the vendors' own threshold advice, Learn-then-Test, the lab's E17 | built: `pipit.calibration`, an exact binomial certificate tested from the strictest cut-off down (#24) | first results on P1 above |
+| Hosted models drift and the API echoes the alias | Perplexity and TypeSafe docs; our Jev run moved from 16 to 15 failures | a canary set run at the start of every study | it catches a version change before a study runs on it |
+
+## Later (thought through, not scheduled)
+
+- **Repair data.** Once a limitation is confirmed on fresh cases, build targeted examples to fix it and test that
+  the fix breaks nothing else (A3's pattern). The first candidate is dose arithmetic.
+- **More domains from the first plan.** Legal deadline arithmetic, economics units and bases, and behavioural
+  framing, as families inside the five jobs where they fit.
+- **Chatbot guardrails, multi-turn agents and images.**
+- **The viewer** (milestone M5).
 
 ## Order of work
 
-1. M1, the synthetic subject, now also the test for the new gate: planted failure rates, repeated peeking, the
-   stated false-claim level held.
-2. The P1 child study on dose arithmetic, as diagnosis and intervention: does supplying the computed ratio in the
-   state fix the failure, as the lab's "decompose, compute, decide" predicts.
-3. The protocol pieces above, each its own issue and pull request: family spec, canary set, calibration certificate,
-   gate.
-4. P2 to P5, then the programme report and the viewer.
+1. M1, the instrument proof, now also the test for the stopping rule.
+2. The P1 follow-up on dose arithmetic, as a fix test: does putting the computed mg/kg in the record fix it?
+3. The P3 screen, built around what the pilot found: self-harm signals inside complaints, trusted account notes
+   against customer pressure, and the two answers contradicting each other.
+4. The protocol pieces: family spec, canary set, stopping rule.
+5. P2, P4 and P5, then the transfer study on one real stream.
 
 ## Sources read
 
