@@ -54,7 +54,7 @@ The scope for now is instruction following, reasoning, preferences and decisions
 rubrics for multi-step tasks, comes at 0.2.5 to 0.3.
 
 Five industries, one at a time, each starting where the right answer can be computed or planted: clinical and
-biomedical first; then legal; finance and banking decisions; data and AI work (analytics, analytics engineering and
+biomedical first; then finance and banking decisions; legal; data and AI work (analytics, analytics engineering and
 machine learning, not software engineering at large); and human-centred AI, such as tutoring and collaboration, where
 what is planted is the person: a misconception, a level, a goal or a constraint, and the move that serves them.
 
@@ -93,7 +93,7 @@ Pipit's answer has three parts.
   response theory makes the same point for benchmarks: tinyBenchmarks reports that about 100 well-chosen items
   estimate a model's accuracy on a full benchmark within a few points.
 - **The right answer is planted, so checking scales.** Each case is built from a spec that says what its answer must
-  be, numbers are computed by code, and a person reviews a sample instead of every case. P1 built 120 checked cases
+  be, numbers are computed by code, and a second, independent implementation checks the answers (0.0.7). P1 built 120 checked cases
   for about one and a half cents of helper-model calls.
 
 ## What we take, and what is ours
@@ -195,7 +195,7 @@ passed, and its own hash. A case set is frozen once a claim cites it, and every 
 | Calibration | whether its confidence means what it says | built |
 | A stopping rule that stays valid when we look early | when the evidence is enough, even in an adaptive loop | 0.1 (#25) |
 | Adaptive allocation against uniform at equal budget | where to spend the next cases | 0.1 (#9) |
-| Anchors to public benchmarks | where the model stands on an established benchmark, from about 100 items | 0.1 (new) |
+| Anchors to public benchmarks | where the model stands on an established benchmark, from about 100 items | after 0.1.0; V1 is the first comparison |
 | The bench | whether all of the above give the right verdicts when the truth is known | 0.1 (#8) |
 | Transfer to real traffic | whether results on written cases predict a real stream | 0.2 (#28) |
 
@@ -216,7 +216,7 @@ passed, and its own hash. A case set is frozen once a claim cites it, and every 
 ## The study team, in 0.2
 
 The agentic design in `docs/agentic.md` comes after 0.1, on purpose: a lead model, specialists, small models as
-workers, a council, a person at the gates, modes, a shared record, a business's context through MCP, and an
+workers, a council, gates registered in advance, modes, a shared record, a business's context through MCP, and an
 autoresearch loop with a frozen judge. The team acts through the commands above and is judged on the bench, and
 neither exists yet. Version 0.1 builds both, so the team has something to act with and something that can rule it
 out.
@@ -234,7 +234,7 @@ small experiment: one question, one baseline, one change, one evaluation.
 | S2 The tree | a partition of the case space by mechanism; every case in exactly one key question | built, and checked in code (#45) |
 | S3 Evaluation aspects | correctness, consistency, robustness, predictability, safety, cost, validity | partly built; see below |
 | S4 Claims | explore, then confirm on held-back families with tests registered first | planned |
-| S5 Experiments on the method | E1 to E4 in `docs/engine.md` | E2 running as study J1 |
+| S5 Experiments on the method | E1 to E5 in `docs/engine.md` | results for E1 (B1), E2 (J1) and E5 (X1) |
 
 **Algorithmic: how evidence becomes a decision**
 
@@ -277,14 +277,14 @@ small experiment: one question, one baseline, one change, one evaluation.
 | --- | --- | --- | --- |
 | Typed decision | a planted fact | P1, medication decisions | built |
 | Routing a messy queue | the planted kind of message | P3, support triage | pilot |
-| Extraction into fields | planted field values | G1, handover notes | built, not yet run |
-| A computed number | code computes it | G1, a child's dose | built, not yet run |
+| Extraction into fields | planted field values | G1, handover notes | local work, not merged (0.0.13, #47) |
+| A computed number | code computes it | G1, a child's dose | local work, not merged (0.0.13, #47) |
 | Judge items | a proposal whose verdict is planted | J1 | running |
 | A difficulty ladder | a setting whose difficulty is known | the dose-ratio staircase | planned |
 | Multi-turn, fact stated early | a fact given early and needed late | none yet | planned |
 | Agent task, state checked | code checks the final state or a planted secret | none yet | planned |
 | Attack against baseline | the same case with and without an attack | J1's injected note | started |
-| Interpretability pairs | one variable changed, tokens aligned | P1's minimal pairs | planned |
+| Interpretability pairs | one variable changed, tokens aligned | P1's minimal pairs | built for I1 |
 
 Every style takes the same variants: rewordings, option order, an injected instruction, a different surface or
 persona, and a difficulty setting where the mechanism has one.
@@ -325,12 +325,13 @@ the ledger.
 
 ## Releases on the way to 0.1.0
 
-Each release answers one question and is tagged once its pull requests have merged.
+Each release answers one question. It is tagged only when it passes the release gate in `CONTRIBUTING.md`, and it
+is measured against the reference problem suite in `docs/suite.md`, whose statuses its notes report.
 
 | Release | The question | The work |
 | --- | --- | --- |
 | 0.0.3 | Can Pipit's numbers be trusted? | counting a case once and the comparison with the field (#39); the rules in code (#56); native setups (#58); the engine design with J1, X1 and I1 (#59); the bench (#60); V1 registered (#61); this plan (#62) |
-| 0.0.4 | Can we trust a run? | V1's results, with the providers that served each model; the rules checked before a run, so every API model has a pinned provider and a family; a time limit per call; results saved as each item finishes |
+| 0.0.4 | Can we trust a run? | V1's results, with the providers that served each model; checks before a run, one time limit per call and results saved per item, in V1's runner; the other runners adopt them when they next run, P1's in 0.0.7 |
 | 0.0.5 | Can a report drift from its data? | CI rebuilds every report from its recorded runs; `report.json` with a schema (#18); the study registry (#54), the model inventory (#20) and the programme tables (#17) generated from it; the numbers in the README and docs checked against it |
 | 0.0.6 | Can anyone read the code? | the conventions in `CONTRIBUTING.md`; modules by concept and plain names, below; type checks and docstrings in CI; studies importable without editing `sys.path`; every report regenerates byte-identical |
 | 0.0.7 | Is the dose finding real? | the family spec (#22); the confirm round on fresh dose families (#10), scored with more than one right answer where the record allows it (#11); a second, independent writer for each family, and how much the writer changes the result; P1's planted answers checked by a second, independent implementation and against published reference values |
@@ -357,7 +358,7 @@ sequences, certificates), `tree` (hypotheses, partition, evidence, verdicts), `a
 | `calibration.ece`, `calibration.brier` | `expected_calibration_error`, `brier_score` | no abbreviations |
 | `evidence.unit_share` | `failures_per_independent_case` | the concept, in words |
 | `questions.noul` | `questions.yes_no` | "noul" is TypeSafe's word |
-| `checks.severity`, `checks.completeness` | P1's own code | clinical rules belong to the study |
+| `checks.severity`, `checks.completeness` | P1's and P3's own code | the rules belong to the studies that use them |
 
 **Methods are read when the release that relies on them starts:** conformal risk control before 0.0.8; confidence
 sequences, thresholding bandits and tinyBenchmarks before 0.0.9. Each gets a short note: its claim, its conditions and
@@ -372,10 +373,10 @@ Honest gaps, as of 2026-11-01, each with the work that closes it:
 | Every result is on cases we wrote | a model can pass written cases and fail on real traffic | V1 against MedCalc-Bench's real notes (0.0.4), then the transfer study on real complaints (#28) |
 | One person set the clinical truth | a planted answer is only as right as its author | no reviewer is available, so each planted answer is checked by a second, independent implementation and against published reference values, and each family gets a second writer (0.0.7) |
 | Nothing has been confirmed | every claim so far is exploratory | the confirm round on fresh dose families (0.0.7, #10) |
-| Studies are small, and rewordings add little | P1 settles one of twelve key questions per model; its two wordings agreed on 51 to 53 of 53 cases | new scenarios instead of rewordings (#22), fewer and deeper key questions, and adaptive spending (#9) |
+| Studies are small, and rewordings add little | P1 settles one or two of twelve key questions per model; its two wordings agreed on 51 to 53 of 53 cases | new scenarios instead of rewordings (#22), fewer and deeper key questions, and adaptive spending (#9) |
 | Reports and docs can drift from the data | I1's report could not be rebuilt from its script, and the docs overstated B1 | reports rebuilt in CI and the numbers checked (0.0.5) |
 | No judge is certified | where code cannot grade, the number is only as good as the judge | J1 with 30 to 60 more unsafe items, and injection resistance in the bar (#41) |
-| The platform is fragile | a stopped server, a sleeping laptop or one stuck call cost hours | checks before a run, a time limit per call and results saved per item (0.0.4); the supervisor (0.0.10, #53) |
+| The platform is fragile | a stopped server, a sleeping laptop or one stuck call cost hours | checks before a run, a time limit per call and results saved per item, in V1's runner (0.0.4); the supervisor (0.0.10, #53) |
 
 What moved toward the real world on 2026-11-01: evidence counted once per case, which corrected overclaims;
 judges measured before use; Pipit tested beside Petri on the same model; three methods agreeing on why the dose
@@ -408,11 +409,12 @@ Taken on 2026-11-01:
 
 1. The agent team is built in 0.2, after the bench and the commands exist.
 2. The LLM is Qwen3.5-4B, the instruction-tuned model Perplexity's decider was trained from, run in its native
-   setup.
+   setup; its instruct-mode runs, in P1 and X1, are controls.
 3. Remote GPUs wait: everything is tested on this Mac first, and an SSH host plugs in when one is available.
 4. On a self-contradicting record, asking for more information and refusing both count as right; asking is
    preferred, and both readings are reported (#11).
-5. DeepSeek V4 Pro and V4.1 Flash are the first judges.
+5. DeepSeek V4.1 Flash is the default judge where code cannot grade, reported with its measured error rates. No
+   judge yet passes the bar set in J1, so a judged number is never a claim on its own (#41).
 6. The family rule is in code, merged in #56: no helper, judge or council member shares a family with a candidate
    (#43).
 7. Releases are small: 0.0.3, 0.0.4 and so on, each answering one question, up to 0.1.0.
@@ -434,7 +436,8 @@ Taken on 2026-11-01:
 Open:
 
 1. Runner: run on Inspect with Pipit as the statistics on top, or keep our runner and read Inspect logs (#46).
-2. The plain names and module layout proposed for 0.0.6.
+2. The renames and module layout proposed for 0.0.6; `CONTRIBUTING.md` sets the naming rules, and the table above
+   lists the changes.
 3. The explore split on the Hub: public, or gated behind accepted terms.
 4. The confirm split: run only by us, or shared under agreement.
 5. The lead agent: may it be a model behind an API for studies that touch a business's data?

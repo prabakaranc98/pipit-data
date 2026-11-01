@@ -10,9 +10,11 @@ way someone else can repeat. Our first studies built the machinery. They also sh
 weak. This playbook sets the rules that make the output good enough for an enterprise sign-off and for research:
 studies of model behaviour, interpretability, alignment and safety evaluation, and benchmarks.
 
-One principle runs through all of it: **models write, statistics allocate, code grades, people decide.** Helper
+One principle runs through all of it: **models write, statistics allocate, code grades, rules registered in advance decide.** Helper
 models and agents draft hypotheses and cases. Statistics, not a model's judgement, decide where the next case goes
-and when to stop. Code computes every right answer and grades every reply. A person signs every claim.
+and when to stop. Code computes every right answer and grades every reply. A claim is accepted only by gates
+registered in advance: the confidence sequence, the confirm round, agreement with a benchmark where one exists. No
+step waits for a person.
 
 ## What our own studies showed is weak
 
@@ -29,14 +31,14 @@ and when to stop. Code computes every right answer and grades every reply. A per
 
 | Step | What happens | Who does it | Check before moving on |
 | --- | --- | --- | --- |
-| 1. Frame | the question, the tolerance (the failure rate that matters for this use), and hypotheses by mechanism, grounded in what is already known: earlier findings, vendor-admitted weaknesses, the literature | lead model drafts; a person signs | every hypothesis says what would refute it; together they cover the ways the decision can fail |
+| 1. Frame | the question, the tolerance (the failure rate that matters for this use), and hypotheses by mechanism, grounded in what is already known: earlier findings, vendor-admitted weaknesses, the literature | lead model drafts; the study owner chooses the question, and the tree is registered before any case runs | every hypothesis says what would refute it; together they cover the ways the decision can fail |
 | 2. Operationalise | each key question gets at least two independent case families with different surfaces and the same mechanism; cases are minimal pairs that change one factor; a difficulty setting where the mechanism has one (dose ratio, days past a deadline, how deep a fact is buried); right answers computed by code | family writers draft; code computes truth | a finding counts only if it appears in both families |
-| 3. Validate items | code checks every case; near-duplicates are removed; wording spread is measured; a person rates a sample for realism; every helper model is scored against planted truth in its role | code, critic models, a person | a dataset card with pass rates; a helper below its bar is not used |
+| 3. Validate items | code checks every case; near-duplicates are removed; wording spread is measured; realism is measured by whether a classifier can tell the cases from real records; every helper model is scored against planted truth in its role | code, critic models measured on planted items | a dataset card with pass rates; a helper below its bar is not used |
 | 4. Pilot and power | a small even pilot estimates failure rates and spread; a power calculation sets the cases each question needs at the tolerance | statistics | the budget is written down before the main run |
 | 5. Measure adaptively | the next cases go to questions whose evidence straddles the tolerance, weighted by what a miss costs; where there is a difficulty setting, an adaptive staircase finds the model's threshold and slope with tens of cases instead of a grid; stopping uses confidence sequences that stay valid when we look early | statistics allocate; writers fill the gaps they are asked to fill | the stopping rule fires, or the budget ends and the report says so |
-| 6. Confirm | fresh families held out from every earlier step, frozen, with tests registered in advance and a false-discovery correction across all questions | statistics; a person opens and closes it | each claim carries its effect size and interval |
+| 6. Confirm | fresh families held out from every earlier step, frozen, with tests registered in advance and a false-discovery correction across all questions | statistics; opened and closed by the rules registered for it | each claim carries its effect size and interval |
 | 7. Explain | ablations and fixes on the same minimal pairs, such as supplying the computed mg/kg to see whether the error disappears; the pairs are exported for interpretability, where activation patching and probes need exactly such contrasts | lead and analyst; code | a cause is claimed only where an intervention changed the outcome |
-| 8. Report and keep | the reliance dossier in three voices; datasets versioned with cards; findings, sources and decisions in the record and the knowledge graph | analyst; a person signs | someone else can rebuild every number from the record |
+| 8. Report and keep | the reliance dossier in three voices; datasets versioned with cards; findings, sources and decisions in the record and the knowledge graph | analyst; the release gate in `CONTRIBUTING.md` | someone else can rebuild every number from the record |
 
 ## From a gap to a release
 
@@ -106,8 +108,8 @@ Rules that came out of the first studies, each now a check rather than a promise
 | A tree must partition its cases: every case claimed by exactly one key question | P1's spec, as written, claimed 40 cases twice, and only the order of the code decided which question got them | `pipit.tree.partition`; P1's `tree()` raises when it fails |
 | No model filters or grades for a candidate of its own family | a validator keeps the cases its family reads well; P1's validator is a Qwen model, like all three of its candidates | `family` in every manifest; `pipit.manifest.family_conflicts` |
 | An API model is pinned to one provider, and mixed routing is flagged | in study J1, OpenRouter served one judge from 18 providers, so its measured accuracy belonged to no single one | `settings.request.provider` in the manifest; `pipit.preflight.pinned`; `pipit.ledger.mixed_providers` |
-| A run starts only when every model declares a family, every API model is pinned, and the estimated cost fits the key's budget | in study V1, models were served by up to 18 providers each, and the key ran out mid-run | `pipit.preflight.require` before the first call; an unpinned run needs an explicit flag, which its report states |
-| A refused key stops the run, each call has a time limit, and each result is saved as it finishes | in V1, 1,385 refusals were recorded as failures, one call hung for over 20 minutes, and results were written only when a model finished | `openrouter.KeyRefused` and `TooSlow`; `pipit.results.Results` |
+| A run starts only when every model declares a family, every API model whose provider varies per call is pinned to one provider, and the estimated cost fits the key's budget; V1's runner checks this today, and each other runner adopts it when it next runs | in study V1, models were served by up to 18 providers each, and the key ran out mid-run | `pipit.preflight.require` before the first call; an unpinned run needs an explicit flag, which its report states |
+| A refused key stops the run, each call has one time limit across its attempts, and each result is saved as it finishes (V1's runner; the others when they next run) | in V1, 1,385 refusals were recorded as failures, one call hung for over 20 minutes, and results were written only when a model finished | `openrouter.KeyRefused` and `TooSlow`; `pipit.results.Results` |
 
 ## How agents carry the playbook
 
@@ -118,11 +120,12 @@ Rules that came out of the first studies, each now a check rather than a promise
 - **Context is scoped by role.** Writers see the spec and earlier findings, never another model's answers or the
   confirm set. Critics see cases and their planted truth. The lead sees the record and the allocator's numbers.
 - **Coordination goes through the record, not through chat.** Proposals, reviews and decisions are typed entries.
-  When critics or council members disagree, a person decides.
+  When critics or council members disagree, the case gets more checks or is reported as unresolved; it never
+  waits for a person.
 - **The allocator decides where to spend; the lead decides what to write.** The lead writes new families only where
   the allocator asks for evidence the existing families cannot give.
 - **Each agent is itself measured.** The share of a writer's cases that pass the checks, a critic's agreement with
-  planted truth, how many of a proposer's ideas a person keeps: all recorded, all on the bench.
+  planted truth, how many of a proposer's ideas survive the gates: all recorded, all on the bench.
 
 ## What this makes possible beyond an enterprise audit
 

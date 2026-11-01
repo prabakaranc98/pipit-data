@@ -38,7 +38,7 @@ Python library, study files, a command line, a viewer, and access over MCP.
 - **The item loop, in seconds:** write a case, check it by code, let a model answer, grade the answer by code, write
   a ledger row. Everything here is code except the writing and the answering.
 - **The study loop, in hours:** allocate the budget, measure, then stop or confirm on fresh cases, then report.
-  Statistics decide where the next cases go and when to stop; a person opens and closes confirmation.
+  Statistics decide where the next cases go and when to stop; confirmation opens and closes by the rules registered for it.
 - **The improvement loop, in days:** change one skill or prompt, run the frozen bench, keep the change or discard it.
   The bench's judge is planted truth, which no agent can edit.
 

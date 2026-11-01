@@ -49,7 +49,7 @@ programme's own operating rules weight at about 5% of the effort.
 | Lead | a large model, named in a manifest | drafts and expands the tree, chooses the mode and the next batch, writes proposals, asks for budget | scores a case; sees Confirm results before the run closes; writes the record except through tools |
 | Specialists | sub-agents of the lead, each with its own context | tree designer, case writer, critic, analyst | see each other's drafts unless the lead passes them on |
 | Workers | small decision models: Jev, local deciders such as d3-mini | typed checks at volume: does the fact survive the rewrite, does it read like a real message, which hypothesis a failure belongs to, near-duplicates | filter the cases of a study in which they are also a subject |
-| Council | three models from different families | review expected answers and findings before they count | decide alone: when they disagree, a person decides |
+| Council | three models from different families | review expected answers and findings before they count | decide alone: when they disagree, the case gets more checks or is reported as unresolved |
 | Lab models | as today: paraphraser, validator | rewrite and check cases | judge themselves |
 | Subjects | candidate and reference | answer | see the record or the tree |
 | Person | the study owner | signs the pre-registration, reads flags, keeps or drops proposals, opens and closes Confirm | |
@@ -66,7 +66,7 @@ The team does not build the whole dataset and then evaluate. It moves between mo
 | Ground | learn the business's world | read its policies, products, ticket samples and ontology through MCP | a one-page context brief exists | person |
 | Explore | find where failures might be | small batches across many families: write, check, run, update the tree, repeat | the explore budget is spent, or every hypothesis has a first signal | logged |
 | Focus | measure the promising cells | spend budget where evidence is thin and stakes are high (M2's allocator) | the stopping rule (#25) says the evidence is sufficient | logged |
-| Confirm | certify | fresh cases on a protected split, frozen before the run; agents see no results until it closes | the fixed size is reached | person opens and closes |
+| Confirm | certify | fresh cases on a protected split, frozen before the run; agents see no results until it closes | the fixed size is reached | opened and closed by its registered rules |
 | Explain | find out why | counterfactual pairs, ablations, composition rules, fix tests | a mechanism claim, or "unknown" | person |
 | Watch | keep it true | canary re-runs on a schedule (#23) | a drift alarm, which reopens Confirm | logged |
 

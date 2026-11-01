@@ -15,7 +15,8 @@ it adds, the literature), `docs/programme.md` (the studies), `docs/agentic.md` (
 ![Pipit's design on one page](public/assets/overview.svg)
 
 **How the engine reasons and what it has found:** `docs/engine.md`. **The plan by module, with who does what and the
-releases to 0.1.0:** `docs/plan.md`. **Pipit beside the field:** `docs/landscape.md`. **How to contribute:** `CONTRIBUTING.md`.
+releases to 0.1.0:** `docs/plan.md`. **Pipit beside the field:** `docs/landscape.md`. **The problems every release is measured against, with a reading list:** `docs/suite.md`.
+**How to contribute, and the release gate:** `CONTRIBUTING.md`.
 
 ## The discipline
 
@@ -37,7 +38,8 @@ Both are reached through the same contract: a subject is a callable from a case 
 
 ## Releases
 
-Each release answers one question, and its issues sit in a GitHub milestone of the same name. The plan is in
+Each release answers one question. From 0.0.4 on, its issues sit in a GitHub milestone of the same name; 0.0.3's sit
+in the closed milestones M1 and M3. The plan is in
 `docs/plan.md`.
 
 | Release | Question |
@@ -65,52 +67,52 @@ set, the runs and the report. The first is `studies/p1_clinical/`: ten case fami
 4B decider as candidate, Jev as reference, two lab models for construction. P3's pilot, `studies/p3_support_crisis/`, tests
 crisis triage in a messy support queue on 24 hand-written cases (`pilot.py report` rebuilds its report).
 
-    uv sync --extra local --extra typesafe            # adapters' libraries; the core needs none of them
-    uv run python studies/p1_clinical/build_cases.py  # reproduces the case set from the cache at no cost
+    uv sync --all-extras                              # every adapter's library; a plain `uv sync` removes them
+    uv run python studies/p1_clinical/build_cases.py  # rebuilds the case set; free only with the local cache
     uv run python studies/p1_clinical/run.py models/pplx_flash.yaml --role candidate
     uv run python studies/p1_clinical/run.py models/jev.yaml --role reference
-    uv sync --extra mlx                                 # Apple silicon: MLX serves LLMs locally
     uv run python studies/p1_clinical/run.py models/qwen35_4b.yaml --role candidate   # Qwen3.5-4B, instruct mode
     uv run python studies/p1_clinical/run.py models/qwen35_4b_thinking.yaml --questions decision --workers 2   # thinking mode
     uv run python studies/p1_clinical/analyse.py      # report.md
-    uv run python studies/p1_clinical/propose.py      # proposals.md, for human review
+    uv run python studies/p1_clinical/propose.py      # proposals.md: changes for the next round
 
 Models are registered by YAML manifest (identifier, revision, adapter, placement, device, dtype, the name of the
 environment variable that holds the key) and resolved through an adapter at the edge; see `docs/design.md`.
 
 ## Where things stand (2026-11-01)
 
-Five industries by five uses. A row opens only when the one before it is done; shared machinery, the judges (J1) and
-the bench (B1), counts through the cells it serves.
+Five industries by five uses. Rows open one at a time, clinical first and finance next; P3, an earlier pilot, sits in
+the human-centred row. Shared machinery, the judges (J1) and the bench (B1), counts through the cells it serves.
 
 | | Data for post-training | Evaluation | Auditing | Alignment, interpretability, safety | Reliability and routing |
 | --- | --- | --- | --- | --- | --- |
 | **Clinical and biomedical** | planned (0.0.11) | P1, V1 | X1 | I1 | P1's certificate; 0.0.8 |
-| Legal | | | | | |
 | Finance and banking | | | | | |
+| Legal | | | | | |
 | Data and AI work | | | | | |
 | Human-centred AI | | | | P3 | |
 
 | Study | Question | Result so far | Report |
 | --- | --- | --- | --- |
 | P1, clinical decisions | Where does a 4B decision model's clinical safety decision break? | Both deciders fail weight-based dose checks. Counted once per case (#39), Jev could act alone on 60% of cases at no more than 5 silent errors per 100. Qwen3.5-4B in thinking mode made 5 mistakes in 30 against 8 in instruct mode, not distinguishable (p = 0.51), for 5.8 hours of compute. | `studies/p1_clinical/report.md` |
-| P3, support triage pilot | Does the router catch the emergency in a messy queue? | Both models sent a self-harm message inside a payment complaint to billing. | `studies/p3_support_crisis/pilot_report.md` |
+| P3, support triage pilot | Does the router catch the emergency in a messy queue? | Both models sent a self-harm message inside a payment complaint to the vulnerable-customer team instead of the emergency team; neither missed a crisis outright (0 of 17). | `studies/p3_support_crisis/pilot_report.md` |
 | J1, judges | Can a judge tell a right clinical decision from a wrong one? | DeepSeek V4.1 Flash is the best default of four. A note in the reply made V4 Pro pass 14 of 20 unsafe proposals. Jev failed as an injection guard; Nemotron 3 Ultra raised the most false alarms. None can be certified on 20 unsafe items. | `studies/j1_judges/report.md` |
 | X1, beside Petri | What does each method find on the same model, on each other's ground? | Petri's clinical audits point at the mechanisms P1 measured but swing between runs, from 10 to 1 on one seed. On sycophancy, Petri's seeds scored 1 to 3 in two runs, while Pipit's pressure test flipped 18 of 39 right decisions (p = 0.0015). Twelve audits cost $3.66. | `studies/x1_petri/report.md` |
-| B1, the bench | Does adaptive spending beat an even spread? | On a confidence sequence, which keeps early stopping honest, sampling nearest to a verdict settled 4 to 44 times as many questions as an even spread at 240 units, but under twice as many at 60, where it settled fewer than an even spread on ordinary intervals. A false claim appeared in at most 1.3% of runs; on ordinary intervals, in up to a quarter. | `studies/b1_bench/report.md` |
-| I1, interpretability | Does Qwen hold the planted fact when its decision ignores it? | Yes: a probe reads the fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18. On doses the decision barely moves between safe and unsafe. | `studies/i1_interp/report.md` |
-| V1, beside MedCalc-Bench | Do Pipit's written cases rank models the way a real-note benchmark does? | Not overall: across 12 models, Spearman 0.21 (p = 0.25). Where both measure calculation, yes: 0.61 (p = 0.020). Token caps, an answer key with 19 corrected calculators, and models served by up to 18 providers all shape the scores. It cost $6.90. | `studies/v1_medcalc/report.md` |
+| B1, the bench | Does adaptive spending beat an even spread? | On a confidence sequence, which keeps early stopping honest, sampling nearest to a verdict settled 4 to 44 times as many questions as an even spread on the same sequence at 240 units, but under twice as many at 60, where it settled fewer than an even spread on ordinary intervals. A false claim appeared in at most 1.3% of runs; on ordinary intervals, in up to a quarter. | `studies/b1_bench/report.md` |
+| I1, interpretability | Does Qwen hold the planted fact when its decision ignores it? | Yes: a probe reads the fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18. On doses the decision barely moves between safe and unsafe, as it also barely moves in two other families. | `studies/i1_interp/report.md` |
+| V1, beside MedCalc-Bench | Do Pipit's written cases rank models the way a real-note benchmark does? | Not overall: across 12 models, Spearman 0.21 (p = 0.25). Where both measure calculation, yes: 0.61 (p = 0.020). Token caps, an answer key that an audit found errors in, and models served by up to 18 providers all shape the scores. It cost $6.90. | `studies/v1_medcalc/report.md` |
 
-Released on 2026-11-01: 0.0.3 (#39, #56, #58, #59, #60, #61, #63, #64) and 0.0.4 (V1's results, #65, and the
-checks before a run, #66). Next: 0.0.5, can a report drift from its data?
+Released on 2026-11-01: 0.0.3 (every pull request merged that day up to #64) and 0.0.4 (#65, V1's results, and #67,
+the checks before a run). In review: the quality pass (#68). Next: the rest of 0.0.5, can a report drift from its
+data?
 
 ## How work moves
 
-issue → branch → pull request → CI → review → merge → release
+issue → branch → pull request → CI → independent review → merge → release gate → tag
 
 - Every change starts as an issue under a milestone and ends as one small pull request that references it. Nothing is pushed to `main`.
 - A change to behaviour ships with a test. CI runs lint and tests on every pull request. Nothing merges red.
-- Docs change in the same pull request as the code they describe. Branch names: `m<N>/<topic>`.
+- Docs change in the same pull request as the code they describe. Branch names: `<release>/<topic>`, such as `0.0.5/quality-pass`.
 - Names, code, studies, reports and data follow `CONTRIBUTING.md`.
 
 ## Versioning
@@ -127,6 +129,6 @@ Three things carry versions, separately.
 
 ## Run
 
-    uv sync
+    uv sync --all-extras
     uv run ruff check . && uv run ruff format --check .
     uv run pytest
