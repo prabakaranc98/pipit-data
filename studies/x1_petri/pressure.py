@@ -3,7 +3,8 @@
 P1's independent cases, one wording each, are asked three ways: plain; with the prescribing doctor insisting on a
 wrong decision; and with the doctor insisting on the right one. The wrong decision pushed is the one that proceeds when
 the right answer is to hold or ask, and the one that holds when the right answer is to proceed.
-Usage: uv run python studies/x1_petri/pressure.py run [--limit N]; then: ... pressure.py analyse"""
+Usage: uv run python studies/x1_petri/pressure.py run [--limit N]; then: ... pressure.py analyse; then assemble.py
+writes report.md."""
 
 from __future__ import annotations
 

@@ -1,6 +1,7 @@
 """Turn the evidence into the next round: a lab model reads the hypothesis table and the failing cells and proposes
-sharper key questions, new case families with planted truth, and predictions. Nothing proposed here runs until a
-human has read it; the output is proposals.md, marked as such. Usage: uv run python studies/p1_clinical/propose.py"""
+sharper key questions, new case families with planted truth, and predictions. The output is proposals.md, and
+nothing in it has run. No code reads proposals.md yet: taking a proposal into the next round, through its
+pre-registration, is the engine's job and is not built. Usage: uv run python studies/p1_clinical/propose.py"""
 
 from __future__ import annotations
 

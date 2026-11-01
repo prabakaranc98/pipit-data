@@ -20,7 +20,7 @@ Qwen3.5-4B in instruct mode, P1's revision, on this Mac. Setup, measures and the
 | The truth | planted and computed by code | the judge's reading of the transcript |
 | Rerun | the same fixed cases give the same counts | the auditor improvises: the thin-record seed scored 10, then 1 |
 | Elicitation | single-turn typed decisions | multi-turn, synthetic tools, a realism check; realism scored 7 to 9 in the clinical audits and 6 to 10 in the sycophancy audits |
-| Cost on this model | P1's helpers $0.014; the pressure test $0 and about two minutes on this Mac | $3.66 for twelve audits over two runs, 12 and 22 minutes per arm |
+| Cost on this model | $0.014 of helper calls to build P1's cases (the paraphraser and the validator); the pressure test $0 and about two minutes on this Mac | $3.66 for twelve audits over two runs, 12 and 22 minutes per arm |
 | The judge | none needed | DeepSeek V4 Pro, which study J1 showed passes 14 of 20 unsafe proposals when told to |
 
 ## What this shows

@@ -3,6 +3,7 @@ Usage: python studies/v1_medcalc/analyse.py"""
 
 from __future__ import annotations
 
+import datetime
 import itertools
 import json
 import random
@@ -15,11 +16,9 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "p1_clinical"))
 import study as p1  # noqa: E402
 
-from pipit import preflight  # noqa: E402
 from pipit.checks import wilson  # noqa: E402
 from pipit.evidence import unit_share  # noqa: E402
 from pipit.ledger import Ledger  # noqa: E402
-from pipit.manifest import load_manifest  # noqa: E402
 
 RUNS = HERE / "runs"
 CATEGORIES = ["lab test", "physical", "dosage", "date", "risk", "severity", "diagnosis"]
@@ -109,6 +108,26 @@ def capped(ledger: list[dict], name: str, arm: str, key: str) -> set:
         if r.get("subject") == name and r.get("arm") == arm and not r.get("cached"):
             last[r.get(key)] = r.get("finish_reason")
     return {k for k, v in last.items() if v == "length"}
+
+
+def pinned_calls(ledger: list[dict], names: list[str]) -> dict[str, tuple[int, int]]:
+    """For each model, its calls made by a run that pinned it to one provider, and all its calls. A call is
+    credited to the last run in runs/run_log.jsonl that started before it; a call older than the log came from
+    V1's first runs, which pinned none. Today's manifests are not read: they say what a run would do now, not
+    what the runs did."""
+    path = RUNS / "run_log.jsonl"
+    runs = [json.loads(x) for x in path.read_text().splitlines() if x.strip()] if path.exists() else []
+    starts = [(datetime.datetime.fromisoformat(r["started"]).timestamp(), set(r["pinned"])) for r in runs]
+
+    def pinned_by(t: float) -> set[str]:
+        before = [models for start, models in starts if start <= t]
+        return before[-1] if before else set()
+
+    counts = {}
+    for name in names:
+        calls = [r["t"] for r in ledger if r.get("subject") == name and not r.get("cached")]
+        counts[name] = (sum(name in pinned_by(t) for t in calls), len(calls))
+    return counts
 
 
 def main() -> None:
@@ -202,12 +221,20 @@ def main() -> None:
             f"| {name} | {share(*t['medcalc'])} | {share(*t['medcalc_unaudited'])} | {share(*t['medcalc_audited'])} |"
         )
     L.append("\n## Providers that served each model\n")
-    pinned = [n for n in names if preflight.pinned(load_manifest(HERE / "models" / f"{n}.yaml"))]
-    which = "no model was pinned" if not pinned else f"{len(pinned)} of {len(names)} models were pinned"
-    L.append(
-        f"OpenRouter routed each call to a provider of its choosing; {which}. A model's score mixes "
-        "every provider that served it.\n"
-    )
+    pinned = pinned_calls(ledger, names)
+    if not any(k for k, _ in pinned.values()):
+        L.append(
+            "OpenRouter routed each call to a provider of its choosing; no model was pinned. A model's score "
+            "mixes every provider that served it.\n"
+        )
+    elif all(k == n for k, n in pinned.values()):
+        L.append("Every call was pinned to one provider; the table shows how many served each model.\n")
+    else:
+        some = ", ".join(f"{name} {k} of {n}" for name, (k, n) in pinned.items() if k)
+        L.append(
+            f"Some calls were pinned to one provider: {some}. OpenRouter routed every other call to a provider "
+            "of its choosing, so a score mixes every provider that served its model.\n"
+        )
     L.append("| model | providers | the one that served the most calls |")
     L.append("|---|---|---|")
     for name in names:

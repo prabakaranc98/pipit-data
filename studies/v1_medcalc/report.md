@@ -128,8 +128,8 @@ cap. Not registered, and decided after seeing the results: with cut-off and fail
 the correlation is 0.47 (p = 0.064). Providers did not apply the caps alike; one reply used 12,210 tokens against a
 cap of 4,096.
 
-**The reproduction holds overall.** Llama 3.1 70B scores 39% against the paper's 36% for Llama 3 70B, on a different
-model and data version. Categories with 8 to 16 items do not reproduce.
+**The overall score is near the paper's, for a different model.** Llama 3.1 70B scores 39% against the paper's 36% for
+Llama 3 70B, and the data version differs too. Categories with 8 to 16 items do not reproduce.
 
 **The answer key matters.** Every model scores lower on the 19 calculators whose code Krohn-Grimberghe (2026)
 corrected, by 8 to 38 points. Wrong answers in the key and harder calculators cannot be told apart here.
