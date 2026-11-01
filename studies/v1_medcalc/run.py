@@ -10,6 +10,8 @@ key refuses a call, no further calls are sent and the run stops."""
 from __future__ import annotations
 
 import argparse
+import datetime
+import json
 import re
 import sys
 import threading
@@ -93,7 +95,21 @@ def main() -> None:
     budget = openrouter.budget_left() if cost and any(m.placement == "api" for m in manifests) else None
     preflight.require(manifests, allow_unpinned=args.allow_unpinned, cost=cost, budget=budget)
     left = "" if budget is None else f", with ${budget:.2f} left on the key"
-    print(f"Checks passed. This run may cost up to ${cost:.2f}{left}; cached replies cost nothing.")
+    print(f"Checks passed. This run is estimated at ${cost:.2f}{left}; cached replies cost nothing.")
+    with (RUNS / "run_log.jsonl").open("a") as log:  # what each run was allowed to do, for the report
+        log.write(
+            json.dumps(
+                {
+                    "started": datetime.datetime.now(datetime.UTC).isoformat(timespec="seconds"),
+                    "models": [m.name for m in manifests],
+                    "allow_unpinned": args.allow_unpinned,
+                    "pinned": [m.name for m in manifests if preflight.pinned(m)],
+                    "estimated_usd": round(cost, 4),
+                    "budget_left": budget,
+                }
+            )
+            + "\n"
+        )
     stop = threading.Event()
 
     for m in manifests:

@@ -4,13 +4,20 @@ from pipit.manifest import Manifest
 from pipit.preflight import PreflightError, estimated_usd, pinned, problems, require
 
 
-def _model(name="m", placement="api", family="vendor", provider=None, prices=(1.0, 2.0)):
+def _model(
+    name="m",
+    placement="api",
+    family="vendor",
+    provider=None,
+    prices=(1.0, 2.0),
+    adapter="pipit.adapters.openrouter:load",
+):
     settings = {"request": {"provider": provider}} if provider is not None else {}
     return Manifest(
         name=name,
         id=f"vendor/{name}",
         revision="as-served",
-        adapter="a:b",
+        adapter=adapter,
         placement=placement,
         family=family,
         price_usd_per_million_in=prices[0],
@@ -49,3 +56,11 @@ def test_the_cost_bound_and_the_budget() -> None:
         require([_model(provider=PIN)], cost=2.0, budget=1.0)
     with pytest.raises(PreflightError, match="not pinned"):
         require([_model()])
+
+
+def test_pinning_means_one_provider_and_applies_only_where_the_provider_varies() -> None:
+    assert not pinned(_model(provider={"order": ["A", "B"], "allow_fallbacks": False}))
+    jev = _model("jev", adapter="pipit.adapters.typesafe:load", prices=(None, None))
+    assert problems([jev]) == []  # a vendor's own API serves every call itself
+    unpriced = _model(provider=PIN, prices=(None, None))
+    assert [p.rule for p in problems([unpriced])] == ["price"]

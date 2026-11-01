@@ -7,8 +7,9 @@ typed question is asked on its own as a multiple-choice prompt, in one of two mo
   log-probabilities, renormalised over the option letters, and the share on the letters is recorded.
 - **after_reasoning** (thinking mode): the model reasons within a token budget at the sampling settings its
   card recommends; the answer is read after the reasoning. A reasoned answer is always certain, so each
-  question is sampled several times in parallel and the option probabilities are the shares of the votes. A
-  split vote has no majority and gives no answer.
+  question is sampled several times in parallel. Each option's probability is its share of all samples,
+  so a sample cut off at the token budget counts against confidence. The answer is the most common one; an
+  exact tie gives no answer.
 
 With `settings.launch`, the adapter starts a local server for the manifest and stops it at exit.
 """
@@ -85,11 +86,15 @@ def reasoned_letter(
 ) -> str | None:
     """The option a reasoning model chose: the first standalone option letter of its final answer. Servers
     that split the reasoning out (MLX, and vLLM or SGLang with a reasoning parser) return the answer alone;
-    otherwise the text after the end-of-reasoning marker is read."""
+    otherwise the text after the end-of-reasoning marker is read. Reasoning that opens and never closes
+    was cut off, so it gives no answer. A capital letter used as a word, such as the article "A", can still
+    be misread."""
     first = (response.get("choices") or [{}])[0]
     text = (first.get("message") or {}).get("content") or ""
     if reasoning_end and reasoning_end in text:
         text = text.split(reasoning_end)[-1]
+    elif reasoning_end.startswith("</") and reasoning_end.replace("/", "", 1) in text:
+        return None
     allowed = LETTERS[: len(names)]
     for match in re.finditer(r"(?<![A-Za-z])([A-Z])(?![A-Za-z])", text):
         if match.group(1) in allowed:
@@ -329,7 +334,7 @@ class LLMSubject:
             options = list(pool.map(one, range(self.samples)))
         votes = Counter(o for o in options if o is not None)
         answered = sum(votes.values())
-        probs = {n: votes.get(n, 0) / answered for n in names} if answered else None
+        probs = {n: votes.get(n, 0) / self.samples for n in names} if answered else None
         top = max(probs.values()) if probs else None
         tie = probs is not None and sum(v == top for v in probs.values()) > 1
         detail = {

@@ -156,8 +156,9 @@ def test_thinking_mode_votes_across_samples_in_parallel(tmp_path) -> None:
     ctx = Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path)
     subject = LLMSubject(m, ctx, transport=transport)
     out = subject("state", {"team": CHOICE}, meta={"case_id": "c1", "subject": "llm"})["team"]
-    assert out["choice"] == "sales" and out["answered"] == 4 and out["agreement"] == 0.75 and not out["tie"]
-    assert out["probabilities"] == {"billing": 0.25, "support": 0.0, "sales": 0.75}
+    # Five samples, four answered: confidence is a share of all five, so the silent one counts against it.
+    assert out["choice"] == "sales" and out["answered"] == 4 and out["agreement"] == 0.6 and not out["tie"]
+    assert out["probabilities"] == {"billing": 0.2, "support": 0.0, "sales": 0.6}
     assert len(sent) == 5 and subject.answered_by().endswith("thinking, 5 samples")
     again = subject("state", {"team": CHOICE})["team"]
     assert again["probabilities"] == out["probabilities"] and len(sent) == 5
@@ -181,3 +182,12 @@ def test_thinking_mode_split_vote_gives_no_answer(tmp_path) -> None:
     )
     out = subject("state", {"team": CHOICE})["team"]
     assert out["tie"] and out["choice"] is None and out["agreement"] == 0.5
+
+
+def test_reasoning_cut_off_before_its_end_gives_no_answer() -> None:
+    from pipit.adapters.openai_compat import reasoned_letter
+
+    cut = {"choices": [{"message": {"content": "<think>Weighing A against C, the dose"}}]}
+    assert reasoned_letter(cut, ["proceed", "hold", "ask"]) is None
+    whole = {"choices": [{"message": {"content": "<think>Weighing A against C</think>\nC"}}]}
+    assert reasoned_letter(whole, ["proceed", "hold", "ask"]) == "ask"

@@ -2,9 +2,9 @@
 requested, and the provider that served the call, which varies per call and is recorded. Empty content counts
 as a failure: reasoning models return it when the token budget is spent on reasoning, and it is never cached.
 
-A refused key stops at once: retrying cannot raise a spending limit. Each call has a total time limit,
-`settings.deadline_s` in the manifest (600 seconds unless set), because OpenRouter keeps a slow connection
-alive with padding and the socket's own timeout never fires."""
+A refused key stops at once: retrying cannot raise a spending limit or fix a wrong key. Each call has one
+time limit across all its attempts, `settings.deadline_s` in the manifest (600 seconds unless set), because
+OpenRouter keeps a slow connection alive with padding and the socket's own timeout never fires."""
 
 from __future__ import annotations
 
@@ -78,8 +78,8 @@ class OpenRouterChat:
     def __init__(self, manifest: Manifest, context: Context, transport: Transport | None = None):
         self.manifest = manifest
         self.context = context
-        deadline_s = float(manifest.settings.get("deadline_s", 600))
-        self.transport = transport or (lambda body, headers: _urllib_transport(body, headers, deadline_s))
+        self.deadline_s = float(manifest.settings.get("deadline_s", 600))
+        self._transport = transport
         self.cache = JsonlCache(context.cache_dir / f"{manifest.name}.jsonl")
         self.calls = 0
         self._key: str | None = None
@@ -88,6 +88,11 @@ class OpenRouterChat:
         if self._key is None:
             self._key = require_key(self.manifest.key_env or "OPENROUTER_API_KEY")
         return {"Authorization": f"Bearer {self._key}"}
+
+    def _send(self, body: dict[str, Any], seconds_left: float) -> dict[str, Any]:
+        if self._transport is not None:
+            return self._transport(body, self._headers())
+        return _urllib_transport(body, self._headers(), seconds_left)
 
     @staticmethod
     def _content(response: dict[str, Any]) -> str:
@@ -145,8 +150,11 @@ class OpenRouterChat:
         t0 = time.perf_counter()
         for attempt in range(retries):
             attempts = attempt + 1
+            left = self.deadline_s - (time.perf_counter() - t0)
+            if left <= 0:
+                raise TooSlow(f"{self.manifest.id}: no complete reply within {self.deadline_s:.0f} s")
             try:
-                response = self.transport(body, self._headers())
+                response = self._send(body, left)
                 if "error" in response:
                     raise urllib.error.HTTPError(
                         URL, int(response["error"].get("code", 500)), str(response["error"]), {}, None
@@ -159,22 +167,22 @@ class OpenRouterChat:
                 if attempt == retries - 1:
                     raise
             except urllib.error.HTTPError as e:
-                if e.code in (402, 403):
+                if e.code in (401, 402, 403):
+                    why = "the key was rejected" if e.code == 401 else "its spending limit may be reached"
                     raise KeyRefused(
-                        f"{self.manifest.id}: the API refused the key (HTTP {e.code}); "
-                        "its spending limit may be reached"
+                        f"{self.manifest.id}: the API refused the key (HTTP {e.code}); {why}"
                     ) from e
                 if attempt == retries - 1:
                     raise
-                time.sleep(delay)
+                time.sleep(min(delay, max(0.0, self.deadline_s - (time.perf_counter() - t0))))
                 delay *= 2
             except TooSlow:
-                if attempt >= 1:  # one more try: a provider that hangs once may answer the next time
+                if attempt == retries - 1:  # tried again only while the call's time lasts
                     raise
             except (urllib.error.URLError, TimeoutError):
                 if attempt == retries - 1:
                     raise
-                time.sleep(delay)
+                time.sleep(min(delay, max(0.0, self.deadline_s - (time.perf_counter() - t0))))
                 delay *= 2
         assert response is not None
         seconds = time.perf_counter() - t0

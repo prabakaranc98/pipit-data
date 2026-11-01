@@ -3,6 +3,7 @@ id: perplexity-ai/pplx-decider-flash-v1.2
 revision: 9ff7cf9838e59df461c276b7699d56b244d2af58
 adapter: pipit.adapters.pplx:load
 placement: local
+family: qwen
 device: mps
 dtype: bf16
 settings:

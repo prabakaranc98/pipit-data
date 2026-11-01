@@ -7,7 +7,8 @@ and what a right answer looks like before anything runs. You build test cases wh
 so no judge is needed to score them. The model under test answers; every call is saved and priced. The result is
 a count of wrong answers with a range for how sure you can be, sorted by how bad each mistake is, and a plain
 statement of what is still unknown. Strong evidence becomes a finding and opens a deeper study. Weak evidence
-sends helper models to propose what to try next, and a person decides. The rest of this note is the detail.
+sends helper models to propose what to try next, and a proposal enters the next round only through its
+pre-registration. The rest of this note is the detail.
 
 Pipit turns a question about a model into a budgeted experiment and an accounted claim. This note describes the
 instrument as built for the first real study (P1, `studies/p1_clinical/`), the loop it runs, the references it
@@ -55,7 +56,7 @@ one engine scales from one question to a programme without a new pipeline per us
 | 9 Evidence | cells per (family, condition), verdicts, bottom-up roll-up with budget, reading versus deciding, wording invariance, cases-to-evidence, paired tests between subjects, and the reliance certificate: how much the model can handle alone at a stated silent-error rate | `pipit.evidence`, `pipit.calibration`, `analyse.py` |
 | 10 Adjudication | a person reads every validator flag; primary and adjudicated analyses are both reported | `adjudication.yaml` |
 | 11 Report | one document with sets, tree, cells, agreement, ledger | `report.md` |
-| 12 Proposals | a lab model proposes sharper questions, families and predictions; a person decides what enters round two | `propose.py`, `proposals.md` |
+| 12 Proposals | a lab model proposes sharper questions, families and predictions; a proposal enters round two only through its pre-registration | `propose.py`, `proposals.md` |
 
 ## The instrument
 

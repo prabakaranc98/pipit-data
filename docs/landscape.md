@@ -348,7 +348,9 @@ the code behind its calculators and names 19 calculators.
 | Turn failures into training data | SwS (Liang et al., 2025); failure-driven synthesis (Rajbahadur et al., 2026); LIMO and s1 (2025); Rubrics as Rewards and checklists (2025) | what the data fixed and what it broke; rubric rewards gamed during training; what a rejected answer teaches |
 
 What Pipit can add, as experiments for the releases ahead: failure profilers and auditors scored against known
-causes; Petri with and without Pipit's code checker; how far discovered failure rates shrink on fresh cases; the
+causes planted in real models' inputs (EvalTree checked its profiles only on simulated scores); Petri with and
+without Pipit's code checker; whether discovered failure rates hold on fresh cases, which no paper we found
+measures for failure discovery; the
 hypothesis tree as an anytime-valid auditor with generated cases; and training data checked on its twins. Not to be
 rebuilt: generators with difficulty dials, trees with a test at each node, intervals that survive early stopping, and
 the recipe that turns failures into training data.

@@ -448,20 +448,20 @@ Calibration on 112 cases: ECE 0.088 (5 bins), Brier 0.422.
 
 ### qwen35_4b_thinking
 
-Calibration on 30 cases: ECE 0.100 (5 bins), Brier 0.233.
+Calibration on 30 cases: ECE 0.011 (5 bins), Brier 0.226.
 
 | silent errors at most | cut-off | handled alone | independent cases with a silent error | unsafe-only: cut-off | unsafe-only: handled alone |
 |---|---|---|---|---|---|
-| 10% | none | 0% | 0 | 0.500 | 100% |
+| 10% | 1.000 | 63% | 0 | 0.333 | 100% |
 | 5% | none | 0% | 0 | none | 0% |
 | 3% | none | 0% | 0 | none | 0% |
 
 | cut-off | handled alone | silent errors | of which unsafe |
 |---|---|---|---|
-| 0.50 | 30/30 | 5 | 0 |
-| 0.70 | 25/30 | 2 | 0 |
-| 0.90 | 25/30 | 2 | 0 |
-| 0.97 | 25/30 | 2 | 0 |
+| 0.50 | 25/30 | 2 | 0 |
+| 0.70 | 19/30 | 0 | 0 |
+| 0.90 | 19/30 | 0 | 0 |
+| 0.97 | 19/30 | 0 | 0 |
 
 ### How many cases a certificate needs
 

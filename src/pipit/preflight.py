@@ -5,8 +5,9 @@ providers belongs to no single deployment; a helper of the candidate's own famil
 reads well; a key that runs out halfway records refusals as failures. Study V1 met all three.
 
     >>> from pipit.manifest import Manifest
-    >>> m = Manifest(name="judge", id="vendor/model", revision="as-served", adapter="a:b", placement="api",
-    ...              family="vendor")
+    >>> m = Manifest(name="judge", id="vendor/model", revision="as-served", placement="api", family="vendor",
+    ...              adapter="pipit.adapters.openrouter:load", price_usd_per_million_in=1.0,
+    ...              price_usd_per_million_out=2.0)
     >>> [p.rule for p in problems([m])]
     ['provider']
 """
@@ -18,7 +19,7 @@ from dataclasses import dataclass
 
 from pipit.manifest import Manifest, family_conflicts
 
-__all__ = ["PreflightError", "Problem", "estimated_usd", "pinned", "problems", "require"]
+__all__ = ["PreflightError", "Problem", "estimated_usd", "pinned", "problems", "provider_varies", "require"]
 
 
 @dataclass(frozen=True)
@@ -32,23 +33,32 @@ class PreflightError(RuntimeError):
     """A run was stopped before its first call because a check failed."""
 
 
+def provider_varies(manifest: Manifest) -> bool:
+    """Whether the service behind the adapter picks a provider for each call. Today that is OpenRouter; a
+    vendor's own API, such as TypeSafe's, serves every call itself, so it has nothing to pin."""
+    return manifest.adapter.startswith("pipit.adapters.openrouter")
+
+
 def pinned(manifest: Manifest) -> bool:
-    """Whether an API model's requests name the providers to use, in order, and forbid falling back to others.
+    """Whether an API model's requests name exactly one provider and forbid falling back to any other.
 
     >>> pinned(Manifest(name="m", id="v/m", revision="r", adapter="a:b", placement="api",
     ...                 settings={"request": {"provider": {"order": ["Alibaba"], "allow_fallbacks": False}}}))
     True
+    >>> pinned(Manifest(name="m", id="v/m", revision="r", adapter="a:b", placement="api",
+    ...                 settings={"request": {"provider": {"order": ["A", "B"], "allow_fallbacks": False}}}))
+    False
     """
     provider = manifest.settings.get("request", {}).get("provider", {})
-    return bool(provider.get("order")) and provider.get("allow_fallbacks") is False
+    return len(provider.get("order") or []) == 1 and provider.get("allow_fallbacks") is False
 
 
 def problems(
     candidates: Iterable[Manifest], helpers: Iterable[Manifest] = (), *, allow_unpinned: bool = False
 ) -> list[Problem]:
-    """Every rule the models of a run break: a family not declared, an API model not pinned to a provider
-    (unless `allow_unpinned`, which a report must then state), and a helper or judge sharing a candidate's
-    family."""
+    """Every rule the models of a run break: a family not declared; a model whose provider varies per call
+    that is not pinned to one (unless `allow_unpinned`, which the run must record) or has no prices to
+    estimate its cost; and a helper or judge sharing a candidate's family."""
     candidates, helpers = list(candidates), list(helpers)
     found = []
     for m in candidates + helpers:
@@ -56,12 +66,18 @@ def problems(
             found.append(
                 Problem(m.name, "family", "no family declared, so the family rule cannot be checked")
             )
-        if m.placement == "api" and not allow_unpinned and not pinned(m):
+        if (
+            m.placement == "api"
+            and provider_varies(m)
+            and (m.price_usd_per_million_in is None or m.price_usd_per_million_out is None)
+        ):
+            found.append(Problem(m.name, "price", "no prices, so the cost of the run cannot be estimated"))
+        if m.placement == "api" and provider_varies(m) and not allow_unpinned and not pinned(m):
             found.append(
                 Problem(
                     m.name,
                     "provider",
-                    "not pinned: set settings.request.provider.order and allow_fallbacks: false",
+                    "not pinned: set settings.request.provider.order to one provider, allow_fallbacks: false",
                 )
             )
     for helper, candidate, family in family_conflicts(candidates, helpers):
@@ -70,9 +86,9 @@ def problems(
 
 
 def estimated_usd(manifest: Manifest, calls: int, tokens_in: int, tokens_out: int) -> float | None:
-    """An upper bound on what `calls` requests cost at the manifest's prices, taking every reply at
-    `tokens_out`; None when the manifest has no prices. Replies already in the cache cost nothing, so the
-    bound is generous.
+    """An estimate of what `calls` requests cost at the manifest's prices, taking every prompt at `tokens_in`
+    and every reply at `tokens_out`; None when the manifest has no prices. It is not a guarantee: prompts can
+    run longer, and some providers let reasoning run past the reply cap. Cached replies cost nothing.
 
     >>> m = Manifest(name="m", id="v/m", revision="r", adapter="a:b", placement="api",
     ...              price_usd_per_million_in=1.0, price_usd_per_million_out=2.0)
@@ -100,6 +116,6 @@ def require(
         for p in problems(candidates, helpers, allow_unpinned=allow_unpinned)
     ]
     if cost is not None and budget is not None and cost > budget:
-        lines.append(f"the run may cost up to ${cost:.2f}, more than the ${budget:.2f} left on the key")
+        lines.append(f"the run is estimated at ${cost:.2f}, more than the ${budget:.2f} left on the key")
     if lines:
         raise PreflightError("Checks before the run failed:\n  " + "\n  ".join(lines))

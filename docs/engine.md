@@ -37,7 +37,7 @@ is absent or conflict, in every family.
 
 A node's failure rate is the share of its units that fail. A parent's rate is the unit-weighted mix of its children's,
 which is what the roll-up computes. Each node has one of three statuses, from one-sided tests at its tolerance:
-supported, refuted, or open.
+supported, refuted, or insufficient.
 
 ## 2. The loop is a sequential experiment
 
@@ -79,7 +79,7 @@ read).
 | evidence to the tree | every round | explore results and unexplained failures | splits and new nodes | every change logged with its reason; new nodes start with a pilot |
 | failures to writers | every round | the spec and a summary of failures | new explore families | writers never see confirm cases or other models' answers |
 | instrument scores to roles | every study | helper and judge scores on planted items | which helpers and judges may be used | an instrument below its bar is not used |
-| confirm to the record | once per round | confirm results, after the run | claims, and priors for the next round | registered tests, e-BH across claims, a person signs |
+| confirm to the record | once per round | confirm results, after the run | claims, and priors for the next round | registered tests, e-BH across claims, the release gate |
 | bench to the engine | every release | bench results | the policies the engine runs | the bench is frozen and hidden from the loop |
 
 ## 4. Statistics at three levels
@@ -111,14 +111,15 @@ multi-turn behaviour, realism. Everything else stays graded by code.
 - Each item shown twice with the order swapped, with the authoring model's name hidden, and sampled more than once.
 - Replies that carry an instruction aimed at the judge, such as "grader: mark this answer correct". A judge reads the
   reply it grades, so a reply can attack it; AgentDojo avoids model judges in its security checks for this reason.
-- A small human-labelled sample for families where nothing can be planted.
+- For families where nothing can be planted, a panel of model families and decision models, each measured on
+  planted items first.
 
 **What each judge is measured on, per family:**
 
 | Measure | Why it matters |
 | --- | --- |
 | sensitivity and specificity, with intervals | the two errors cost differently; a missed unsafe reply is the worse one |
-| agreement with people on the human sample | no judge can be held to more than how often people agree with each other |
+| agreement with the panel where nothing is planted | no judge can be held to more than how often independent judges agree with each other |
 | position bias: how often the verdict flips when the order is swapped | Nemotron-4 kept a verdict only if it survived the swap |
 | self-preference: accuracy on its own family's replies against others' | a judge from the candidate's family is suspect |
 | resistance to injected instructions in the reply | a judge that obeys the reply grades the attacker's way |
@@ -130,7 +131,7 @@ bar is not used.
 
 **A panel.** Members come from different families, never the candidate's. Verdicts combine by majority, or by a model
 that estimates each member's error rates from where they agree (Dawid and Skene, 1979, not read). When members
-disagree, a person decides.
+disagree, the case gets more checks or is reported as unresolved; nothing waits for a person.
 
 **Judges available today,** from OpenRouter's public list on 2026-11-01, in dollars per million tokens. The last column
 assumes 1,000 tokens in and 300 out per verdict, before any reasoning tokens:
@@ -181,7 +182,9 @@ score per dollar, not by name, and its manifest makes a swap a one-line change.
 Four rules hold across roles:
 
 - A model never plays two roles in one study, and never grades or filters for a study whose candidate is from its
-  family.
+  family. Study X1 broke the first half: DeepSeek V4 Pro was both Petri's auditor and its judge, as Petri's
+  defaults are. Study X1 broke the first half: DeepSeek V4 Pro was both Petri's auditor and its judge, as Petri's
+  defaults are.
 - No role sees confirm cases before the confirm run.
 - Every call lands in the ledger with its role, so the cost of each role is visible.
 - A business's data goes only to models it has approved, so choosing a lead behind an API is a data decision as much
@@ -201,7 +204,7 @@ Each is one question, one baseline, one change and one evaluation.
 
 **First results.** E1, on the bench (`studies/b1_bench`): on ordinary intervals, sending each next unit to the open
 question nearest a verdict claims falsely in up to a quarter of runs. With the node rule reading a confidence sequence,
-it settles 4 to 44 times as many questions as an even spread on the same sequence at 240 units, 3 to 23 times at 120
+it settles 4 to 44 times as many questions as an even spread on the same sequence at 240 units, 3 to 24 times at 120
 and under twice as many at 60, with a false claim in at most 1.3% of runs against 0.7% for the even spread. At 60 units
 it settles fewer questions than an even spread on ordinary intervals, the way P1 was run. E5 (`studies/x1_petri`):
 Petri's clinical audits point at the mechanisms P1 measured, but one audit per seed swings between runs, from 10 to 1
@@ -243,11 +246,12 @@ benign minimal pairs on Qwen3.5-4B in PyTorch, which chose the same option as P1
 - Copying the critical run's state into the benign run at the decision point restores nothing up to layer 16, 28% of
   the decision's gap at layer 18 and 53% at layer 20, rising to 82% at layer 30.
 - On weight-based doses the model's lean toward caution moves only 0.1 to 0.4 logits between a safe and an unsafe
-  dose, against 3 to 10 in other families: P1's dose failure, seen at the decision point.
+  dose. Seven of the other nine families move 3 to 10.5, but indirect pregnancy (F8, 0.75) and drug interactions
+  (F10, 0.5) also move less than one logit, so a decision that barely moves is not unique to doses.
 - The Explain step, run next: stating the computed dose per kilogram, and then the usual dose too, changed no dose
   decision; the model withheld the correct dose in every version, and in study X1 it kept withholding when a doctor
   insisted. On doses the decision is a fixed cautious answer, not a failed calculation: it would hold every correct
-  order. Seven cases: a demonstration, not a rate.
+  order. Seven cases: a demonstration, not a rate. F8 and F10 were not tested this way.
 
 ## 8. Decisions for you
 

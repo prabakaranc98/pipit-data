@@ -12,6 +12,7 @@ can pick up only the items that are not done.
 from __future__ import annotations
 
 import json
+import os
 import threading
 from collections.abc import Iterable
 from pathlib import Path
@@ -30,10 +31,16 @@ class Results:
         self._lock = threading.Lock()
         self._rows: dict[Any, dict[str, Any]] = {}
         if self.path.exists():
-            for line in self.path.read_text().splitlines():
-                if line.strip():
+            lines = [x for x in self.path.read_text().splitlines() if x.strip()]
+            for i, line in enumerate(lines):
+                try:
                     row = json.loads(line)
-                    self._rows[row[key]] = row
+                except json.JSONDecodeError:
+                    if i < len(lines) - 1:
+                        raise
+                    self._write(list(self._rows.values()))  # a run stopped mid-row; drop the partial row
+                    break
+                self._rows[row[key]] = row
 
     def get(self, item: Any) -> dict[str, Any] | None:
         """The latest row recorded for an item, or None."""
@@ -51,5 +58,11 @@ class Results:
         """Rewrite the file with one row per item, in `order`, and return those rows."""
         with self._lock:
             rows = [self._rows[k] for k in order if k in self._rows]
-            self.path.write_text("".join(json.dumps(r) + "\n" for r in rows))
+            self._write(rows)
             return rows
+
+    def _write(self, rows: list[dict[str, Any]]) -> None:
+        """Replace the file in one step, so a stop mid-write never leaves it half rewritten."""
+        tmp = self.path.with_name(self.path.name + ".tmp")
+        tmp.write_text("".join(json.dumps(r) + "\n" for r in rows))
+        os.replace(tmp, self.path)

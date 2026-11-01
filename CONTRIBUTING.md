@@ -7,11 +7,34 @@ do, and one way to do each thing. This guide sets the rules. Where the code does
 ## How work moves
 
 - Each step gets an issue when it starts, not before.
-- One branch per issue, named `m<N>/<topic>`. One pull request open at a time, always against `main`.
+- One branch per issue, named `<release>/<topic>`, such as `0.0.5/quality-pass`. One pull request open at a time, always against `main`.
 - CI must pass: lint, format and tests; type checks from 0.0.6.
 - Docs change in the same pull request as the code they describe. Every change goes in `CHANGELOG.md`, renames
   included.
 - Releases are small: 0.0.3, 0.0.4 and so on, each answering one question. The study owner tags them.
+
+## Reviews and releases
+
+**Before a pull request is merged,** an independent review agent checks it for errors. It sees only the diff and
+the claims the pull request makes, never the author's reasoning.
+
+**A release is tagged only when it passes this gate,** not when its pull requests merge:
+
+1. CI passes: lint, format, tests and the docstring examples.
+2. Every study report rebuilds byte-identical from its recorded runs: run the study's script, then `git diff` is
+   empty. I1 also needs its activations file, `runs/hidden_last.npy`, which `extract.py` makes on the local model
+   and git ignores.
+3. Every number in the README, the changelog and the docs is traced to the report it comes from, and matches.
+4. Every capability the release notes claim has been exercised, not only found to exist.
+5. The planted answers behind any claim in the release are checked by a second, independent implementation or
+   against published reference values.
+6. Every pre-registration amendment is dated before the results it touches.
+7. The release notes say what changed in our understanding, which problems in `docs/suite.md` changed status, and
+   the known limits.
+8. Steps 2 to 4 are checked by independent verification agents that see only the repository and the claims. Their
+   reports are kept with the release.
+
+Until 0.0.5 automates steps 2 and 3, the verification agents do them.
 
 ## Names
 
@@ -53,7 +76,7 @@ do, and one way to do each thing. This guide sets the rules. Where the code does
 | case | one input with its planted right answer |
 | family | the cases built from one spec around one mechanism |
 | scenario | one situation within a family: the person, the numbers, the setting |
-| condition | how the deciding fact appears: critical, benign, absent or conflicting |
+| condition | how the deciding fact appears: critical, benign, absent or conflict |
 | wording | one phrasing of a case; the wordings of a case are not independent of each other |
 | independent case | a scenario under one condition, with all its wordings; every count and interval uses this unit |
 | hypothesis | one way a decision can fail, written so that evidence could refute it |
@@ -65,6 +88,6 @@ do, and one way to do each thing. This guide sets the rules. Where the code does
 | explore, confirm | cases used to find and adapt; held-back cases run once to confirm what was found |
 | model | anything that answers, a decision model or an LLM, local or remote, registered in a manifest |
 | role | what a model does in a study: candidate, reference, judge, writer or checker |
-| manifest | the YAML file that registers a model: identifier, revision, engine, provider and family |
+| manifest | the YAML file that registers a model: name, identifier, revision, adapter, placement, family, prices and settings, including any provider pin |
 | ledger | one row per call: who asked what, how long it took and what it cost |
 | cache | stored replies keyed by their request, so a rerun costs nothing |

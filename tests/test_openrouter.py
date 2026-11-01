@@ -120,7 +120,7 @@ def test_a_reply_that_never_finishes_hits_the_time_limit() -> None:
     assert _read_within(Whole(), deadline_s=600) == b'{"ok": 1}'
 
 
-def test_a_slow_call_is_tried_once_more_then_fails(tmp_path, monkeypatch) -> None:
+def test_a_slow_call_is_tried_again_while_its_time_lasts(tmp_path, monkeypatch) -> None:
     monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
     served = [TooSlow("slow"), _response("ok")]
 
@@ -151,3 +151,39 @@ def test_the_budget_left_on_a_key(monkeypatch) -> None:
     assert budget_left("PIPIT_TEST_OR_KEY", fetch=fetch) == 14.85
     assert seen == {"url": "https://openrouter.ai/api/v1/key", "auth": "Bearer k"}
     assert budget_left("PIPIT_TEST_OR_KEY", fetch=lambda u, h: {"data": {"limit_remaining": None}}) is None
+
+
+def test_the_time_limit_covers_the_whole_call_not_each_attempt(tmp_path, monkeypatch) -> None:
+    import time
+
+    monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
+    attempts = []
+
+    def stalls(body, headers):
+        attempts.append(1)
+        time.sleep(0.06)
+        raise TimeoutError("socket stalled")
+
+    m = _manifest()
+    m = type(m)(**{**m.__dict__, "settings": {"deadline_s": 0.1}})
+    chat = OpenRouterChat(m, Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path), stalls)
+    start = time.perf_counter()
+    with pytest.raises((TooSlow, TimeoutError)):
+        chat("x")
+    assert time.perf_counter() - start < 0.3 and len(attempts) <= 2
+
+
+def test_a_rejected_key_stops_at_once(tmp_path, monkeypatch) -> None:
+    monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
+    calls = []
+
+    def transport(body, headers):
+        calls.append(body)
+        raise urllib.error.HTTPError("u", 401, "Unauthorized", {}, None)  # type: ignore[arg-type]
+
+    chat = OpenRouterChat(
+        _manifest(), Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path), transport
+    )
+    with pytest.raises(KeyRefused, match="rejected"):
+        chat("x")
+    assert len(calls) == 1

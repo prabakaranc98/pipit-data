@@ -4,6 +4,7 @@ id: deepseek/deepseek-v4-pro
 revision: as-served
 adapter: pipit.adapters.openrouter:load
 placement: api
+family: deepseek
 key_env: OPENROUTER_API_KEY
 price_usd_per_million_in: 1.60
 price_usd_per_million_out: 3.20

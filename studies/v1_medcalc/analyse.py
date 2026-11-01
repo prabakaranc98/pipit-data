@@ -15,9 +15,11 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "p1_clinical"))
 import study as p1  # noqa: E402
 
+from pipit import preflight  # noqa: E402
 from pipit.checks import wilson  # noqa: E402
 from pipit.evidence import unit_share  # noqa: E402
 from pipit.ledger import Ledger  # noqa: E402
+from pipit.manifest import load_manifest  # noqa: E402
 
 RUNS = HERE / "runs"
 CATEGORIES = ["lab test", "physical", "dosage", "date", "risk", "severity", "diagnosis"]
@@ -200,8 +202,10 @@ def main() -> None:
             f"| {name} | {share(*t['medcalc'])} | {share(*t['medcalc_unaudited'])} | {share(*t['medcalc_audited'])} |"
         )
     L.append("\n## Providers that served each model\n")
+    pinned = [n for n in names if preflight.pinned(load_manifest(HERE / "models" / f"{n}.yaml"))]
+    which = "no model was pinned" if not pinned else f"{len(pinned)} of {len(names)} models were pinned"
     L.append(
-        "OpenRouter routed each call to a provider of its choosing; no model was pinned. A model's score mixes "
+        f"OpenRouter routed each call to a provider of its choosing; {which}. A model's score mixes "
         "every provider that served it.\n"
     )
     L.append("| model | providers | the one that served the most calls |")
