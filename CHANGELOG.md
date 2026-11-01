@@ -4,14 +4,34 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Fixed
+
+- Found by three independent verification agents, which checked every claim of 0.0.3 and 0.0.4 (#68):
+  - Thinking mode: each option's probability is its share of all samples, so samples cut off at the token budget count against confidence; reasoning cut off before its end gives no answer. P1's thinking-mode answers were recounted from the recorded votes with no model call: 8 of 30 rows change confidence, no choice changes, calibration error falls from 0.100 to 0.011, and at 10% silent errors the model can act alone on 63% of cases.
+  - The OpenRouter adapter: one time limit across all of a call's attempts; a rejected key (HTTP 401) stops at once.
+  - `pipit.preflight`: pinned means exactly one provider; pinning and prices are required only of models whose provider varies per call, so TypeSafe's own API can pass; an OpenRouter model without prices is flagged; the cost check is called an estimate.
+  - `pipit.results`: a half-written last row no longer blocks a resume, and files are rewritten in one step.
+  - Every committed manifest declares a family (seven did not). V1's runner records each run, including whether unpinned models were allowed, and its report states the pinning from the manifests. X1 uses the core's exact paired test. P1's case builder keeps the fields written by hand.
+  - Docs: P3 sent the crisis message to the vulnerable-customer team, not "to billing", and missed no crisis outright; on I1, two other families also barely move, so that is not unique to doses; P1 settles one or two of twelve key questions; X1's header (realism 6 to 10 on sycophancy, $0.014, seven cut-off replies, 12 and 22 minutes per arm); install with `uv sync --all-extras`, since a plain sync removes the adapters' libraries; P1's case cache is local; "no step waits for a person" now holds in the methodology, engine, architecture, agentic and design docs; finance comes next in the plan and the grid; G1 is marked as local, unmerged work; stale plan text.
+
+### Added
+
+- `docs/suite.md` (#68): the reference problem suite. Fourteen problems and four industries, each with its source, its documented finding, Pipit's status and what is missing, and a reading list of 125 references with quotes checked against their sources.
+- `CONTRIBUTING.md` (#68): an independent review of every pull request before it merges, and the release gate that every release must pass before it is tagged.
+
+### Corrections to earlier entries
+
+- 0.0.3: Qwen3.5-4B against the decider gives p = 0.041 counted once per case, not the per-wording 0.006 written before that release's own fix. The landscape came from eight research passes over about 160 tools and papers, not six over about seventy.
+- 0.0.4: the checks before a run, the time limit and the results saved per item ran in V1's runner only; the time limit applied per attempt; the cost check was an estimate, not an upper bound; the `--allow-unpinned` flag was not recorded; Llama 3.1 70B's 39% is near the paper's 36% for a different model, Llama 3 70B.
+
 ## [0.0.4] - 2026-11-01
 
 ### Added
 
-- `pipit.preflight` (#66): checks before a run. Every model declares a family, every API model is pinned to a provider (otherwise an explicit flag, which the report states), no helper shares a candidate's family, and an upper bound on the cost fits the key's budget.
+- `pipit.preflight` (#66): checks before a run. Every model declares a family, every API model is pinned to a provider (otherwise an explicit flag, recorded only from 0.0.5), no helper shares a candidate's family, and an estimate of the cost fits the key's budget. Only V1's runner calls it.
 - `pipit.results` (#66): results saved as each item finishes, so a run that stops resumes where it stopped.
-- The OpenRouter adapter (#66): a refused key raises `KeyRefused` at once instead of being retried; each call has a total time limit, `settings.deadline_s` (600 s unless set), because keep-alive padding defeats the socket's timeout; `budget_left` reads what is left on the key. V1's runner uses all of them, and its result files replay unchanged.
-- Study V1's results (`studies/v1_medcalc`, #57): twelve models on 220 MedCalc-Bench items and on P1's 112 cases, for $6.90. Across 12 models the two do not rank the models alike overall (Spearman 0.21, p = 0.25); where both measure calculation they agree (0.61, p = 0.020). Llama 3.1 70B reproduces the paper's overall score (39% against 36%). Every model scores lower on the 19 calculators whose code an audit corrected. The report shows the providers behind each model, up to 18, and ends with a hand-written reading.
+- The OpenRouter adapter (#66): a refused key raises `KeyRefused` at once instead of being retried; each call has a time limit, `settings.deadline_s` (600 s unless set; per attempt until 0.0.5), because keep-alive padding defeats the socket's timeout; `budget_left` reads what is left on the key. V1's runner uses all of them, and its result files replay unchanged.
+- Study V1's results (`studies/v1_medcalc`, #57): twelve models on 220 MedCalc-Bench items and on P1's 112 cases, for $6.90. Across 12 models the two do not rank the models alike overall (Spearman 0.21, p = 0.25); where both measure calculation they agree (0.61, p = 0.020). Llama 3.1 70B scores 39%, near the paper's 36% for Llama 3 70B, a different model. Every model scores lower on the 19 calculators whose code an audit corrected. The report shows the providers behind each model, up to 18, and ends with a hand-written reading.
 - `run.py --resume` in V1: after the API key's spending limit refused 1,385 calls, only those were sent again; a run now stops at the first refusal. Every V1 manifest declares its `family`.
 - `docs/landscape.md`: the five uses as the field defines them, with their borders, and the loop as others built it in 2025 and 2026.
 
@@ -43,12 +63,12 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 - `pipit.tree`: checks that a hypothesis tree partitions its cases; P1's tree is now built through it, and its spec states the conditions each key question covers (#45).
 - The family rule: manifests declare a `family`, and `pipit.manifest.family_conflicts` reports any helper, judge or council member sharing a family with a candidate; P1's Qwen validator is the first case it catches (#43).
 - `pipit.ledger.providers` and `mixed_providers`: which providers served each API model, so a model routed to several can be pinned (#44).
-- `docs/landscape.md`: Pipit against the field, from six research passes over about seventy tools and papers: what it gets wrong, ranked; what it adds and what is prior art; the literature by line of work, kept apart as known, open and ours; the loop for automatic data research; why item banks wait for a population of models.
+- `docs/landscape.md`: Pipit against the field, from eight research passes over about 160 tools and papers: what it gets wrong, ranked; what it adds and what is prior art; the literature by line of work, kept apart as known, open and ours; the loop for automatic data research; why item banks wait for a population of models.
 - `pipit.checks.mcnemar_exact`: the exact paired test, moved from the study scripts into the core.
 
 - `docs/architecture.md`: the components by layer (interfaces, control plane, agent team, core, engines, data, quality), built or planned; three loops at three speeds; how configuration flows from a machine profile to a study file to manifests; memory on a laptop, measured, and the rules that keep a run out of swap; one diagram.
 - `docs/methodology.md`: the playbook. Models write, statistics allocate, code grades, people decide; eight steps from framing to report, each with an owner and a check; how agents carry it through skills, tested prompts, scoped context and coordination through the record; what it enables for research; and three experiments that will show whether it works. `docs/plan.md`: the path to 0.1.0 reordered around it.
-- `pipit.adapters.openai_compat`: any LLM behind an OpenAI-style endpoint (MLX, vLLM, SGLang, llama.cpp, Ollama, OpenRouter) answers typed questions as single-letter multiple choice, with option probabilities from the first answer token's log-probabilities, the share of probability on the letters recorded, a request cache, ledger rows per question, and an optional local server launched from the manifest. An `mlx` extra for Apple silicon. P1 run on Qwen3.5-4B in BF16 through MLX, next to the decider trained from it: 36 mistakes against 19 of 112 (exact paired test p = 0.006); the LLM reads facts about as well but turns them into wrong decisions more often, fails indirect clues (10 of 16 against 0), and shares the decider's weakness on weight-based doses.
+- `pipit.adapters.openai_compat`: any LLM behind an OpenAI-style endpoint (MLX, vLLM, SGLang, llama.cpp, Ollama, OpenRouter) answers typed questions as single-letter multiple choice, with option probabilities from the first answer token's log-probabilities, the share of probability on the letters recorded, a request cache, ledger rows per question, and an optional local server launched from the manifest. An `mlx` extra for Apple silicon. P1 run on Qwen3.5-4B in BF16 through MLX, next to the decider trained from it: 36 mistakes against 19 of 112 (exact paired test p = 0.041, counted once per case); the LLM reads facts about as well but turns them into wrong decisions more often, fails indirect clues (10 of 16 against 0), and shares the decider's weakness on weight-based doses.
 - `docs/plan.md`: the plan to 0.1.0: who Pipit helps, why a few hundred planted cases instead of tens of thousands, any model on any engine, studies as data, the measurement science, the developer experience, ten steps, and what 0.1.0 means. `docs/agentic.md`: the study team, for 0.2. README: a reading order, milestone M6 and the 0.1.0 definition.
 - `docs/programme.md`: the five-study programme on one candidate and its shared protocol; milestones M4 and M5 in the README.
 - `pipit.calibration`: calibration error, Brier score, the review band, an exact binomial reliance certificate tested from the strictest cut-off down, and the number of cases a certificate needs. The P1 report gains the certificate, an exact paired test between subjects, a ledger by subject, and the Perplexity model run with its two questions grouped.
