@@ -23,3 +23,12 @@ def test_rows_added_from_many_threads_are_all_kept(tmp_path) -> None:
         list(pool.map(lambda i: results.add({"row": i, "answer": i * 2}), range(200)))
     reread = Results(tmp_path / "answers.jsonl", key="row")
     assert all(reread.get(i)["answer"] == i * 2 for i in range(200))
+
+
+def test_a_half_written_last_row_is_dropped_not_fatal(tmp_path) -> None:
+    path = tmp_path / "answers.jsonl"
+    path.write_text('{"case_id": "a", "choice": "hold"}\n{"case_id": "b", "cho')
+    results = Results(path, key="case_id")
+    assert results.get("a")["choice"] == "hold" and results.get("b") is None
+    results.add({"case_id": "b", "choice": "ask"})
+    assert [Results(path, key="case_id").get(k)["choice"] for k in ("a", "b")] == ["hold", "ask"]
