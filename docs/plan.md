@@ -73,8 +73,14 @@ model is reached is its manifest's business.
   OpenAI-style interface. Pipit asks a typed question as a multiple-choice prompt and reads the option
   probabilities from the first answer token's log-probabilities. Where an engine returns none, it falls back to a
   constrained choice and repeated sampling, and the report says so.
-- **The same cases, decider and LLM side by side.** The dogfood pair is Perplexity's 4B decider and Qwen3.5-4B, the
-  backbone it was trained from. On the same cases, the difference is what decision training buys at the same size.
+- **Candidates are chosen by the job, in their native setup.** LLM candidates are instruction-tuned or thinking
+  models, run the way their model card recommends: thinking on when that is the default, and the card's sampling
+  settings. A base model appears only as a control for a question about post-training. Two models meet on the same
+  cases only when a business is choosing between them for one job, or when the pair isolates one cause.
+  Qwen3.5-4B and Perplexity's 4B decider share a backbone, so their pair shows what decision training adds.
+- **Confidence depends on the mode.** In instruct mode the option probabilities are read from the first answer
+  token. A reasoned answer is always certain, so in thinking mode each question is asked several times and
+  confidence is how often the answers agree.
 - **On this Mac,** one 4B model in BF16 at a time, about 9 GB of the 24. Placement follows the measured footprint,
   and nothing falls back silently.
 - **On a remote GPU,** you give an SSH host; Pipit uses a vLLM or SGLang server there, its own or yours, through a
@@ -88,8 +94,9 @@ decision-models lab pinned, served by MLX through its OpenAI-style endpoint and 
 about 5 seconds, about 9.4 GB of memory, about 0.4 seconds per question. On every one of P1's 224 questions the answer
 letters carried at least 94% of the first token's probability, so option probabilities are read directly. The
 adapter switches thinking off in the chat template and renormalises the coarse BF16 log-probabilities over the
-options. On P1's 112 cases the LLM made 36 mistakes against its decision-trained sibling's 19 (exact paired test
-p = 0.006); `studies/p1_clinical/report.md` has the breakdown.
+options. On P1's 112 cases the LLM made 36 mistakes against its decision-trained sibling's 19. Counted once per
+independent case (59), the LLM did worse on 15 and better on 5: exact paired test p = 0.04, where counting each
+wording had given 0.006. `studies/p1_clinical/report.md` has the breakdown.
 
 ## Studies as data
 
@@ -166,7 +173,7 @@ small experiment: one question, one baseline, one change, one evaluation.
 | Module | What it holds | State |
 | --- | --- | --- |
 | S1 Question and tolerance | the job question, a tolerance per node, what would refute each hypothesis | built in P1 and P3 |
-| S2 The tree | a partition of the case space by mechanism; every case in exactly one key question | built; a partition check in code is next |
+| S2 The tree | a partition of the case space by mechanism; every case in exactly one key question | built, and checked in code (#45) |
 | S3 Evaluation aspects | correctness, consistency, robustness, predictability, safety, cost, validity | partly built; see below |
 | S4 Claims | explore, then confirm on held-back families with tests registered first | planned |
 | S5 Experiments on the method | E1 to E4 in `docs/engine.md` | E2 running as study J1 |
@@ -250,7 +257,7 @@ the ledger.
 | Candidate | is measured | Perplexity's decider, Qwen3.5-4B in both modes; Jev as reference | P1, P3, X1 | G1 (#47) |
 | Lead | drafts and grows the tree, chooses the next action | not built; DeepSeek V4 Pro proposed | none | E1 on the bench (#8, #9) |
 | Case writer | writes families from specs | gpt-oss-120b paraphrases today | P1: code caught 6 broken paraphrases | family specs (#22) |
-| Validator | checks a planted fact survives a rewrite | qwen3-235b, the same family as P1's candidates | wrong on 25 of its 31 flags | the family rule, E3 (#43) |
+| Validator | checks a planted fact survives a rewrite | qwen3-235b, the same family as P1's candidates | wrong on 25 of its 31 flags; the family rule now flags it (#43) | E3: the same cases checked by another family |
 | Judge | grades where code cannot | DeepSeek V4.1 Flash first; V4 Pro only where replies cannot instruct it | J1 | injection resistance in the bar (#41) |
 | Scorer and ranker | scores, compares and ranks cases, situations and hypotheses at volume: realism, severity, priority | Jev, once measured in each of these roles | J1: 0.1 s per verdict, a little less accurate than DeepSeek | pairwise realism (#50); hypothesis priority on the bench |
 | Guard | keeps instructions written in a reply away from a judge | none yet: Jev, asked one question, flagged plain proposals more often than injected ones | J1 | quote replies as data, then test again (#41) |
@@ -259,13 +266,13 @@ the ledger.
 
 ## The build order, one pull request at a time
 
-1. **The comparison with the field, and counting a case once** (#38; pull request #39, open).
-2. **Thinking mode in its native setup** (#35): done on its branch. 5 mistakes in 30 against 8 in instruct mode,
+1. **The comparison with the field, and counting a case once** (#38): merged in #39.
+2. **Thinking mode in its native setup** (#35): merged in #58. 5 mistakes in 30 against 8 in instruct mode,
    exact paired test p = 0.51, for 5.8 hours of compute.
-3. **The engine design, J1 and X1** (#40, #41, #42): the method as computation, judges measured, and Pipit beside Petri
-   on the same model.
-4. **Rules the studies exposed:** the family rule (#43), provider pinning (#44), the partition check (#45). Done on
-   branch `m1/rules`.
+3. **The engine design, J1, X1 and I1** (#40, #41, #42; pull request #59): the method as computation, judges
+   measured, Pipit beside Petri on the same model, and what the model holds when its decision ignores a fact.
+4. **Rules the studies exposed:** the family rule (#43), provider pinning (#44), the partition check (#45). Merged
+   in #56.
 5. **The platform under the loop:** the supervisor that owns model servers and resumes jobs (#53), and the study
    registry (#54).
 6. **Dataset styles and variants:** extraction and a computed number (#47); pressure and injection variants (#48).
@@ -291,7 +298,7 @@ Honest gaps, as of 2026-11-01, each with the work that closes it:
 | Studies are small | P1 settles one of twelve key questions per model | fewer, deeper key questions per budget, and adaptive spending (#9) |
 | No judge is certified | where code cannot grade, the number is only as good as the judge | J1 with 30 to 60 more unsafe items, and injection resistance in the bar (#41) |
 | The platform is fragile | a stopped server or a sleeping laptop cost hours today | the supervisor and resumable jobs (#53) |
-| Five branches wait on one open pull request | building outpaces review, and context drifts | merging in order, one at a time |
+| Work waits on review | building outpaces review, and context drifts | one pull request at a time, against main: #39, #56 and #58 merged on 2026-11-01; `m2/bench` and `m3/v1-medcalc` wait |
 
 What moved toward the real world on 2026-11-01: evidence counted once per case, which corrected overclaims;
 judges measured before use; Pipit tested beside Petri on the same model; three methods agreeing on why the dose
@@ -314,10 +321,19 @@ decision fails; and adaptive spending kept honest by intervals valid under early
 The study team, a business's context through MCP, the knowledge graph and the autoresearch loop (all 0.2); P2, P4
 and P5; the transfer study; repair data; images and multi-turn agents.
 
-## Decisions for the study owner
+## Decisions
 
-Settled: the agent team waits for 0.2; Qwen3.5-4B is the second candidate; everything runs on this Mac until an SSH
-host is available; DeepSeek V4 Pro and V4.1 Flash are the first judges.
+Taken on 2026-11-01:
+
+1. The agent team is built in 0.2, after the bench and the commands exist.
+2. The LLM is Qwen3.5-4B, the instruction-tuned model Perplexity's decider was trained from, run in its native
+   setup.
+3. Remote GPUs wait: everything is tested on this Mac first, and an SSH host plugs in when one is available.
+4. On a self-contradicting record, asking for more information and refusing both count as right; asking is
+   preferred, and both readings are reported (#11).
+5. DeepSeek V4 Pro and V4.1 Flash are the first judges.
+6. The family rule is in code, merged in #56: no helper, judge or council member shares a family with a candidate
+   (#43).
 
 Open:
 
@@ -326,6 +342,4 @@ Open:
 3. The explore split on the Hub: public, or gated behind accepted terms.
 4. The confirm split: run only by us, or shared under agreement.
 5. The lead agent: may it be a model behind an API for studies that touch a business's data?
-6. The family rule for validators and judges: code now, or after E3.
-7. Examples: notebooks or scripts.
-8. Issue #11: may "avoid" count as right on a conflicting record?
+6. Examples: notebooks or scripts.

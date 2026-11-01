@@ -8,7 +8,8 @@ Pipit treats data as an experimental instrument. It turns a question about a mod
 
 **Read in this order:** `docs/plan.md` (what Pipit is for, whom it helps, the path to 0.1), `docs/methodology.md`
 (the playbook every study and agent follows), `docs/architecture.md` (the components, loops, configuration and memory),
-`docs/design.md` (the loop and the instrument), `docs/programme.md` (the studies), `docs/agentic.md` (the study team, for 0.2).
+`docs/design.md` (the loop and the instrument), `docs/landscape.md` (Pipit against the field: what it gets wrong, what
+it adds, the literature), `docs/programme.md` (the studies), `docs/agentic.md` (the study team, for 0.2).
 
 ![Pipit's design on one page](public/assets/overview.svg)
 
@@ -47,7 +48,7 @@ One question each. A milestone closes with a tagged release and a note on what c
 | M5 | Can a reader see what a study found, at what evidence level and cost, without running anything? | `report.json` per study and a static viewer under `public/` |
 | M6 | Does an agentic study team find planted failures with fewer cases and dollars than the scripted loop, without more false claims? | keep or kill on the bench, after 0.1.0; see `docs/agentic.md` |
 
-First candidates: Perplexity's 4B decider and Qwen3.5-4B, the LLM it was trained from, both in BF16 on this Mac.
+First candidate: Perplexity's 4B decider, in BF16 on this Mac. Qwen3.5-4B, the instruction-tuned LLM it was trained from, is the control, run in its native setup: thinking on, with its model card's sampling settings.
 
 ## Studies
 
@@ -61,7 +62,8 @@ crisis triage in a messy support queue on 24 hand-written cases (`pilot.py repor
     uv run python studies/p1_clinical/run.py models/pplx_flash.yaml --role candidate
     uv run python studies/p1_clinical/run.py models/jev.yaml --role reference
     uv sync --extra mlx                                 # Apple silicon: MLX serves LLMs locally
-    uv run python studies/p1_clinical/run.py models/qwen35_4b.yaml --role candidate   # Qwen3.5-4B, launched by its manifest
+    uv run python studies/p1_clinical/run.py models/qwen35_4b.yaml --role candidate   # Qwen3.5-4B, instruct mode
+    uv run python studies/p1_clinical/run.py models/qwen35_4b_thinking.yaml --questions decision --workers 2   # thinking mode
     uv run python studies/p1_clinical/analyse.py      # report.md
     uv run python studies/p1_clinical/propose.py      # proposals.md, for human review
 
@@ -79,8 +81,9 @@ environment variable that holds the key) and resolved through an adapter at the 
 | B1, the bench | Does adaptive spending beat an even spread? | Sampling nearest to a verdict settles 3 to 15 times as many questions, but raises false claims on ordinary intervals; #25 first. | `studies/b1_bench/report.md`, branch `m2/bench` |
 | I1, interpretability | Does Qwen hold the planted fact when its decision ignores it? | Yes: a probe reads the fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18. On doses the decision barely moves between safe and unsafe. | `studies/i1_interp/report.md` |
 
-Branches waiting to open as pull requests, in order: `m3/native-setup` (#35), `m1/engine-design` (#40 to #42),
-`m1/rules` (#43 to #45), `m2/bench` (#8, #9). Pull request #39 is open.
+Merged on 2026-11-01: #39 (counting a case once; Pipit against the field), #56 (the rules) and #58 (native setups).
+In review: #59, the engine design with J1, X1 and I1 (#40 to #42). Next, one at a time: `m2/bench` (#8, #9, #25),
+then `m3/v1-medcalc` (#57).
 
 ## How work moves
 

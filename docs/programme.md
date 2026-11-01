@@ -6,25 +6,31 @@ Before a business switches on a small decision model, it has to answer one quest
 regulator will ask it again afterwards: on which cases can the model act alone, how often will it be wrong without
 anyone noticing, how many cases still need a person, and how long does that answer stay true?
 
-Pipit answers that question for Perplexity's 4B decider and, from 0.1, for Qwen3.5-4B, the general LLM it was
-trained from, on five jobs these models are actually sold for. Running both on the same cases shows what decision
-training changes. Each study ends in a **reliance dossier**: where the model breaks, how much it can handle alone at a stated
+Pipit answers that question for Perplexity's 4B decider, on five jobs these models are actually sold for. An LLM
+joins a study only where the job calls for one, in its native setup. Qwen3.5-4B, the instruction-tuned model the
+decider was trained from, is the control that shows what decision training adds. Each study ends in a **reliance dossier**: where the model breaks, how much it can handle alone at a stated
 error rate, which settings change that, what finding it out cost, and the check that says when the answer expires.
 
 ## What the first tests showed (2026-11-01)
 
-- **How much it can do alone, on the clinical cases.** Allowing at most 5 silent errors per 100 cases, Jev could
-  handle 64% of P1's cases alone, Perplexity asked one question at a time 36%, and Perplexity with its two
-  questions grouped 29%. A silent error is a wrong answer nobody reviewed.
-- **The setting matters as much as the model.** Grouping the two questions, an option the vendor offers, raised
-  Perplexity's mistakes from 19 to 29 of 112 and its calibration error from 0.02 to 0.17 (paired test p = 0.02).
-  Jev and Perplexity one-at-a-time are not distinguishable overall on these cases (p = 0.39).
+- **How much it can do alone, on the clinical cases.** P1 has 59 independent cases: the two wordings of a case
+  almost always get the same outcome, so they count once. That is just enough to certify at most 5 silent errors
+  per 100, and only where the model made none. At that target Jev could handle 60% of P1's cases alone, Perplexity
+  asked one question at a time 33%, and Perplexity with its two questions grouped 19%. A silent error is a wrong
+  answer nobody reviewed. Counting each wording as its own case had given 64%, 36% and 29%: more certainty than
+  the data holds.
+- **The setting may matter as much as the model, but these cases cannot show it yet.** Grouping the two
+  questions, an option the vendor offers, raised Perplexity's mistakes from 19 to 29 of 112 and its calibration
+  error from 0.02 to 0.17. Counted once per independent case, grouping did worse on 7 and better on 2: paired test
+  p = 0.18, not enough to call. The vendor's model card advises one question per request for this model. Jev and
+  Perplexity one at a time are not distinguishable overall on these cases (p = 0.45).
 - **Well calibrated on average does not mean safe to automate.** Perplexity's average calibration error is lower
   than Jev's, yet it can be trusted alone on far fewer cases, because its few mistakes are made with high
   confidence.
-- **Certificates need cases.** 112 cases can never certify better than about 3 silent errors per 100. One in 100
-  needs about 300 clean cases; one in 1,000 about 3,000. The candidate runs a case in about 1.3 seconds on this
-  laptop, so the cost of a certificate is in building enough valid cases, not in running them.
+- **Certificates need independent cases.** 59 independent cases can never certify better than about 5 silent
+  errors per 100. One in 100 needs about 300 clean independent cases; one in 1,000 about 3,000. Rewording a case
+  does not add one. The candidate runs a case in about 1.3 seconds on this laptop, so the cost of a certificate is
+  in building enough valid, distinct cases, not in running them.
 - **In a messy support queue** (24-case pilot), both models caught every gas leak, overheating battery, account
   takeover and data exposure, even buried in an angry complaint. Both failed on the most dangerous message: a
   customer who writes "I don't see the point of going on anymore" inside a payment complaint was sent to the

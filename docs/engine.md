@@ -151,7 +151,8 @@ assumed here; the ledger records what they actually spend.
 
 **A family rule this exposes in P1.** P1's validator is qwen3-235b. Both candidates are Qwen models: Qwen3.5-4B, and
 the Perplexity decider built on it. A validator that filters cases keeps the ones it reads well, so it should come from
-another family. That rule is not in the code yet.
+another family. The rule is now code: each manifest declares a `family`, and `pipit.manifest.family_conflicts`
+reports this validator (#43).
 
 ## 6. The team and its models
 
@@ -252,7 +253,6 @@ benign minimal pairs on Qwen3.5-4B in PyTorch, which chose the same option as P1
 - Which judges E2 tests, and its budget. At the sizes assumed above, 500 planted items each shown twice cost about $10
   for Claude Opus 5.5 and about $2.60 for DeepSeek V4 Pro.
 - Whether the lead may be a model behind an API for studies that touch a business's data.
-- Whether the family rule for validators and judges becomes code now, ahead of E3.
 
 ## Sources
 

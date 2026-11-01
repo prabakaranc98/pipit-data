@@ -97,6 +97,16 @@ collection:
 Outputs whose terms restrict reuse, such as Jev's under TypeSafe's terms, are published only as aggregates unless
 their terms allow more.
 
+## Rules checked in code
+
+Three rules came out of the first studies, and each is now a check rather than a promise:
+
+| Rule | Why | Where |
+| --- | --- | --- |
+| A tree must partition its cases: every case claimed by exactly one key question | P1's spec, as written, claimed 40 cases twice, and only the order of the code decided which question got them | `pipit.tree.partition`; P1's `tree()` raises when it fails |
+| No model filters or grades for a candidate of its own family | a validator keeps the cases its family reads well; P1's validator is a Qwen model, like all three of its candidates | `family` in every manifest; `pipit.manifest.family_conflicts` |
+| An API model is pinned to one provider, and mixed routing is flagged | in study J1, OpenRouter served one judge from 18 providers, so its measured accuracy belonged to no single one | `settings.request.provider` in the manifest; `pipit.ledger.mixed_providers` |
+
 ## How agents carry the playbook
 
 - **Each step is a skill.** A skill has instructions, the shape of its inputs and outputs, a checklist, a worked
@@ -119,8 +129,9 @@ their terms allow more.
 - **Interpretability:** verified minimal pairs with planted truth, ready for activation patching and probing.
 - **Alignment and safety evaluation:** elicitation with planted truth wherever possible, and measured judges only
   where not.
-- **Benchmarks:** item banks with difficulty estimated by item response theory, so a hundred well-chosen items say
-  what thousands would, and threshold fits in the spirit of METR's time-horizon measurements.
+- **Benchmarks:** threshold fits on difficulty set by construction, in the spirit of METR's time-horizon
+  measurements; item banks fitted by item response theory only once tens of models have answered the same items,
+  since that method needs such a population (`docs/landscape.md`).
 - **Comparisons:** configurations and cost recorded for every endpoint, as Artificial Analysis does, but on the
   cases of the job at hand.
 

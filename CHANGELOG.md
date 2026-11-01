@@ -4,6 +4,10 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Fixed
+
+- Intervals, replays, paired tests and the reliance certificate now count a case and its rewordings once (`pipit.evidence`, `pipit.calibration`). In P1 the two wordings of a case agreed in 51 to 53 of 53 pairs, so counting both claimed too much: 8 of 68 verdicts move to insufficient, grouping the questions is no longer shown to hurt (p = 0.021 becomes 0.18), and certificates at 5% silent errors shrink (Jev 64% to 60%). Two simulations in `tests/test_units.py` show the old counting covering 88% instead of 95%, and certifying 12% of models that sit at the limit instead of at most 5%.
+
 ### Added
 
 - `docs/engine.md` and `public/assets/overview.svg`: the method as computation. The tree as a partition of the case space, the loop as a sequential experiment with explore and confirm kept apart, feedback paths with their guards, statistics at three levels, judges measured like any model, the team's models, and experiments E1 to E5.
@@ -11,7 +15,13 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 - `docs/methodology.md`: how a study goes from a gap to a Hub release, with the independent cases a node needs to be settled, which sets a tree's width and depth.
 - Study J1 (`studies/j1_judges`): four judges measured on 177 planted items from P1. DeepSeek V4.1 Flash is the best default; V4 Pro passed 14 of 20 unsafe proposals when the reply told it to; Jev failed as an injection guard; Nemotron 3 Ultra raised the most false alarms. None can be certified on 20 unsafe items.
 - Study X1 (`studies/x1_petri`): Pipit and Petri 3.1.1 on Qwen3.5-4B, on clinical decisions and on sycophancy. Pipit's pressure test flipped 18 of 39 right decisions when a doctor insisted (exact paired test p = 0.0015), with no judge and no cost.
-- Study I1 (`studies/i1_interp`): a probe and last-position patching on P1's minimal pairs, registered before its run.
+- Study I1 (`studies/i1_interp`): a probe, last-position patching and the Explain step on P1's minimal pairs, each registered before it ran. Qwen3.5-4B holds the planted fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18; stating the computed dose per kilogram changed no dose decision.
+- Native setups for LLM candidates (#35, merged in #58): thinking mode in `pipit.adapters.openai_compat`, at the sampling settings the model card recommends, with confidence from how often several samples agree; a request timeout per manifest; P1's runner asks one question, runs cases in parallel and can take a few cases per cell. Qwen3.5-4B in thinking mode made 5 mistakes in 30 against 8 in instruct mode on the same cases (exact paired test p = 0.51), for 5.8 hours of local compute. `pipit.viz` draws a hypothesis tree with each node's evidence and status.
+- `pipit.tree`: checks that a hypothesis tree partitions its cases; P1's tree is now built through it, and its spec states the conditions each key question covers (#45).
+- The family rule: manifests declare a `family`, and `pipit.manifest.family_conflicts` reports any helper, judge or council member sharing a family with a candidate; P1's Qwen validator is the first case it catches (#43).
+- `pipit.ledger.providers` and `mixed_providers`: which providers served each API model, so a model routed to several can be pinned (#44).
+- `docs/landscape.md`: Pipit against the field, from six research passes over about seventy tools and papers: what it gets wrong, ranked; what it adds and what is prior art; the literature by line of work, kept apart as known, open and ours; the loop for automatic data research; why item banks wait for a population of models.
+- `pipit.checks.mcnemar_exact`: the exact paired test, moved from the study scripts into the core.
 
 - `docs/architecture.md`: the components by layer (interfaces, control plane, agent team, core, engines, data, quality), built or planned; three loops at three speeds; how configuration flows from a machine profile to a study file to manifests; memory on a laptop, measured, and the rules that keep a run out of swap; one diagram.
 - `docs/methodology.md`: the playbook. Models write, statistics allocate, code grades, people decide; eight steps from framing to report, each with an owner and a check; how agents carry it through skills, tested prompts, scoped context and coordination through the record; what it enables for research; and three experiments that will show whether it works. `docs/plan.md`: the path to 0.1.0 reordered around it.

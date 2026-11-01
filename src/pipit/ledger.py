@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import json
 import time
-from collections import defaultdict
+from collections import Counter, defaultdict
+from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
 
@@ -46,3 +47,20 @@ class Ledger:
             else:
                 a["usd"] += r["usd"]
         return dict(agg)
+
+
+def providers(rows: Iterable[dict[str, Any]], key: str = "subject") -> dict[str, Counter]:
+    """For each model named by `key` in the rows, how many fresh calls each provider served. An API model
+    routed to several providers may not be the same model on each; pin the provider in its manifest, for
+    OpenRouter with settings.request.provider: {order: [...], allow_fallbacks: false}."""
+    out: dict[str, Counter] = {}
+    for r in rows:
+        if r.get("cached") or not r.get(key) or not r.get("provider"):
+            continue
+        out.setdefault(r[key], Counter())[r["provider"]] += 1
+    return out
+
+
+def mixed_providers(rows: Iterable[dict[str, Any]], key: str = "subject") -> dict[str, Counter]:
+    """The models whose calls came from more than one provider."""
+    return {name: c for name, c in providers(rows, key).items() if len(c) > 1}
