@@ -4,6 +4,8 @@ Written 2026-11-01. This note states Pipit's method as computation, so each part
 own. It builds on the playbook (`docs/methodology.md`) and the comparison with the field (`docs/landscape.md`).
 Sources not yet read for this project are marked.
 
+![Pipit's design on one page](../public/assets/overview.svg)
+
 ## In plain words
 
 The tree is a map of where a model might fail. Each node is a region of the cases we can write, with a claim and a
