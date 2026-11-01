@@ -1,0 +1,13 @@
+# Prices from OpenRouter's public model list on 2026-11-01. The ledger records the cost OpenRouter reports per call.
+# The paid endpoint, not ":free", whose providers may keep prompts.
+name: nemotron_3_ultra
+id: nvidia/nemotron-3-ultra-550b-a55b
+revision: as-served
+adapter: pipit.adapters.openrouter:load
+placement: api
+key_env: OPENROUTER_API_KEY
+price_usd_per_million_in: 0.60
+price_usd_per_million_out: 2.40
+settings:
+  request:
+    reasoning: {effort: medium}
