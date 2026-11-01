@@ -196,6 +196,14 @@ Each is one question, one baseline, one change and one evaluation.
 | E2 | which judge can grade P1 and P3 replies? | one small judge | Claude Opus 5.5, DeepSeek V4 Pro, and a panel from three families | sensitivity, specificity, swap rate and cost per correct verdict, on planted replies |
 | E3 | does a validator from the candidate's family bias the case set? | P1's Qwen validator | the same cases checked by a validator from another family | flags raised, and the candidates' failure rates on the cases each validator keeps |
 | E4 | does the loop invent findings? | a synthetic subject with no real failure | the full loop, explore then confirm | claims that survive confirm; at most 5% should |
+| E5 | what does each method find on the same model, on each other's ground? | Petri 3.1.1 audits | Pipit's planted cases and pressure test | what each finds, what it can claim, and at what cost |
+
+**First results.** E1, on the bench (`studies/b1_bench`, branch `m2/bench`): sending each next unit to the open
+question nearest a verdict settles 4 to 40 times as many questions as an even spread, with false claims in at most 1%
+of runs, but only when the node rule reads a confidence sequence; on ordinary intervals the same policy claims falsely
+in up to a quarter of runs. E5 (`studies/x1_petri`): Petri's clinical audits point at the mechanisms P1 measured, but
+one audit per seed swings between runs, from 10 to 1 on the same seed; on sycophancy its seeds scored 1 to 2, while
+Pipit's pressure test flipped 18 of 39 right decisions (exact paired test p = 0.0015).
 
 **First result: E2 on two DeepSeek judges** (`studies/j1_judges`, registered before any call). 177 items from
 P1: each independent case with each of its options proposed, 59 right and 118 wrong.
