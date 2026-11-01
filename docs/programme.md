@@ -2,59 +2,80 @@
 
 ## In plain words
 
-We take one small decision model, Perplexity's 4B decider, and ask it the same kind of question in five areas of
-life: a clinic, a legal office, a support desk, a study of people, and a money decision. In each area we pick one
-narrow thing that is easy to get wrong and matters when it is wrong. We build cases where we know the right answer
-in advance, because we planted the fact that decides it. Then we count how often the model gets it wrong, say how
-sure we are given how few cases we ran, and say what it cost. When the evidence is strong enough, that is a finding,
-and the finding becomes the start of a deeper study. When it is not, the lab models suggest where to look next,
-and a person decides.
+We take one small decision model, Perplexity's 4B decider, and test it on the jobs these models are actually sold
+for. We read the vendors' own documentation to find those jobs, and the vendors' own lists of known weak spots.
+Then we pick, for each job, one narrow thing that is easy to get wrong, matters when it is wrong, and has not
+already been measured by the decision-models lab. For each we build cases where the right answer is known in
+advance, run the model, count the mistakes, say how sure we are, say what it cost, and let a finding open a deeper
+study. Five studies, one protocol, one report across them.
 
-The point of doing five is not five reports. It is to learn what this model can and cannot do, which helper models
-were worth their cost, and whether the method itself holds up outside the clinic.
+## What the reading showed (2026-10-31)
 
-## The five studies, each with an example
+**What the models are for.** TypeSafe's use-case map and cookbooks, and Perplexity's Decisions API docs, describe
+the same five jobs: routing and labelling at volume; verifying another model's work (extractions, citations,
+tool-call traces); guardrails and moderation; scoring retrieved passages before they reach an answering model;
+choosing and filling tools or skills for an agent. Perplexity says the Flash model is for "routing, labeling, or
+filtering" at volume and that it answers each question separately. Both vendors say: keep thresholds in your code,
+set them on your own labelled data, and send uncertain cases to a person.
 
-| Study | Where | The one thing we test | An example case |
+**What the vendors admit.** TypeSafe's own page on Jev 1.13's rough edges lists: literal reading of scoping words
+and negation; arithmetic, counting and dates; double negatives and multi-hop; large state full of irrelevant
+detail; adversarial content in the state; contradictory criteria; a lean toward the first option. Perplexity's
+card says grouped questions influence each other, long inputs beyond 32k tokens are only spot-checked, held-out
+calibration error is about 0.05, and the API's response echoes the model name you sent, not the version that
+served it, so aliases can move under you.
+
+**What the lab already measured on 15 models, this one included.** Rule application and date arithmetic on a
+return-window policy; the spike at the policy's number; abstention on missing and on conflicting records (this
+model never abstains on conflicts, Jev does 60% of the time); forged evidence and nine attack families; option
+order and yes/no against three-way; calibration (this model 0.052); recognition against decision; the Decision
+Index against its own measures; an agent's shell-command gate; and when a model can be left alone at a stated
+error rate. P1's conflict result reproduces the lab's. Pipit does not repeat any of this; it cites it.
+
+**Where that leaves the five.** Each study below is a job the vendors sell, a weakness they admit or a limit they
+flag, and a question the lab has not asked.
+
+## The five studies
+
+| Study | The job | The narrow question | Example case |
 | --- | --- | --- | --- |
-| P1 clinical | a ward or a GP surgery | can the model read a record and keep a patient safe | a child weighs 18 kg and the chart says 540 mg of paracetamol: give it, hold it, or ask? |
-| P2 legal | a compliance desk | does it apply an exception and count a deadline correctly | a notice must be sent within 30 business days of delivery; delivery was a Friday; is Tuesday week five too late? |
-| P3 customer support | a help desk | does it follow a written policy with time windows and tiers | returns are accepted 30 days from delivery, not from order; the order was 35 days ago, delivery 28: eligible? |
-| P4 behavioural science | a study of people | is its judgment steady when the same fact is worded two ways | "9 in 10 recover" and "1 in 10 do not" describe the same outcome: does the answer change? |
-| P5 economics | a money decision | does it compare amounts when units and periods differ | a fee of 1.2 percent a month against 12 percent a year: which is cheaper? |
+| P1 clinical, done | routing a safety decision | reading, computing, inferring, calibrating on a clinical record | 18 kg child, 540 mg on the chart: give, hold, or ask? |
+| P2 verification | checking another model's extraction or citation | does the checker catch answers that look right but are wrong: a schema-valid field that was invented, a quote that exists but whose context contradicts the claim, a field wrongly left blank | the invoice total "1,250.00" was copied from a different line; the quote is verbatim but the section says the opposite |
+| P3 guardrails | screening messages in and out of an LLM | does the guard decide on the words or on the intent: scary words with benign intent, polite words with harmful intent, the same request obfuscated, code-switched or spread over turns | a novelist asks how a detective would describe a poisoning; a user asks the same thing without the frame |
+| P4 retrieval gating | scoring passages before they reach the answering model | does relevance track support for the claim or topical overlap: passages that support, contradict, only share the topic, or are irrelevant, alone and grouped with competitors, short and long | a passage names every term in the question and then says the opposite |
+| P5 agent tools | choosing and filling a tool from a catalogue | with many near-duplicate tools, does it pick the right one and leave unmentioned arguments at their defaults instead of guessing, alone and grouped, as the catalogue grows | "show nvda for the last hour": which of 60 chart tools, and is the window stated? |
 
-Each study has three kinds of case for every example: the fact is there and should change the decision; the fact
-is there and is harmless; the fact is missing or the record contradicts itself, so the right answer is "ask".
+Each study keeps the four hypotheses of P1 (misread, cannot compute, cannot infer, commits when it should ask)
+and adds the two knobs the vendors flag: grouped against one question per request, and state length from a few
+hundred to 32k tokens with the deciding fact at a known position.
 
-## How every study works, step by step
+## What the references add to the engine
 
-1. **Write the question first.** What could go wrong, split into four kinds: the model misreads, the model reads
-   but cannot compute or compare, the model cannot infer from indirect clues, the model commits when it should ask.
-2. **Build the cases with the answer planted.** Two scenarios per family, the three kinds of case, two wordings
-   of each. A helper model rewrites the wording; a different helper model checks the fact is still there. Code
-   checks for broken or cut-off text. Anything with a number is checked by code, not by a model.
-3. **Run the models.** The model under test only answers. A second model answers too, for comparison, never as a
-   teacher. Every call is saved and priced.
-4. **Count and say how sure we are.** For every family and kind of case: how many wrong, and the range the true
-   rate could be in given how few cases we ran. Wrong answers are sorted by how bad they are: unsafe, too cautious,
-   or sure when it should have asked.
-5. **A person reads the flags.** Where the helper model disagreed with the planted answer, a person decides who
-   was right, and both readings are reported.
-6. **Decide.** Strong evidence becomes a finding and opens a deeper study on fresh cases the model has never seen.
-   Weak evidence sends the helper models to propose sharper questions and new cases; a person keeps or drops them.
-7. **Keep the record.** Every study writes the same report, as text and as data, so the five can be read side by
-   side: what was found, how sure, what it cost, which helper models were used.
+These are the pieces the method lacks today, each taken from a named reference and each with a test.
 
-## What the programme must answer at the end
-
-1. About the model: what it can do, where it breaks, and what is still unknown, in words a clinician or a support
-   lead would understand.
-2. About the helper models: which ones were right often enough to be worth their cost, in which job.
-3. About the method: how many cases a finding took compared with just sampling evenly, and where the method beat
-   the published references in practice and where it did not.
+| Gap in Pipit today | Taken from | What we build | How we know it works |
+| --- | --- | --- | --- |
+| Cases are hand-written Python | NeMo Data Designer, Distilabel | a declarative family spec (slots, conditions, expected answers, validators) that a generator compiles to cases with lineage | P1's 120 cases regenerate byte for byte from the spec |
+| The stop rule uses fixed-sample intervals, but the loop stops when evidence looks sufficient | anytime-valid confidence sequences (Howard et al.), the lab's e-values | a sufficiency gate that stays valid under optional stopping; Wilson stays for reporting cells | on M1's synthetic subject, the false-claim rate stays at the stated level however often we peek |
+| The focus stage spends budget by gut | tinyBenchmarks, SubLIME | choose the next cases by how much they would change the estimate (IRT or anchor cases), against uniform at equal budget | M2's keep-or-kill curve |
+| Scenario ideation is one prompt | Bloom, AdaTest, Petri | behaviour-first ideation with diversity control, scored by planted truth, gated by a person; multi-turn and simulated tools for P3 and P5 | the accepted-proposal rate after review, per study |
+| Graders live inside study scripts | OpenAI evals, Inspect | graders as code in `pipit.checks`, separate from samples; a study is a spec plus manifests | a new study needs no new Python |
+| Confidence is reported, not certified | the vendors' own threshold guidance, the lab's E17 | a calibration certificate per study: error against confidence, and the review-band curve (how many cases go to a person for a stated residual error) | the curve is the number an operator asks for |
+| As-served models drift and the API echoes the alias | Perplexity and TypeSafe docs; our Jev run moved from 16 to 15 failures between runs | a canary set re-run at the start of every study; drift is a recorded fact, and a threshold is revalidated when it moves | the canary catches a version change before a study runs on it |
 
 ## Order of work
 
-First the instrument proof (M1) and the clinical dose follow-up, because they cost nothing in helper-model calls
-and tell us whether the counting rules can be trusted. Then the shared protocol and the common report format. Then
-the four new studies. Then the programme report and the viewer.
+1. M1, the synthetic subject, now also the test for the new gate: planted failure rates, repeated peeking, the
+   stated false-claim level held.
+2. The P1 child study on dose arithmetic, as diagnosis and intervention: does supplying the computed ratio in the
+   state fix the failure, as the lab's "decompose, compute, decide" predicts.
+3. The protocol pieces above, each its own issue and pull request: family spec, canary set, calibration certificate,
+   gate.
+4. P2 to P5, then the programme report and the viewer.
+
+## Sources read
+
+TypeSafe docs: introduction, primitives, confidence, how to build with System One, use-case map, patterns,
+cookbooks (guardrails, function calling, citation check, SDE cascade), Jev 1.13 jaggedness. Perplexity: the
+pplx-decider-v1.2 and flash model cards, the Decisions API docs. The decision-models lab: research map, landscape,
+scenarios, log, E14, E14b, E17. Third-party guides were read but not relied on.
