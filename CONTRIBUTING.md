@@ -21,10 +21,11 @@ the claims the pull request makes, never the author's reasoning.
 **A release is tagged only when it passes this gate,** not when its pull requests merge:
 
 1. CI passes: lint, format, tests and the docstring examples.
-2. Every study report rebuilds byte-identical from its recorded runs: run the study's script, then `git diff` is
-   empty. I1 also needs its activations file, `runs/hidden_last.npy`, which `extract.py` makes on the local model
-   and git ignores. X1's report is put together by `assemble.py`; rebuilding its Petri section needs an
-   environment with inspect-petri.
+2. Every study report rebuilds byte-identical from its recorded runs: `uv run --all-extras python
+   studies/rebuild.py` rebuilds them all and fails on any difference, and CI runs it on every pull request. CI
+   skips I1, which also needs its activations file, `runs/hidden_last.npy`, which `extract.py` makes on the local
+   model and git ignores; before a release the script runs where that file exists. X1's Petri section is a
+   recorded run output; rebuilding it needs an environment with inspect-petri.
 3. Every number in the README, the changelog and the docs is traced to the report it comes from, and matches.
 4. Every capability the release notes claim has been exercised, not only found to exist.
 5. The planted answers behind any claim in the release are checked by a second, independent implementation or
@@ -58,7 +59,8 @@ Until 0.0.5 automates steps 2 and 3, the verification agents do them.
 
 - A study is a folder: its pre-registration, its code, its recorded runs and its report.
 - A report is written by its script from recorded runs and is never edited by hand. A hand-written reading goes in a
-  separate file that the script includes.
+  separate file that the script includes. Each report's script is a step in `studies/rebuild.py`, and a test fails
+  when a committed report has none.
 - Numbers in the README and docs are copied from a report; from 0.0.5 they are checked against its `report.json`.
 - An amendment to a pre-registration is written before the results it affects are read, and says what prompted it.
 
