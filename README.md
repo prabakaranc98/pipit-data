@@ -103,8 +103,9 @@ the human-centred row. Shared machinery, the judges (J1) and the bench (B1), cou
 | V1, beside MedCalc-Bench | Do Pipit's written cases rank models the way a real-note benchmark does? | Not overall: across 12 models, Spearman 0.21 (p = 0.25). Where both measure calculation, yes: 0.61 (p = 0.020). Token caps, an answer key that an audit found errors in, and models served by up to 18 providers all shape the scores. It cost $6.90. | `studies/v1_medcalc/report.md` |
 
 Released on 2026-11-01: 0.0.3 (every pull request merged that day up to #64) and 0.0.4 (#65, V1's results, and #67,
-the checks before a run). In 0.0.5 so far: the quality pass (#68, merged in #69), and the fixes from its independent
-review (#70), in review. Next: the rest of 0.0.5, can a report drift from its data?
+the checks before a run). In 0.0.5 so far: the quality pass (#68, merged in #69), the fixes from its independent
+review (#70, merged in #71), and the fixes from the review of #71 (#72). Next: the rest of 0.0.5, can a report drift
+from its data?
 
 ## How work moves
 

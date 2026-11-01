@@ -14,8 +14,10 @@ Status: **reproduced** (Pipit's cases show the documented effect), **agrees** (m
 **not yet**, **regressed** (was passing, now is not).
 
 How the sources were read: by research agents on 2026-11-01, at abstract level or by keyword search of the full
-text, never end to end by a person. Every quote in the reading list, 127 over 125 references, was checked by
-script as an exact substring of its source. A venue marked † comes only from Semantic Scholar's record.
+text, never end to end by a person. The reading list has 125 entries, citing 123 sources (two papers are cited
+twice), with 127 quotes, each word for word from the research draft. A script checked 135 quotes gathered for that
+draft, these 127 among them, as exact substrings of their saved sources. A venue marked † comes only from Semantic
+Scholar's record.
 
 ## Status at 0.0.4
 

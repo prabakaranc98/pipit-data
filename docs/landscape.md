@@ -28,7 +28,7 @@ vendor's questions is no longer shown to hurt, and three hypotheses we had calle
 | --- | --- | --- | --- |
 | 1 | Rewordings counted as independent cases | P1's wording pairs agree 96–100%; two simulations | fixed here |
 | 2 | Building our own runner, log and viewer | Inspect has them, with 28 providers, agents, sandboxes and a viewer | run on Inspect or read its logs; your decision |
-| 3 | Treating planted truth as the end of judging | harm cannot be graded by code; measured judges agree with people 59–93% of the time | judges scored against people, their error carried into the number |
+| 3 | Treating planted truth as the end of judging | harm cannot be graded by code; measured judges agree with people 59–93% of the time | judges scored against published human labels, their error carried into the number |
 | 4 | Attack rates without their budget | success keeps rising with the number of tries | every attack claim names the attack class and the tries allowed |
 | 5 | Item banks fitted by item response theory as a near-term plan | they need hundreds of earlier models answering the same items | adaptive measurement on difficulty set by construction |
 | 6 | Two case families per question | two templates are a sample of two | many cheap rewordings, their spread reported |
@@ -80,8 +80,9 @@ not cover "was this reply harmful?", and there the field's judges disagree with 
 human-labelled replies, by our recount of its published labels, a Llama-3-70B judge agreed with the human majority
 90.7% of the time, and HarmBench's classifier 78.3%, calling 49% of replies jailbroken where people said 37%.
 PyRIT's own judges score 0.59 to 0.90 accuracy across 32 configurations. Adopt two practices: score every judge
-against human labels for each case family before use, as PyRIT's `ScorerEvaluator` does, and correct a measured rate
-for the judge's sensitivity and specificity, as garak does, carrying the judge's error into the interval.
+before use against published human labels where they fit the case family, as PyRIT's `ScorerEvaluator` does, and
+otherwise on planted items and against a measured panel; and correct a measured rate for the judge's sensitivity and
+specificity, as garak does, carrying the judge's error into the interval.
 Prediction-powered inference (Angelopoulos et al., 2023) is the formal route: a small gold set plus many judge labels
 give a valid interval.
 
@@ -155,7 +156,7 @@ Not new, and cited as prior art:
 | Frame | position papers, open-problem lists | hypotheses by mechanism and a tolerance, written before data | keep |
 | Write cases | Data Designer; PyRIT converters; garak probes; promptfoo plugins; Bloom; Petri | planted truth, minimal pairs, difficulty settings | generator: Data Designer or our own (#22), your call |
 | Run | Inspect; lm-evaluation-harness; promptfoo | adapters for MLX and the Perplexity decider | runner: Inspect, your call |
-| Grade | code scorers; LLM judges; Llama Guard; HarmBench's classifier | code against planted truth; judges measured against people | keep, extend to judges |
+| Grade | code scorers; LLM judges; Llama Guard; HarmBench's classifier | code against planted truth; judges measured against published human labels | keep, extend to judges |
 | Decide | nothing found | tolerance tests, certificate, paired tests, cases needed, allocation | Pipit's core |
 | Keep | Inspect logs; DVC; Hugging Face datasets | cost per role, case-set hash, dataset card | keep; card to build |
 
@@ -218,8 +219,8 @@ distillation data only for a limitation that has been confirmed.
 1. One family spec compiles to cases, split by family and scenario into explore, focus and confirm. Confirm never
    feeds training, selection, prompts or the loop.
 2. Writers vary only what cannot change the answer, seeded from real material; code sets every label.
-3. Every helper is scored against planted truth in its role before use; every judge against people where code
-   cannot grade.
+3. Every helper is scored against planted truth in its role before use; every judge against published human labels
+   where code cannot grade.
 4. The allocator sends cases where the evidence straddles the tolerance, reweighted so rates stay unbiased, with
    stopping that stays valid when we look early.
 5. Confirm on fresh, frozen families, with tests registered in advance and e-BH across the tree, counted once per
@@ -263,7 +264,7 @@ models have answered the same Pipit items, an item bank becomes possible, and th
 
 1. The bench and adaptive measurement (#8, #9): the experiment above.
 2. Run on Inspect, or read its logs: a new issue, and your decision.
-3. Judges scored against people, with their error carried into the interval: a new issue.
+3. Judges scored against published human labels, with their error carried into the interval: a new issue.
 4. Attack claims with their budget, with PyRIT or garak as the attacker: a new issue.
 5. The family spec: build on Data Designer or keep our own (#22): your decision.
 6. The evidence rule with e-BH and confidence sequences (#25).

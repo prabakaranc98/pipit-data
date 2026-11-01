@@ -230,3 +230,35 @@ def test_a_rejected_key_stops_at_once(tmp_path, monkeypatch) -> None:
     with pytest.raises(KeyRefused, match="rejected"):
         chat("x")
     assert len(calls) == 1
+
+
+def test_a_stall_after_an_error_is_not_blamed_on_the_error(tmp_path, monkeypatch) -> None:
+    import types
+
+    from pipit.adapters import openrouter
+
+    monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
+    # A clock the test moves, and no wait between attempts: the 503 is got past, and the stall alone runs out
+    # the time.
+    clock = [0.0]
+    monkeypatch.setattr(
+        openrouter, "time", types.SimpleNamespace(perf_counter=lambda: clock[0], sleep=lambda s: None)
+    )
+    served = []
+
+    def overloaded_then_stalls(body, headers):
+        served.append(1)
+        if len(served) % 2 == 1:
+            raise urllib.error.HTTPError("u", 503, "Service Unavailable", {}, None)  # type: ignore[arg-type]
+        clock[0] += 0.2  # what the real transport does with a reply that never finishes
+        raise TooSlow("no complete reply within 0 s")
+
+    chat = OpenRouterChat(
+        _quick(0.1), Context(ledger=Ledger(tmp_path / "l.jsonl"), cache_dir=tmp_path), overloaded_then_stalls
+    )
+    with pytest.raises(TooSlow) as stopped:
+        chat("x")
+    assert "503" not in str(stopped.value) and stopped.value.__cause__ is None
+    with pytest.raises(TooSlow, match="vendor/model: no complete reply") as last:
+        chat("y", retries=2)  # the stall comes on the last attempt
+    assert "503" not in str(last.value)

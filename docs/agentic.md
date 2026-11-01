@@ -151,10 +151,11 @@ data-first workbench; training data comes later.
 
 **Related work.** LangSmith turns human corrections of an LLM grader into few-shot examples that realign it, and
 LangChain Labs (May 2026) works on continual learning for agents and on prompt optimisation across model families.
-Pipit aligns its checkers the same way, but a checker never scores the bench: planted truth and code do. Other
-self-improving systems, such as AlphaEvolve, the Darwin Gödel Machine, the AI Scientist and ADAS, all stand on an
-automated evaluator. Pipit's contribution is an evaluator for evaluation itself, built on planted truth. Method
-candidates for the edit step are reflective prompt evolution (GEPA, Agrawal et al., 2025) and DSPy's optimisers.
+Pipit aligns its checkers the same way, with planted truth in place of human corrections, and a checker never scores
+the bench: planted truth and code do. Other self-improving systems, such as AlphaEvolve, the Darwin Gödel Machine,
+the AI Scientist and ADAS, all stand on an automated evaluator. Pipit's contribution is an evaluator for evaluation
+itself, built on planted truth. Method candidates for the edit step are reflective prompt evolution (GEPA, Agrawal et
+al., 2025) and DSPy's optimisers.
 
 **Never:** tune on the study being measured; let a model judge its own output; touch a Confirm set; count failures
 found without counting validity.
@@ -162,9 +163,10 @@ found without counting validity.
 ## Build or borrow
 
 - **Borrow the runtime.** LangChain's Deep Agents offers what a long study needs: planning, sub-agents with their
-  own context, a file store with pluggable backends, human approval on chosen tool calls (`interrupt_on`), memory
-  files, sandboxes, and LangGraph underneath for persistence and for resuming a paused study. Tools from any MCP
-  server come in through `tools`. Read on 2026-11-01 from its README and documentation overview.
+  own context, a file store with pluggable backends, memory files, sandboxes, and LangGraph underneath for
+  persistence and for resuming a paused study. Tools from any MCP server come in through `tools`. Its human approval
+  on chosen tool calls (`interrupt_on`) stays off, since no step waits for a person. Read on 2026-11-01 from its
+  README and documentation overview.
 - **Keep Pipit's meaning in Pipit.** The study record, modes, gates, ledger and checks stay in the core, which still
   imports no agent or model library. The agent layer is an optional extra at the edge, `pipit[agents]`, like the
   model adapters. If the runtime changes, studies and their records stay valid.

@@ -53,15 +53,17 @@ decision.
 5. Confirm: freeze held-out families for a set of nodes and run them once.
 6. Stop.
 
-**Policies.** Each action needs a rule. The field offers several for each. The bench decides between them, and none
-is adopted until it beats the plain rule there.
+**Policies.** Each action needs a rule. The field offers several for each. The bench decides between them: a rule is
+adopted only when it beats a plain rule that a script can run. For sampling and stopping, that is what is done
+today. Proposing has a scripted draft that nothing yet adds to the tree, and splitting and writing are still done by
+hand, so for those three the bench's first job is to set a scripted baseline.
 
-| Action | Plain rule today | Options from the literature |
+| Action | Done today | Options from the literature |
 | --- | --- | --- |
 | Sample | an even spread, fixed when the cases are built | a short breadth-first pilot for every node, then the node whose estimate sits closest to its tolerance relative to its uncertainty (thresholding bandits, not read); active testing with reweighting when an unbiased rate is the goal |
 | Stop a node | when the budget ends | when an interval that stays valid under early stopping clears the tolerance either way (confidence sequences, not read) |
 | Split | by hand | test candidate factors on units and split only where the test passes, with false discoveries controlled as tests arrive (alpha-investing, as in Slice Finder, not read); fit a threshold and a slope where the factor is continuous |
-| Propose | a lab model after each round | cluster the failures the tree does not explain, as EvalTree does, and let the lead write a node; a new node starts with a pilot |
+| Propose | a lab model drafted proposals once, after P1's round; nothing yet adds them to the tree | cluster the failures the tree does not explain, as EvalTree does, and let the lead write a node; a new node starts with a pilot |
 | Write | a person and a script | the lead and case writers, from the family spec, checked by code |
 
 **Explore and confirm stay separate.** Everything adaptive happens on explore families: sampling, splitting, proposing,
