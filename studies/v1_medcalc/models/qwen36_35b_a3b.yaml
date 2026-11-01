@@ -1,0 +1,10 @@
+# A candidate through OpenRouter, released 2026-04. Prices from OpenRouter's public list on 2026-11-01; the ledger
+# records the cost OpenRouter reports for each call. Each model runs in its provider's default setup.
+name: qwen36_35b_a3b
+id: qwen/qwen3.6-35b-a3b
+revision: as-served
+adapter: pipit.adapters.openrouter:load
+placement: api
+key_env: OPENROUTER_API_KEY
+price_usd_per_million_in: 0.10
+price_usd_per_million_out: 0.90

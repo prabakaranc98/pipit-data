@@ -81,9 +81,9 @@ environment variable that holds the key) and resolved through an adapter at the 
 | B1, the bench | Does adaptive spending beat an even spread? | On a confidence sequence, which keeps early stopping honest, sampling nearest to a verdict settled 4 to 44 times as many questions as an even spread at 240 units, but under twice as many at 60, where it settled fewer than an even spread on ordinary intervals. A false claim appeared in at most 1.3% of runs; on ordinary intervals, in up to a quarter. | `studies/b1_bench/report.md` |
 | I1, interpretability | Does Qwen hold the planted fact when its decision ignores it? | Yes: a probe reads the fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18. On doses the decision barely moves between safe and unsafe. | `studies/i1_interp/report.md` |
 
-Merged on 2026-11-01: #39 (counting a case once; Pipit against the field), #56 (the rules), #58 (native setups) and
-#59 (the engine design with J1, X1 and I1). In review: #60, the bench and adaptive spending (#8, #9, #25). Next:
-#61, `m3/v1-medcalc` (#57), once its runs finish.
+Merged on 2026-11-01: #39 (counting a case once; Pipit against the field), #56 (the rules), #58 (native setups),
+#59 (the engine design with J1, X1 and I1) and #61 (study V1, registered before its runs). In review: #60, the bench
+and adaptive spending (#8, #9, #25). Next: V1's results, once its runs finish (#57).
 
 ## How work moves
 

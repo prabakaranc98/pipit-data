@@ -298,7 +298,7 @@ Honest gaps, as of 2026-11-01, each with the work that closes it:
 | Studies are small | P1 settles one of twelve key questions per model | fewer, deeper key questions per budget, and adaptive spending (#9) |
 | No judge is certified | where code cannot grade, the number is only as good as the judge | J1 with 30 to 60 more unsafe items, and injection resistance in the bar (#41) |
 | The platform is fragile | a stopped server or a sleeping laptop cost hours today | the supervisor and resumable jobs (#53) |
-| Work waits on review | building outpaces review, and context drifts | one pull request at a time, against main: #39, #56, #58 and #59 merged on 2026-11-01; #60 and #61 wait |
+| Work waits on review | building outpaces review, and context drifts | one pull request at a time, against main: #39, #56, #58, #59 and #61 merged on 2026-11-01; V1's results come next |
 
 What moved toward the real world on 2026-11-01: evidence counted once per case, which corrected overclaims;
 judges measured before use; Pipit tested beside Petri on the same model; three methods agreeing on why the dose
