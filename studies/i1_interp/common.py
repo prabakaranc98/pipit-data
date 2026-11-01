@@ -65,7 +65,9 @@ def encode(tok, text: str):
         enable_thinking=False,
         return_tensors="pt",
     )
-    return ids if not isinstance(ids, dict) else ids["input_ids"]
+    import torch
+
+    return ids if torch.is_tensor(ids) else ids["input_ids"]
 
 
 def letter_ids(tok, n: int) -> list[int]:

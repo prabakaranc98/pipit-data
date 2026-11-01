@@ -231,6 +231,18 @@ P1: each independent case with each of its options proposed, 59 right and 118 wr
 - OpenRouter spread each model across providers. A judge's measured accuracy is only reusable with its provider
   pinned in the manifest.
 
+**First interpretability result: study I1** (`studies/i1_interp`, registered before its run). P1's critical and
+benign minimal pairs on Qwen3.5-4B in PyTorch, which chose the same option as P1's MLX runs on 73 of 74 cases.
+
+- A probe trained on other families reads the planted fact at the decision point from about layer 16, best at layer
+  20 (79% held out). On the cases where the model decided wrong, it still reads the fact on 11 of 13: the fact reaches
+  the decision and is not used.
+- Copying the critical run's state into the benign run at the decision point restores nothing up to layer 16, 28% of
+  the decision's gap at layer 18 and 53% at layer 20, rising to 82% at layer 30.
+- On weight-based doses the model's lean toward caution moves only 0.1 to 0.4 logits between a safe and an unsafe
+  dose, against 3 to 10 in other families: P1's dose failure, seen at the decision point.
+- Next, the playbook's Explain step: supply the computed mg/kg in the record and test whether the dose gap opens.
+
 ## 8. Decisions for you
 
 - Which policies E1 compares first.
