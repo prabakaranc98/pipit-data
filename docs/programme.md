@@ -49,6 +49,22 @@ Each study keeps the four hypotheses of P1 (misread, cannot compute, cannot infe
 and adds the two knobs the vendors flag: grouped against one question per request, and state length from a few
 hundred to 32k tokens with the deciding fact at a known position.
 
+## Cases anyone can read
+
+A rule of the protocol, not a preference. Every study is read by students, engineers, practitioners, leaders and
+buyers, so:
+
+- **Every family opens with the person and the stake.** One sentence: who faces this decision, and what a wrong
+  answer costs them. "A pharmacist checking a child's dose before the nurse gives it."
+- **Every case reads like a real record.** A ticket a customer would send, a note a clinician would write, a
+  contract clause a lawyer would recognise, a tool catalogue an engineer would ship. No placeholders, no codes in
+  the text, no synthetic filler. The lab models paraphrase into the voice of that workplace, and a person reads a
+  sample before the study runs.
+- **Every result is told three ways.** One line for a student (what the model got wrong and why it matters), one
+  for an engineer (which condition, how often, with what confidence), one for a leader (what it means for relying
+  on the model, and what it cost to find out).
+- **Names say what they mean.** Families, conditions and options are plain phrases, not codes, in the report.
+
 ## What the references add to the engine
 
 These are the pieces the method lacks today, each taken from a named reference and each with a test.
