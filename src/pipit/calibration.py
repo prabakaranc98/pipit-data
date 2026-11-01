@@ -5,6 +5,11 @@ below it a person decides. A *silent error* is a wrong answer the model handled 
 processed. The certificate finds the lowest cut-off at which we can say, at a stated confidence, that silent
 errors stay below a stated rate.
 
+The test counts independent units, not cases: a case and its rewordings are one unit, and a unit counts as a
+silent error when any of its cases is one. That count is at least the unit's share of silent errors, so the
+guarantee holds whatever the correlation inside a unit. Counting each rewording as a separate case would
+claim more certainty than the data holds.
+
 Method: an exact binomial test at each cut-off, applied in a fixed sequence from the strictest cut-off
 down and stopped at the first cut-off that fails. This is the fixed-sequence procedure of Learn-then-Test
 (Angelopoulos, Bates, Candes, Jordan and Lei, 2021; not yet read in full for this project). The guarantee
@@ -15,7 +20,7 @@ not a deployment.
 from __future__ import annotations
 
 import math
-from collections.abc import Sequence
+from collections.abc import Hashable, Sequence
 from dataclasses import dataclass
 
 
@@ -63,7 +68,8 @@ def upper_bound(k: int, n: int, delta: float = 0.05) -> float:
 
 
 def cases_needed(alpha: float, delta: float = 0.05, events: int = 0) -> int:
-    """The fewest cases that certify a rate below `alpha` when `events` of them are failures."""
+    """The fewest independent cases (units) that certify a rate below `alpha` when `events` of them are
+    failures."""
     hi = events + 1
     while upper_bound(events, hi, delta) > alpha:
         hi *= 2
@@ -143,7 +149,8 @@ def review_band(
 
 @dataclass(frozen=True)
 class Certificate:
-    """The lowest cut-off at which silent errors are certified below `alpha` with confidence 1 - `delta`."""
+    """The lowest cut-off at which silent errors are certified below `alpha` with confidence 1 - `delta`.
+    `n` and `automated` count cases; `units` and `silent_units` count the independent units tested."""
 
     alpha: float
     delta: float
@@ -152,6 +159,8 @@ class Certificate:
     threshold: float
     automated: int
     silent_errors: int
+    units: int = 0
+    silent_units: int = 0
 
     @property
     def automated_rate(self) -> float:
@@ -159,20 +168,42 @@ class Certificate:
 
     @property
     def silent_upper(self) -> float:
+        if self.units:
+            return upper_bound(self.silent_units, self.units, self.delta)
         return upper_bound(self.silent_errors, self.n, self.delta)
 
 
 def certify(
-    scores: Sequence[float], losses: Sequence[bool], alpha: float, delta: float = 0.05
+    scores: Sequence[float],
+    losses: Sequence[bool],
+    alpha: float,
+    delta: float = 0.05,
+    units: Sequence[Hashable] | None = None,
 ) -> Certificate:
     """Fixed-sequence test from the strictest cut-off down: reject 'silent errors exceed alpha' while the
-    exact binomial p-value P(Binomial(n, alpha) <= k) is at most delta; the last rejected cut-off is
-    certified. When even the strictest cut-off fails, nothing is certified: there are too few cases to say
-    anything at alpha."""
+    exact binomial p-value P(Binomial(units, alpha) <= units with a silent error) is at most delta; the last
+    rejected cut-off is certified. `units[i]` names the independent unit of case i; without it every case is
+    its own unit. When even the strictest cut-off fails, nothing is certified: there are too few independent
+    cases to say anything at alpha."""
     n = len(scores)
-    best = Certificate(alpha, delta, n, False, math.inf, 0, 0)
-    for row in review_band(scores, losses):
-        if binom_cdf(row.silent_errors, n, alpha) > delta:
+    keys: list[Hashable] = list(units) if units is not None else list(range(n))
+    if len(keys) != n:
+        raise ValueError("units must name one unit per case")
+    k = len(set(keys))
+    best = Certificate(alpha, delta, n, False, math.inf, 0, 0, k, 0)
+    order = sorted(range(n), key=lambda i: -scores[i])
+    bad: set[Hashable] = set()
+    automated = errors = i = 0
+    while i < n:
+        t = scores[order[i]]
+        while i < n and scores[order[i]] == t:
+            j = order[i]
+            automated += 1
+            if losses[j]:
+                errors += 1
+                bad.add(keys[j])
+            i += 1
+        if binom_cdf(len(bad), k, alpha) > delta:
             break
-        best = Certificate(alpha, delta, n, True, row.threshold, row.automated, row.silent_errors)
+        best = Certificate(alpha, delta, n, True, t, automated, errors, k, len(bad))
     return best

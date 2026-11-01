@@ -88,8 +88,9 @@ decision-models lab pinned, served by MLX through its OpenAI-style endpoint and 
 about 5 seconds, about 9.4 GB of memory, about 0.4 seconds per question. On every one of P1's 224 questions the answer
 letters carried at least 94% of the first token's probability, so option probabilities are read directly. The
 adapter switches thinking off in the chat template and renormalises the coarse BF16 log-probabilities over the
-options. On P1's 112 cases the LLM made 36 mistakes against its decision-trained sibling's 19 (exact paired test
-p = 0.006); `studies/p1_clinical/report.md` has the breakdown.
+options. On P1's 112 cases the LLM made 36 mistakes against its decision-trained sibling's 19. Counted once per
+independent case (59), the LLM did worse on 15 and better on 5: exact paired test p = 0.04, where counting each
+wording had given 0.006. `studies/p1_clinical/report.md` has the breakdown.
 
 ## Studies as data
 

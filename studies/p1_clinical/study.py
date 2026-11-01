@@ -65,6 +65,12 @@ def adjudicated(cases: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
     return cases
 
 
+def unit(case: dict[str, Any]) -> tuple[str, str, str]:
+    """The independent unit of a case: its scenario and condition. The two wordings of a case are one unit:
+    they almost always get the same outcome, so they are not two independent tests."""
+    return (case["family"], case["scenario"], case["condition"])
+
+
 def severity(case: dict[str, Any], answer: dict[str, Any]) -> str:
     return _severity(case["expected"], answer.get("choice"), CAUTIOUS, PROCEED)
 
