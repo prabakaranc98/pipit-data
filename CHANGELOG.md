@@ -4,12 +4,28 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-11-01
+
 ### Fixed
 
 - Intervals, replays, paired tests and the reliance certificate now count a case and its rewordings once (`pipit.evidence`, `pipit.calibration`). In P1 the two wordings of a case agreed in 51 to 53 of 53 pairs, so counting both claimed too much: 8 of 68 verdicts move to insufficient, grouping the questions is no longer shown to hurt (p = 0.021 becomes 0.18), and certificates at 5% silent errors shrink (Jev 64% to 60%). Two simulations in `tests/test_units.py` show the old counting covering 88% instead of 95%, and certifying 12% of models that sit at the limit instead of at most 5%.
 
 ### Added
 
+- `CONTRIBUTING.md`: how work moves, plain names, code, studies and reports, data, and a glossary of Pipit's words (#62).
+- `pipit.allocate`: where the next cases go. An even spread, the thresholding rule, and a rule that samples the open question nearest to a verdict (#9).
+- `pipit.sequential`: a confidence sequence for a failure rate, valid at every sample size, so a question may stop as soon as its evidence clears; the node rule reads it with `sequential=True` (#25).
+- Study B1 (`studies/b1_bench`): the bench, synthetic subjects with planted failure rates (#8). Sampling nearest to a verdict on ordinary intervals settles up to 15 times as many questions as an even spread but claims falsely in up to 25% of runs. On the confidence sequence it settles 4 to 44 times as many as an even spread on the same sequence at 240 units and under twice as many at 60, with a false claim in at most 1.3% of runs; at 60 units it settles fewer than an even spread on ordinary intervals.
+- `docs/engine.md` and `public/assets/overview.svg`: the method as computation. The tree as a partition of the case space, the loop as a sequential experiment with explore and confirm kept apart, feedback paths with their guards, statistics at three levels, judges measured like any model, the team's models, and experiments E1 to E5.
+- `docs/plan.md` by module: scientific, algorithmic, build and use modules with their state; dataset styles; evaluation aspects after the SAgE group's reliability dimensions; who does what, with each role's model, evidence and next test; the build order mapped to issues #38 to #52.
+- `docs/methodology.md`: how a study goes from a gap to a Hub release, with the independent cases a node needs to be settled, which sets a tree's width and depth.
+- Study J1 (`studies/j1_judges`): four judges measured on 177 planted items from P1. DeepSeek V4.1 Flash is the best default; V4 Pro passed 14 of 20 unsafe proposals when the reply told it to; Jev failed as an injection guard; Nemotron 3 Ultra raised the most false alarms. None can be certified on 20 unsafe items.
+- Study X1 (`studies/x1_petri`): Pipit and Petri 3.1.1 on Qwen3.5-4B, on clinical decisions and on sycophancy. Pipit's pressure test flipped 18 of 39 right decisions when a doctor insisted (exact paired test p = 0.0015), with no judge and no cost.
+- Study I1 (`studies/i1_interp`): a probe, last-position patching and the Explain step on P1's minimal pairs, each registered before it ran. Qwen3.5-4B holds the planted fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18; stating the computed dose per kilogram changed no dose decision.
+- Native setups for LLM candidates (#35, merged in #58): thinking mode in `pipit.adapters.openai_compat`, at the sampling settings the model card recommends, with confidence from how often several samples agree; a request timeout per manifest; P1's runner asks one question, runs cases in parallel and can take a few cases per cell. Qwen3.5-4B in thinking mode made 5 mistakes in 30 against 8 in instruct mode on the same cases (exact paired test p = 0.51), for 5.8 hours of local compute. `pipit.viz` draws a hypothesis tree with each node's evidence and status.
+- `pipit.tree`: checks that a hypothesis tree partitions its cases; P1's tree is now built through it, and its spec states the conditions each key question covers (#45).
+- The family rule: manifests declare a `family`, and `pipit.manifest.family_conflicts` reports any helper, judge or council member sharing a family with a candidate; P1's Qwen validator is the first case it catches (#43).
+- `pipit.ledger.providers` and `mixed_providers`: which providers served each API model, so a model routed to several can be pinned (#44).
 - `docs/landscape.md`: Pipit against the field, from six research passes over about seventy tools and papers: what it gets wrong, ranked; what it adds and what is prior art; the literature by line of work, kept apart as known, open and ours; the loop for automatic data research; why item banks wait for a population of models.
 - `pipit.checks.mcnemar_exact`: the exact paired test, moved from the study scripts into the core.
 
@@ -20,6 +36,10 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 - `docs/programme.md`: the five-study programme on one candidate and its shared protocol; milestones M4 and M5 in the README.
 - `pipit.calibration`: calibration error, Brier score, the review band, an exact binomial reliance certificate tested from the strictest cut-off down, and the number of cases a certificate needs. The P1 report gains the certificate, an exact paired test between subjects, a ledger by subject, and the Perplexity model run with its two questions grouped.
 - Study P3 pilot (`studies/p3_support_crisis/`): crisis triage in a messy support queue, 24 hand-written cases in four families (danger inside a complaint, account takeover under pressure, a customer in crisis, someone else's data exposed), each clear, buried and look-alike; both subjects run; the report counts missed crises, false alarms and wrong crisis teams, checks the two answers against each other, and tests combining them in code.
+
+### Changed
+
+- `docs/plan.md` (#62): the road to 0.1.0 as small releases, one question each; Pipit's five uses, with data as the central artifact; what Pipit makes for each post-training step (it makes the data and measures the result, the training runs elsewhere); NeMo Data Designer as a comparison, not a dependency; agentic tasks at 0.2.5 to 0.3; five industries; the gaps found on 2026-11-01; the decisions taken and open; plain names proposed for 0.0.6.
 
 ## [0.0.2] - 2026-10-31
 
@@ -37,6 +57,7 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 - M0, the repository contract: the `pipit` package skeleton at version 0.0.1, lint and tests in CI, issue and pull-request templates, and the README with the discipline, the two model roles, the milestone ladder and the versioning scheme.
 - Lab models reach Pipit through hosted APIs: TypeSafe for decision models, OpenRouter for LLMs of every size.
 
-[Unreleased]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.3...HEAD
+[0.0.3]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/prabakaranc98/pipit-data/releases/tag/v0.0.1
