@@ -10,6 +10,9 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ### Added
 
+- `pipit.tree`: checks that a hypothesis tree partitions its cases; P1's tree is now built through it, and its spec states the conditions each key question covers (#45).
+- The family rule: manifests declare a `family`, and `pipit.manifest.family_conflicts` reports any helper, judge or council member sharing a family with a candidate; P1's Qwen validator is the first case it catches (#43).
+- `pipit.ledger.providers` and `mixed_providers`: which providers served each API model, so a model routed to several can be pinned (#44).
 - `docs/landscape.md`: Pipit against the field, from six research passes over about seventy tools and papers: what it gets wrong, ranked; what it adds and what is prior art; the literature by line of work, kept apart as known, open and ours; the loop for automatic data research; why item banks wait for a population of models.
 - `pipit.checks.mcnemar_exact`: the exact paired test, moved from the study scripts into the core.
 
