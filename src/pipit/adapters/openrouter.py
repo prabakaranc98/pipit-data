@@ -1,8 +1,10 @@
 """OpenRouter chat completions as a lab model. The response carries the cost when usage accounting is
-requested,
-and the provider that served the call, which varies per call and is recorded. Empty content counts as a
-failure:
-reasoning models return it when the token budget is spent on reasoning, and it is never cached."""
+requested, and the provider that served the call, which varies per call and is recorded. Empty content counts
+as a failure: reasoning models return it when the token budget is spent on reasoning, and it is never cached.
+
+A refused key stops at once: retrying cannot raise a spending limit. Each call has a total time limit,
+`settings.deadline_s` in the manifest (600 seconds unless set), because OpenRouter keeps a slow connection
+alive with padding and the socket's own timeout never fires."""
 
 from __future__ import annotations
 
@@ -25,19 +27,59 @@ class EmptyContent(RuntimeError):
     pass
 
 
-def _urllib_transport(body: dict[str, Any], headers: dict[str, str]) -> dict[str, Any]:
+class KeyRefused(RuntimeError):
+    """The API refused the key (HTTP 402 or 403), usually because its spending limit is reached."""
+
+
+class TooSlow(TimeoutError):
+    """No complete reply within the time limit per call."""
+
+
+def _read_within(response: Any, deadline_s: float, clock: Callable[[], float] = time.monotonic) -> bytes:
+    """Read a whole reply, giving up once `deadline_s` seconds have passed since reading began."""
+    start, chunks = clock(), []
+    while True:
+        if clock() - start > deadline_s:
+            raise TooSlow(f"no complete reply within {deadline_s:.0f} s")
+        chunk = response.read1(65536)
+        if not chunk:
+            return b"".join(chunks)
+        chunks.append(chunk)
+
+
+def _urllib_transport(
+    body: dict[str, Any], headers: dict[str, str], deadline_s: float = 600.0
+) -> dict[str, Any]:
     req = urllib.request.Request(
         URL, data=json.dumps(body).encode(), headers={**headers, "Content-Type": "application/json"}
     )
-    with urllib.request.urlopen(req, timeout=120) as r:
+    with urllib.request.urlopen(req, timeout=min(120.0, deadline_s)) as r:
+        return json.loads(_read_within(r, deadline_s))
+
+
+def _get_json(url: str, headers: dict[str, str]) -> dict[str, Any]:
+    with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=30) as r:
         return json.load(r)
+
+
+def budget_left(
+    key_env: str = "OPENROUTER_API_KEY", fetch: Callable[[str, dict[str, str]], dict[str, Any]] | None = None
+) -> float | None:
+    """Dollars left on an OpenRouter key, or None when the key has no spending limit."""
+    headers = {"Authorization": f"Bearer {require_key(key_env)}"}
+    return (
+        (fetch or _get_json)("https://openrouter.ai/api/v1/key", headers)
+        .get("data", {})
+        .get("limit_remaining")
+    )
 
 
 class OpenRouterChat:
     def __init__(self, manifest: Manifest, context: Context, transport: Transport | None = None):
         self.manifest = manifest
         self.context = context
-        self.transport = transport or _urllib_transport
+        deadline_s = float(manifest.settings.get("deadline_s", 600))
+        self.transport = transport or (lambda body, headers: _urllib_transport(body, headers, deadline_s))
         self.cache = JsonlCache(context.cache_dir / f"{manifest.name}.jsonl")
         self.calls = 0
         self._key: str | None = None
@@ -116,7 +158,20 @@ class OpenRouterChat:
             except EmptyContent:
                 if attempt == retries - 1:
                     raise
-            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError):
+            except urllib.error.HTTPError as e:
+                if e.code in (402, 403):
+                    raise KeyRefused(
+                        f"{self.manifest.id}: the API refused the key (HTTP {e.code}); "
+                        "its spending limit may be reached"
+                    ) from e
+                if attempt == retries - 1:
+                    raise
+                time.sleep(delay)
+                delay *= 2
+            except TooSlow:
+                if attempt >= 1:  # one more try: a provider that hangs once may answer the next time
+                    raise
+            except (urllib.error.URLError, TimeoutError):
                 if attempt == retries - 1:
                     raise
                 time.sleep(delay)

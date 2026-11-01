@@ -99,13 +99,15 @@ their terms allow more.
 
 ## Rules checked in code
 
-Three rules came out of the first studies, and each is now a check rather than a promise:
+Rules that came out of the first studies, each now a check rather than a promise:
 
 | Rule | Why | Where |
 | --- | --- | --- |
 | A tree must partition its cases: every case claimed by exactly one key question | P1's spec, as written, claimed 40 cases twice, and only the order of the code decided which question got them | `pipit.tree.partition`; P1's `tree()` raises when it fails |
 | No model filters or grades for a candidate of its own family | a validator keeps the cases its family reads well; P1's validator is a Qwen model, like all three of its candidates | `family` in every manifest; `pipit.manifest.family_conflicts` |
-| An API model is pinned to one provider, and mixed routing is flagged | in study J1, OpenRouter served one judge from 18 providers, so its measured accuracy belonged to no single one | `settings.request.provider` in the manifest; `pipit.ledger.mixed_providers` |
+| An API model is pinned to one provider, and mixed routing is flagged | in study J1, OpenRouter served one judge from 18 providers, so its measured accuracy belonged to no single one | `settings.request.provider` in the manifest; `pipit.preflight.pinned`; `pipit.ledger.mixed_providers` |
+| A run starts only when every model declares a family, every API model is pinned, and the estimated cost fits the key's budget | in study V1, models were served by up to 18 providers each, and the key ran out mid-run | `pipit.preflight.require` before the first call; an unpinned run needs an explicit flag, which its report states |
+| A refused key stops the run, each call has a time limit, and each result is saved as it finishes | in V1, 1,385 refusals were recorded as failures, one call hung for over 20 minutes, and results were written only when a model finished | `openrouter.KeyRefused` and `TooSlow`; `pipit.results.Results` |
 
 ## How agents carry the playbook
 

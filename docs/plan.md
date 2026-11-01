@@ -320,7 +320,8 @@ the ledger.
 | Scorer and ranker | scores, compares and ranks cases, situations and hypotheses at volume: realism, severity, priority | Jev, once measured in each of these roles | J1: 0.1 s per verdict, a little less accurate than DeepSeek | pairwise realism (#50); hypothesis priority on the bench |
 | Guard | keeps instructions written in a reply away from a judge | none yet: Jev, asked one question, flagged plain proposals more often than injected ones | J1 | quote replies as data, then test again (#41) |
 | Council | reviews findings before they count | three families, never the candidate's | none | 0.2 |
-| Person | signs claims and makes the decisions listed below | the study owner | | |
+| Gates | accept a claim only by rules registered in advance: the confidence sequence, the confirm round, agreement with a benchmark where one exists | code | V1 | the confirm round (0.0.7) |
+| Study owner | makes the decisions listed below; no step waits for a person | | | |
 
 ## Releases on the way to 0.1.0
 
@@ -332,12 +333,12 @@ Each release answers one question and is tagged once its pull requests have merg
 | 0.0.4 | Can we trust a run? | V1's results, with the providers that served each model; the rules checked before a run, so every API model has a pinned provider and a family; a time limit per call; results saved as each item finishes |
 | 0.0.5 | Can a report drift from its data? | CI rebuilds every report from its recorded runs; `report.json` with a schema (#18); the study registry (#54), the model inventory (#20) and the programme tables (#17) generated from it; the numbers in the README and docs checked against it |
 | 0.0.6 | Can anyone read the code? | the conventions in `CONTRIBUTING.md`; modules by concept and plain names, below; type checks and docstrings in CI; studies importable without editing `sys.path`; every report regenerates byte-identical |
-| 0.0.7 | Is the dose finding real? | the family spec (#22); the confirm round on fresh dose families (#10), scored with more than one right answer where the record allows it (#11); a second, independent writer for each family, and how much the writer changes the result; a domain expert's review of P1's answers |
+| 0.0.7 | Is the dose finding real? | the family spec (#22); the confirm round on fresh dose families (#10), scored with more than one right answer where the record allows it (#11); a second, independent writer for each family, and how much the writer changes the result; P1's planted answers checked by a second, independent implementation and against published reference values |
 | 0.0.8 | Can a small model approve alone at a stated clinical error rate, across reruns? | the certificate for Qwen3.5-4B from recorded runs, with reruns to measure consistency, and the cases it hands on; routing between models is not new (FrugalGPT, RouteLLM), so it is not claimed |
 | 0.0.9 | Is Pipit more efficient than random sampling? | Pipit's allocation against random subsets of MedCalc-Bench, on V1's data; the bench with failures that cluster by family and writer, its defects and thin families, and a CI job (#8); P1's dose family (#9); the evidence code reading the confidence sequence (#25) |
 | 0.0.10 | Can it run unattended? | the supervisor (#53), the canary set (#23), and the decision on Inspect (#46) |
-| 0.0.11 | Does data built from a confirmed gap fix it? | training data in the formats above, with source, licence and leak checks; one tutorial that trains with an outside tool and hands the model back to be measured |
-| 0.0.12 | Is our case design better than NeMo Data Designer's? | the same job and budget: labels verifiably right, real failures found, near-duplicates, realism, leaks and cost |
+| 0.0.11 | Does data built from a confirmed gap fix it? | training data in the formats above, with source, licence and leak checks; one tutorial that trains with an outside tool and hands the model back to be measured; the judges' bar with injection resistance (#41); the panel that stands in for human reviewers: model families and decision models such as Jev, each measured on planted items, with votes weighted by their measured error rates |
+| 0.0.12 | Is our case design better than NeMo Data Designer's? | the same job and budget: labels verifiably right, real failures found, near-duplicates, realism measured by whether a classifier can tell the cases from real records (#50), leaks and cost |
 | 0.0.13 | Does the engine carry over to other industries? | extraction and a computed number (G1, #47); pressure and injection variants (#48) |
 | 0.0.14 | Can others use the data? | the first Hub release (#51), the examples (#52) and the viewer (#19) |
 | 0.1.0 | Can someone else pick it up? | the rest of the definition below: one manifest and one command; a study as YAML only (#12); remote engines (#55); P3's dossier confirmed (#14) |
@@ -369,13 +370,12 @@ Honest gaps, as of 2026-11-01, each with the work that closes it:
 | Gap | Why it matters | Closed by |
 | --- | --- | --- |
 | Every result is on cases we wrote | a model can pass written cases and fail on real traffic | V1 against MedCalc-Bench's real notes (0.0.4), then the transfer study on real complaints (#28) |
-| Rules are checked after a run, not before | V1's API models were each served by up to ten providers, so a score belongs to no single deployment | the rules checked before a run (0.0.4) |
-| One person set the clinical truth | a planted answer is only as right as its author | a second writer for each family and a domain expert's review (0.0.7) |
+| One person set the clinical truth | a planted answer is only as right as its author | no reviewer is available, so each planted answer is checked by a second, independent implementation and against published reference values, and each family gets a second writer (0.0.7) |
 | Nothing has been confirmed | every claim so far is exploratory | the confirm round on fresh dose families (0.0.7, #10) |
 | Studies are small, and rewordings add little | P1 settles one of twelve key questions per model; its two wordings agreed on 51 to 53 of 53 cases | new scenarios instead of rewordings (#22), fewer and deeper key questions, and adaptive spending (#9) |
 | Reports and docs can drift from the data | I1's report could not be rebuilt from its script, and the docs overstated B1 | reports rebuilt in CI and the numbers checked (0.0.5) |
 | No judge is certified | where code cannot grade, the number is only as good as the judge | J1 with 30 to 60 more unsafe items, and injection resistance in the bar (#41) |
-| The platform is fragile | a stopped server, a sleeping laptop or one stuck call cost hours | a time limit per call (0.0.4); the supervisor and resumable jobs (0.0.10, #53) |
+| The platform is fragile | a stopped server, a sleeping laptop or one stuck call cost hours | checks before a run, a time limit per call and results saved per item (0.0.4); the supervisor (0.0.10, #53) |
 
 What moved toward the real world on 2026-11-01: evidence counted once per case, which corrected overclaims;
 judges measured before use; Pipit tested beside Petri on the same model; three methods agreeing on why the dose
@@ -425,14 +425,17 @@ Taken on 2026-11-01:
     human-centred AI.
 12. V1 is reported as run, with the providers that served each model shown, and finished runs are not rerun. The
     calls the API key refused were sent again once its limit was raised, which completes the run.
+13. No step waits for a person. Each human check is replaced by an automatic one grounded in a reference: planted
+    answers checked by a second, independent implementation and against published values; realism measured
+    against real records; claims accepted only by gates registered in advance. Where a model must judge, a panel of
+    model families and decision models such as Jev does it, each measured on planted items first.
+14. Industries open one at a time, and finance comes after clinical.
 
 Open:
 
 1. Runner: run on Inspect with Pipit as the statistics on top, or keep our runner and read Inspect logs (#46).
 2. The plain names and module layout proposed for 0.0.6.
-3. Who reviews P1's clinical answers before any release.
-4. The order of the industries after clinical.
-5. The explore split on the Hub: public, or gated behind accepted terms.
-6. The confirm split: run only by us, or shared under agreement.
-7. The lead agent: may it be a model behind an API for studies that touch a business's data?
-8. Examples: notebooks or scripts.
+3. The explore split on the Hub: public, or gated behind accepted terms.
+4. The confirm split: run only by us, or shared under agreement.
+5. The lead agent: may it be a model behind an API for studies that touch a business's data?
+6. Examples: notebooks or scripts.
