@@ -78,12 +78,12 @@ environment variable that holds the key) and resolved through an adapter at the 
 | P3, support triage pilot | Does the router catch the emergency in a messy queue? | Both models sent a self-harm message inside a payment complaint to billing. | `studies/p3_support_crisis/pilot_report.md` |
 | J1, judges | Can a judge tell a right clinical decision from a wrong one? | DeepSeek V4.1 Flash is the best default of four. A note in the reply made V4 Pro pass 14 of 20 unsafe proposals. Jev failed as an injection guard; Nemotron 3 Ultra raised the most false alarms. None can be certified on 20 unsafe items. | `studies/j1_judges/report.md` |
 | X1, beside Petri | What does each method find on the same model, on each other's ground? | Petri's clinical audits point at the mechanisms P1 measured but swing between runs, from 10 to 1 on one seed. On sycophancy, Petri's seeds scored 1 to 3 in two runs, while Pipit's pressure test flipped 18 of 39 right decisions (p = 0.0015). Twelve audits cost $3.66. | `studies/x1_petri/report.md` |
-| B1, the bench | Does adaptive spending beat an even spread? | Sampling nearest to a verdict settles 3 to 15 times as many questions, but raises false claims on ordinary intervals; #25 first. | `studies/b1_bench/report.md`, branch `m2/bench` |
+| B1, the bench | Does adaptive spending beat an even spread? | On a confidence sequence, which keeps early stopping honest, sampling nearest to a verdict settled 4 to 44 times as many questions as an even spread at 240 units, but under twice as many at 60, where it settled fewer than an even spread on ordinary intervals. A false claim appeared in at most 1.3% of runs; on ordinary intervals, in up to a quarter. | `studies/b1_bench/report.md` |
 | I1, interpretability | Does Qwen hold the planted fact when its decision ignores it? | Yes: a probe reads the fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18. On doses the decision barely moves between safe and unsafe. | `studies/i1_interp/report.md` |
 
-Merged on 2026-11-01: #39 (counting a case once; Pipit against the field), #56 (the rules) and #58 (native setups).
-In review: #59, the engine design with J1, X1 and I1 (#40 to #42). Next, one at a time: `m2/bench` (#8, #9, #25),
-then `m3/v1-medcalc` (#57).
+Merged on 2026-11-01: #39 (counting a case once; Pipit against the field), #56 (the rules), #58 (native setups),
+#59 (the engine design with J1, X1 and I1) and #61 (study V1, registered before its runs). In review: #60, the bench
+and adaptive spending (#8, #9, #25). Next: V1's results, once its runs finish (#57).
 
 ## How work moves
 

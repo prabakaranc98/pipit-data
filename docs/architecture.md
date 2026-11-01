@@ -142,7 +142,7 @@ layer below says what holds today, what the first studies showed, and what comes
 | --- | --- | --- |
 | Frame | a tree that partitions the case space; each node a claim with a tolerance | P1's tree, now checked in code (#45) |
 | Build | family specs compiled to cases with planted truth; helpers scored before use | P1; the validator was wrong on 25 of 31 flags |
-| Spend | a pilot, then the open question nearest a verdict, on a confidence sequence | B1: 4 to 40 times as many questions settled, false claims at most 1% of runs |
+| Spend | a pilot, then the open question nearest a verdict, on a confidence sequence | B1: 4 to 44 times as many questions settled as an even spread at 240 units, under twice as many at 60; false claims at most 1.3% of runs |
 | Grade | code first; a measured judge only where code cannot, resistant to instructions in the reply | J1: the best judge passes most bars but not the injection test unaided |
 | Grow | splits on recorded factors with false discoveries controlled; failures clustered into new nodes | planned |
 | Explain | interventions on the minimal pairs: state a fact, patch a layer, see what moves | I1: the dose decision is a fixed cautious answer |

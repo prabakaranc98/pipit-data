@@ -10,6 +10,9 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ### Added
 
+- `pipit.allocate`: where the next cases go. An even spread, the thresholding rule, and a rule that samples the open question nearest to a verdict (#9).
+- `pipit.sequential`: a confidence sequence for a failure rate, valid at every sample size, so a question may stop as soon as its evidence clears; the node rule reads it with `sequential=True` (#25).
+- Study B1 (`studies/b1_bench`): the bench, synthetic subjects with planted failure rates (#8). Sampling nearest to a verdict on ordinary intervals settles up to 15 times as many questions as an even spread but claims falsely in up to 25% of runs. On the confidence sequence it settles 4 to 44 times as many as an even spread on the same sequence at 240 units and under twice as many at 60, with a false claim in at most 1.3% of runs; at 60 units it settles fewer than an even spread on ordinary intervals.
 - `docs/engine.md` and `public/assets/overview.svg`: the method as computation. The tree as a partition of the case space, the loop as a sequential experiment with explore and confirm kept apart, feedback paths with their guards, statistics at three levels, judges measured like any model, the team's models, and experiments E1 to E5.
 - `docs/plan.md` by module: scientific, algorithmic, build and use modules with their state; dataset styles; evaluation aspects after the SAgE group's reliability dimensions; who does what, with each role's model, evidence and next test; the build order mapped to issues #38 to #52.
 - `docs/methodology.md`: how a study goes from a gap to a Hub release, with the independent cases a node needs to be settled, which sets a tree's width and depth.

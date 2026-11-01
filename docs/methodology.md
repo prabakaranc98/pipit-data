@@ -140,6 +140,14 @@ Three rules came out of the first studies, and each is now a check rather than a
 1. **On the bench:** synthetic subjects with planted failure surfaces, failure probability rising with a difficulty
    setting. Do adaptive allocation and staircases recover the planted thresholds with fewer cases than an even
    spread, without more false claims?
+   First result (`studies/b1_bench`, 2026-11-01): on three planted surfaces of twelve questions, sending each next
+   unit to the open question that would settle soonest settles up to fifteen times as many questions as an even
+   spread at the same budget, but on ordinary intervals it claims falsely in up to a quarter of runs. With a
+   confidence sequence instead, which stays valid when a question stops early, it settles 4 to 44 times as many
+   questions as an even spread on the same sequence at 240 units and under twice as many at 60, with a false claim
+   in at most 1.3% of runs. The sequence is stricter, so at 60 units this pair settles fewer questions than an even
+   spread on ordinary intervals. The textbook thresholding rule helped less and erred as often. Adaptive spending is
+   adopted only with the sequence.
 2. **On real models:** a dose-ratio staircase on the Perplexity decider and on Qwen3.5-4B in thinking mode: the ratio
    at which each starts to withhold, and how many cases that took against a grid.
 3. **Replication:** the dose finding re-tested in an independent family with different drugs, units and wording.

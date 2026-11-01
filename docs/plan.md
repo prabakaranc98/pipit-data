@@ -185,8 +185,8 @@ small experiment: one question, one baseline, one change, one evaluation.
 | A1 Units | a case and its rewordings count once | built (#39) |
 | A2 Intervals and paired tests | Wilson intervals; exact paired tests | built |
 | A3 The certificate | a fixed-sequence exact binomial test over units | built |
-| A4 Allocation | a pilot for every node, then the thresholding rule or active testing | planned (#9) |
-| A5 Stopping | intervals that stay valid when we look early | planned (#25) |
+| A4 Allocation | a pilot for every node, then the thresholding rule or active testing | on the bench: an even spread, the thresholding rule, nearest to settle (#9); active testing planned |
+| A5 Stopping | intervals that stay valid when we look early | a confidence sequence the node rule can read (#25); not yet read by `pipit.evidence` |
 | A6 Growing the tree | splits tested on recorded factors, with false discoveries controlled; failure clustering | planned |
 | A7 Thresholds | staircases on difficulty settings | planned |
 | A8 Judged rates | correction for a judge's sensitivity and specificity; prediction-powered inference | planned |
@@ -276,8 +276,8 @@ the ledger.
 5. **The platform under the loop:** the supervisor that owns model servers and resumes jobs (#53), and the study
    registry (#54).
 6. **Dataset styles and variants:** extraction and a computed number (#47); pressure and injection variants (#48).
-7. **The bench and adaptive measurement** (E1; #8, #9, #25): done on branch `m2/bench`, with a
-   confidence sequence; adaptive spending is adopted only with it.
+7. **The bench and adaptive measurement** (E1; #8, #9, #25; pull request #60), with a confidence sequence;
+   adaptive spending is adopted only with it.
 8. **The evaluation aspects in `report.json`,** with a schema (#18).
 9. **The first release and the examples** (#51, #52).
 10. **Study configuration** (#12), after the decision on Inspect (#46); remote engines (#55).
@@ -298,7 +298,7 @@ Honest gaps, as of 2026-11-01, each with the work that closes it:
 | Studies are small | P1 settles one of twelve key questions per model | fewer, deeper key questions per budget, and adaptive spending (#9) |
 | No judge is certified | where code cannot grade, the number is only as good as the judge | J1 with 30 to 60 more unsafe items, and injection resistance in the bar (#41) |
 | The platform is fragile | a stopped server or a sleeping laptop cost hours today | the supervisor and resumable jobs (#53) |
-| Work waits on review | building outpaces review, and context drifts | one pull request at a time, against main: #39, #56 and #58 merged on 2026-11-01; `m2/bench` and `m3/v1-medcalc` wait |
+| Work waits on review | building outpaces review, and context drifts | one pull request at a time, against main: #39, #56, #58, #59 and #61 merged on 2026-11-01; V1's results come next |
 
 What moved toward the real world on 2026-11-01: evidence counted once per case, which corrected overclaims;
 judges measured before use; Pipit tested beside Petri on the same model; three methods agreeing on why the dose

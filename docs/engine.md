@@ -199,12 +199,14 @@ Each is one question, one baseline, one change and one evaluation.
 | E4 | does the loop invent findings? | a synthetic subject with no real failure | the full loop, explore then confirm | claims that survive confirm; at most 5% should |
 | E5 | what does each method find on the same model, on each other's ground? | Petri 3.1.1 audits | Pipit's planted cases and pressure test | what each finds, what it can claim, and at what cost |
 
-**First results.** E1, on the bench (`studies/b1_bench`, branch `m2/bench`): sending each next unit to the open
-question nearest a verdict settles 4 to 40 times as many questions as an even spread, with false claims in at most 1%
-of runs, but only when the node rule reads a confidence sequence; on ordinary intervals the same policy claims falsely
-in up to a quarter of runs. E5 (`studies/x1_petri`): Petri's clinical audits point at the mechanisms P1 measured, but
-one audit per seed swings between runs, from 10 to 1 on the same seed; on sycophancy its seeds scored 1 to 2, while
-Pipit's pressure test flipped 18 of 39 right decisions (exact paired test p = 0.0015).
+**First results.** E1, on the bench (`studies/b1_bench`): on ordinary intervals, sending each next unit to the open
+question nearest a verdict claims falsely in up to a quarter of runs. With the node rule reading a confidence sequence,
+it settles 4 to 44 times as many questions as an even spread on the same sequence at 240 units, 3 to 23 times at 120
+and under twice as many at 60, with a false claim in at most 1.3% of runs against 0.7% for the even spread. At 60 units
+it settles fewer questions than an even spread on ordinary intervals, the way P1 was run. E5 (`studies/x1_petri`):
+Petri's clinical audits point at the mechanisms P1 measured, but one audit per seed swings between runs, from 10 to 1
+on the same seed; on sycophancy its seeds scored 1 to 3 over two runs, while Pipit's pressure test flipped 18 of 39
+right decisions (exact paired test p = 0.0015).
 
 **First result: E2 on two DeepSeek judges** (`studies/j1_judges`, registered before any call). 177 items from
 P1: each independent case with each of its options proposed, 59 right and 118 wrong.
