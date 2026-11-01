@@ -36,6 +36,7 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 from pipit.cache import JsonlCache, request_key
+from pipit.checks import stopped_on_length
 from pipit.manifest import Context, Manifest
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -92,7 +93,7 @@ def reasoned_letter(
     (finish_reason "length"), or reasoning that opens and never closes, was cut off, so it gives no answer.
     A capital letter used as a word, such as the article "A", can still be misread."""
     first = (response.get("choices") or [{}])[0]
-    if first.get("finish_reason") == "length":
+    if stopped_on_length(first.get("finish_reason")):
         return None
     text = (first.get("message") or {}).get("content") or ""
     if reasoning_end and reasoning_end in text:

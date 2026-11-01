@@ -184,10 +184,14 @@ class OpenRouterChat:
                 last_error = e
                 time.sleep(min(delay, max(0.0, self.deadline_s - (time.perf_counter() - t0))))
                 delay *= 2
-            except TooSlow:
+            except TooSlow as e:
                 # The real transport raises this only once the call's time is spent, so the next pass stops.
+                # The stall ran the time out, not an earlier error the call got past.
+                last_error = None
                 if attempt == retries - 1:
-                    raise
+                    raise TooSlow(
+                        f"{self.manifest.id}: no complete reply within {self.deadline_s:.0f} s"
+                    ) from e
             except (urllib.error.URLError, TimeoutError) as e:
                 if attempt == retries - 1:
                     raise

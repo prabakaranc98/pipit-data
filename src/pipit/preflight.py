@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from dataclasses import dataclass
+from urllib.parse import urlparse
 
 from pipit.manifest import Manifest, family_conflicts
 
@@ -38,7 +39,8 @@ def provider_varies(manifest: Manifest) -> bool:
     through its own adapter or through `openai_compat` with an openrouter.ai `base_url`; a vendor's own API,
     such as TypeSafe's, serves every call itself, so it has nothing to pin."""
     if manifest.adapter.startswith("pipit.adapters.openai_compat"):
-        return "openrouter.ai" in str(manifest.settings.get("base_url", ""))
+        host = urlparse(str(manifest.settings.get("base_url", ""))).hostname or ""
+        return host == "openrouter.ai" or host.endswith(".openrouter.ai")
     return manifest.adapter.startswith("pipit.adapters.openrouter")
 
 

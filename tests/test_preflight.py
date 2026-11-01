@@ -74,3 +74,5 @@ def test_openrouter_reached_through_openai_compat_varies_by_provider_too() -> No
     assert provider_varies(compat("https://openrouter.ai/api/v1"))
     assert [p.rule for p in problems([compat("https://openrouter.ai/api/v1")])] == ["provider"]
     assert not provider_varies(compat("http://gpu-box:8000/v1"))  # a server that serves every call itself
+    assert provider_varies(compat("https://OpenRouter.ai/api/v1"))  # a host's case does not matter
+    assert not provider_varies(compat("https://example.com/openrouter.ai/v1"))  # only the host counts

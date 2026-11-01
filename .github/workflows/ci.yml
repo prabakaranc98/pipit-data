@@ -17,6 +17,6 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run pytest
-      # The docstring examples, from the modules that have them. Not all of src: CI installs no extras, and the
-      # PyTorch-based adapters would fail to import.
-      - run: uv run pytest --doctest-modules src/pipit/preflight.py src/pipit/results.py
+      # The docstring examples of the core, so a new example is run as soon as it is written. Not the adapters:
+      # CI installs no extras, and the PyTorch-based adapters would fail to import.
+      - run: uv run pytest --doctest-modules src/pipit --ignore=src/pipit/adapters
