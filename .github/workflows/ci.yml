@@ -20,3 +20,5 @@ jobs:
       # The docstring examples of the whole package, so a new example is run as soon as it is written. The adapters
       # import their model libraries inside functions, so they load without the extras.
       - run: uv run pytest --doctest-modules src/pipit
+      # Every study report rebuilt from its recorded runs; fails when one differs from what its script writes.
+      - run: uv run python studies/rebuild.py
