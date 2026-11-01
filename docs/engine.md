@@ -53,10 +53,12 @@ decision.
 5. Confirm: freeze held-out families for a set of nodes and run them once.
 6. Stop.
 
-**Policies.** Each action needs a rule. The field offers several for each. The bench decides between them, and none
-is adopted until it beats the plain rule there.
+**Policies.** Each action needs a rule. The field offers several for each. The bench decides between them: a rule is
+adopted only when it beats a plain rule that a script can run. For sampling, stopping and proposing, that is what is
+done today; splitting and writing are still done by hand, so the bench's first job there is to set a scripted
+baseline.
 
-| Action | Plain rule today | Options from the literature |
+| Action | Done today | Options from the literature |
 | --- | --- | --- |
 | Sample | an even spread, fixed when the cases are built | a short breadth-first pilot for every node, then the node whose estimate sits closest to its tolerance relative to its uncertainty (thresholding bandits, not read); active testing with reweighting when an unbiased rate is the goal |
 | Stop a node | when the budget ends | when an interval that stays valid under early stopping clears the tolerance either way (confidence sequences, not read) |

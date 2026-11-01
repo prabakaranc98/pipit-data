@@ -84,7 +84,7 @@ single piece.
 | Reference | Fundamental | Pipit's difference in P1 |
 | --- | --- | --- |
 | CheckList (Ribeiro et al., ACL 2020) | behavioural tests: minimum functionality, invariance, directional | the same three test kinds appear as conditions and wordings, with planted truth so no annotation step is needed |
-| AdaTest (Ribeiro and Lundberg, ACL 2022) | model-generated tests, human in the loop | proposals are generated from evidence and enter a round only through its pre-registration; validator flags are settled by the planted truth, not by a person |
+| AdaTest (Ribeiro and Lundberg, ACL 2022) | model-generated tests, human in the loop | proposals are generated from evidence and enter a round only through its pre-registration; in P1 a person read the validator's flags, and from 0.0.7 the planted truth settles them |
 | WEAVER (Findings of EMNLP 2023) | define the investigation space first | the hypothesis tree is written before cases exist and rolls evidence up |
 | tinyBenchmarks (Polo et al., ICML 2024) | estimate a benchmark from few, well-chosen items | it needs hundreds of earlier models answering the same items; Pipit has none yet, so adaptive measurement works on difficulty set by construction, tested on the bench (M2) |
 | SubLIME (ACL 2025) | choose subsets by the decision to be made | cells and verdicts are built around one decision: is there a limitation here |

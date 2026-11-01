@@ -303,7 +303,7 @@ Reliability" (Rabanser et al., ICML 2026), and cost is weighed against accuracy,
 | Predictability | calibration, and the reliance certificate | P1 |
 | Safety | errors by severity; a certificate on unsafe errors alone | P1 |
 | Cost | dollars, tokens and seconds per case and per claim; accuracy against cost | the ledger |
-| Validity | judges against planted truth and people; realism; transfer to real traffic | J1; #28 |
+| Validity | judges against planted truth and published human labels; realism; transfer to real traffic | J1; #28 |
 
 ## Who does what: roles and models
 
