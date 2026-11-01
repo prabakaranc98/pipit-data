@@ -70,6 +70,11 @@ and when to stop. Code computes every right answer and grades every reply. A per
 1. **On the bench:** synthetic subjects with planted failure surfaces, failure probability rising with a difficulty
    setting. Do adaptive allocation and staircases recover the planted thresholds with fewer cases than an even
    spread, without more false claims?
+   First result (`studies/b1_bench`, 2026-11-01): on three planted surfaces of twelve questions, sending each next
+   unit to the open question that would settle soonest settles three to fifteen times as many questions as an even
+   spread at the same budget. It also raises the share of runs with a false claim, to as much as 25% near the
+   threshold, because a question stops on an ordinary interval. The textbook thresholding rule helps less and errs
+   as often. No adaptive policy is adopted until intervals that stay valid under early stopping land (#25).
 2. **On real models:** a dose-ratio staircase on the Perplexity decider and on Qwen3.5-4B in thinking mode: the ratio
    at which each starts to withhold, and how many cases that took against a grid.
 3. **Replication:** the dose finding re-tested in an independent family with different drugs, units and wording.
