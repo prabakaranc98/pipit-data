@@ -29,30 +29,32 @@ def score(rates: list[float], verdicts: list[str]) -> tuple[int, int]:
     return right, false
 
 
-def run_even(rates: list[float], budget: int, rng: random.Random) -> tuple[list[str], int]:
+def run_even(
+    rates: list[float], budget: int, rng: random.Random, sequential: bool = False
+) -> tuple[list[str], int]:
     names = [f"Q{i}" for i in range(len(rates))]
     units = even(names, budget)
     verdicts = []
     for name, rate in zip(names, rates, strict=True):
         n = units[name]
-        verdicts.append(status(sum(rng.random() < rate for _ in range(n)), n))
+        verdicts.append(status(sum(rng.random() < rate for _ in range(n)), n, sequential=sequential))
     return verdicts, budget
 
 
 def run_adaptive(
-    rates: list[float], budget: int, rng: random.Random, policy=thresholding
+    rates: list[float], budget: int, rng: random.Random, policy=thresholding, sequential: bool = False
 ) -> tuple[list[str], int]:
     names = [f"Q{i}" for i in range(len(rates))]
     counts = {name: (0, 0) for name in names}
     spent = 0
     while spent < budget:
-        q = policy(counts)
+        q = policy(counts, sequential=sequential) if sequential else policy(counts)
         if q is None:
             break
         f, n = counts[q]
         counts[q] = (f + (rng.random() < rates[names.index(q)]), n + 1)
         spent += 1
-    return [status(*counts[name]) for name in names], spent
+    return [status(*counts[name], sequential=sequential) for name in names], spent
 
 
 def main() -> None:
@@ -71,6 +73,11 @@ def main() -> None:
                 ("even", run_even),
                 ("thresholding", run_adaptive),
                 ("nearest to settle", lambda r, b, g: run_adaptive(r, b, g, nearest_to_settle)),
+                ("even, sequence", lambda r, b, g: run_even(r, b, g, sequential=True)),
+                (
+                    "nearest to settle, sequence",
+                    lambda r, b, g: run_adaptive(r, b, g, nearest_to_settle, True),
+                ),
             )
             for policy, fn in policies:
                 rng = random.Random(f"{surface}-{budget}")

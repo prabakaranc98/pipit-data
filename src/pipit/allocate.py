@@ -17,16 +17,19 @@ import math
 from collections.abc import Mapping
 
 from pipit.checks import wilson
+from pipit.sequential import confidence_sequence
 
 LIMITATION, CLEAR = 0.20, 0.15
 
 
-def status(fail: float, n: float, limitation: float = LIMITATION, clear: float = CLEAR) -> str:
+def status(
+    fail: float, n: float, limitation: float = LIMITATION, clear: float = CLEAR, sequential: bool = False
+) -> str:
     """The node rule: supported when the lower bound clears `limitation`, refuted when the upper bound stays
     below `clear`, insufficient otherwise."""
     if n == 0:
         return "insufficient"
-    lo, hi = wilson(fail, n)
+    lo, hi = confidence_sequence(fail, n) if sequential else wilson(fail, n)
     if lo > limitation:
         return "supported"
     if hi < clear:
@@ -60,36 +63,44 @@ def thresholding(
     )
 
 
-def units_to_settle(fail: float, n: int, cap: int = 4000) -> int | None:
+def units_to_settle(fail: float, n: int, cap: int = 4000, sequential: bool = False) -> int | None:
     """If the observed rate held, how many more units until the question settles; None when it never would,
     because the rate sits between the two thresholds. Wilson bounds tighten as units grow, so a binary search
     finds the smallest total."""
     if n == 0:
         return None
     rate = fail / n
-    if status(rate * cap, cap) == "insufficient":
+
+    def at(m: int) -> str:
+        return status(round(rate * m) if sequential else rate * m, m, sequential=sequential)
+
+    if at(cap) == "insufficient":
         return None
     lo, hi = n, cap
     while lo < hi:
         mid = (lo + hi) // 2
-        if status(rate * mid, mid) == "insufficient":
+        if at(mid) == "insufficient":
             lo = mid + 1
         else:
             hi = mid
     return lo - n
 
 
-def nearest_to_settle(counts: Mapping[str, tuple[float, int]], pilot: int = 3) -> str | None:
+def nearest_to_settle(
+    counts: Mapping[str, tuple[float, int]], pilot: int = 3, sequential: bool = False
+) -> str | None:
     """The question to sample next: after a pilot, the open question that would settle soonest if its rate
     held. Open questions that could never settle at their current rate are sampled only when nothing else is
     left, fewest units first. None when every question is settled."""
     for q, (_, n) in counts.items():
         if n < pilot:
             return q
-    open_questions = [q for q, (f, n) in counts.items() if status(f, n) == "insufficient"]
+    open_questions = [
+        q for q, (f, n) in counts.items() if status(f, n, sequential=sequential) == "insufficient"
+    ]
     if not open_questions:
         return None
-    reachable = {q: units_to_settle(*counts[q]) for q in open_questions}
+    reachable = {q: units_to_settle(*counts[q], sequential=sequential) for q in open_questions}
     finite = [q for q in open_questions if reachable[q] is not None]
     if finite:
         return min(finite, key=lambda q: reachable[q])

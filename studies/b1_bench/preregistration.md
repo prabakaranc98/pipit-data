@@ -40,3 +40,9 @@ more but also claims falsely more often, the fixed-sample intervals are the prob
 The thresholding rule starved the easy questions and raised false claims. A third policy, written for Pipit's
 interval-based verdicts, is added before the second run: after the pilot, each next unit goes to the open question
 that would settle soonest if its observed rate held. Both runs are reported.
+
+## Second amendment, after the second run
+
+Nearest-to-settle settled far more questions but stopped on ordinary intervals and claimed falsely in up to a
+quarter of runs. Both the even spread and nearest-to-settle are run a third time with the node rule reading a
+confidence sequence, `pipit.sequential`, that stays valid when a question stops early. All three runs are reported.

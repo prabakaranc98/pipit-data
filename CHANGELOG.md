@@ -7,7 +7,8 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 ### Added
 
 - `pipit.allocate`: where the next cases go. An even spread, the thresholding rule, and a rule that samples the open question nearest to a verdict (#9).
-- Study B1 (`studies/b1_bench`): the bench, synthetic subjects with planted failure rates (#8). Sampling nearest to a verdict settles three to fifteen times as many questions as an even spread at equal budget, but stopping on ordinary intervals raises false claims, to as much as 25% of runs near the threshold; #25 comes before any adaptive policy is adopted.
+- `pipit.sequential`: a confidence sequence for a failure rate, valid at every sample size, so a question may stop as soon as its evidence clears; the node rule reads it with `sequential=True` (#25).
+- Study B1 (`studies/b1_bench`): the bench, synthetic subjects with planted failure rates (#8). Sampling nearest to a verdict on ordinary intervals settles 3 to 15 times as many questions as an even spread but claims falsely in up to 25% of runs; on the confidence sequence it settles 4 to 40 times as many as an even spread on the same sequence, with false claims in at most 1% of runs.
 
 - `docs/architecture.md`: the components by layer (interfaces, control plane, agent team, core, engines, data, quality), built or planned; three loops at three speeds; how configuration flows from a machine profile to a study file to manifests; memory on a laptop, measured, and the rules that keep a run out of swap; one diagram.
 - `docs/methodology.md`: the playbook. Models write, statistics allocate, code grades, people decide; eight steps from framing to report, each with an owner and a check; how agents carry it through skills, tested prompts, scoped context and coordination through the record; what it enables for research; and three experiments that will show whether it works. `docs/plan.md`: the path to 0.1.0 reordered around it.
