@@ -10,17 +10,27 @@ from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from study import HERE, LEDGER, RUNS, adjudicated, load_cases, read_jsonl, severity, tree  # noqa: E402
+from study import HERE, LEDGER, RUNS, adjudicated, load_cases, read_jsonl, severity, tree, unit  # noqa: E402
 
-from pipit.calibration import binom_cdf, brier, cases_needed, certify, ece, review_band, top_probability  # noqa: E402
-from pipit.checks import wilson  # noqa: E402
+from pipit.calibration import brier, cases_needed, certify, ece, review_band, top_probability, upper_bound  # noqa: E402
+from pipit.checks import mcnemar_exact, wilson  # noqa: E402
 from pipit.costs import PriceList, per_case, per_group, summarize  # noqa: E402
-from pipit.evidence import cases_to_evidence, cells, rollup  # noqa: E402
+from pipit.evidence import cases_to_evidence, cells, rollup, unit_share  # noqa: E402
 from pipit.ledger import Ledger  # noqa: E402
 
 
 def fmt(lo: float, hi: float) -> str:
     return f"{lo:.2f}–{hi:.2f}"
+
+
+def by_unit(cases: dict, answers: dict) -> tuple[float, int]:
+    """Failures and independent cases: a case and its rewording count once, adding the share that failed."""
+    units: dict = {}
+    for k, a in answers.items():
+        c = units.setdefault(unit(cases[k]), [0, 0])
+        c[1] += 1
+        c[0] += severity(cases[k], a) != "ok"
+    return unit_share(units), len(units)
 
 
 def main() -> None:
@@ -39,6 +49,12 @@ def main() -> None:
         f"Case set: {len(cases)} cases. Primary set (pre-registered: validator agrees, executable checks pass): {len(primary)}. "
         f"Adjudicated set (after reading every validator flag, see adjudication.yaml): {len(adjud)}. "
         "Tables use the adjudicated set; the primary overall figure is given per subject.\n"
+    )
+    L.append(
+        f"Independent cases: {len({unit(cases[k]) for k in adjud})} in the adjudicated set. The two wordings of a case "
+        "almost always get the same outcome (see wording invariance below), so they count as one independent case in "
+        "every interval, replay, paired test and certificate. Counting each wording would claim more certainty than "
+        "the data holds.\n"
     )
     L.append(
         "Excluded: "
@@ -63,15 +79,18 @@ def main() -> None:
             if s != "ok":
                 sev[s] += 1
         L.append(f"\n## {name}: {next(iter(ans.values()))['model_answered']}\n")
+        pu, pn = by_unit(cases, prim)
+        au, an = by_unit(cases, ans)
         L.append(
-            f"Primary set: {pf}/{len(prim)} failures (95% {fmt(*wilson(pf, len(prim)))}). "
-            f"Adjudicated set: {af}/{len(ans)} (95% {fmt(*wilson(af, len(ans)))}); by severity {dict(sev)}.\n"
+            f"Primary set: {pf}/{len(prim)} failures, {pu:g}/{pn} counted once per independent case "
+            f"(95% {fmt(*wilson(pu, pn))}). Adjudicated set: {af}/{len(ans)}, {au:g}/{an} independent "
+            f"(95% {fmt(*wilson(au, an))}); by severity {dict(sev)}.\n"
         )
 
-        by_cell = cells(cases, ans, key=lambda c: (c["family"], c["condition"]), failed=severity)
+        by_cell = cells(cases, ans, key=lambda c: (c["family"], c["condition"]), failed=severity, unit=unit)
         L.append("### Hypothesis tree, rolled up bottom-up\n")
         L.append(
-            "| node | title | fail/n | 95% interval | status | seconds | USD |\n|---|---|---|---|---|---|---|"
+            "| node | title | fail/n | independent | 95% interval | status | seconds | USD |\n|---|---|---|---|---|---|---|---|"
         )
         agg = rollup(nodes, cell_map, by_cell)
         case_costs = per_case([r for r in Ledger(LEDGER).rows() if r.get("subject") == name], prices)
@@ -91,7 +110,7 @@ def main() -> None:
             c = node_costs.get(nid, {"seconds": 0.0, "usd": 0.0, "unpriced": 0})
             usd = f"{c['usd']:.4f}" + ("*" if c["unpriced"] else "")
             L.append(
-                f"| {'&nbsp;&nbsp;' * depth}{nid} | {n.title} | {n.fail}/{n.n} | {fmt(*n.interval)} | {n.status()} | {c['seconds']:.0f} | {usd} |"
+                f"| {'&nbsp;&nbsp;' * depth}{nid} | {n.title} | {n.fail}/{n.n} | {n.fail_units:g}/{n.n_units} | {fmt(*n.interval)} | {n.status()} | {c['seconds']:.0f} | {usd} |"
             )
             for ch in n.children:
                 walk(ch, depth + 1)
@@ -99,13 +118,13 @@ def main() -> None:
         walk("O", 0)
         L.append("\n### Cells\n")
         L.append(
-            "| family | aspect | condition | fail/n | 95% interval | severity | verdict | failing cases |\n|---|---|---|---|---|---|---|---|"
+            "| family | aspect | condition | fail/n | independent | 95% interval | severity | verdict | failing cases |\n|---|---|---|---|---|---|---|---|---|"
         )
         aspects = {c["family"]: c["aspect"] for c in cases.values()}
         for key in sorted(by_cell, key=lambda k: (int(k[0][1:]), k[1])):
             c = by_cell[key]
             L.append(
-                f"| {key[0]} | {aspects[key[0]]} | {key[1]} | {c.fail}/{c.n} | {fmt(*c.interval)} | {dict(c.severities) or '-'} | "
+                f"| {key[0]} | {aspects[key[0]]} | {key[1]} | {c.fail}/{c.n} | {c.fail_units:g}/{c.n_units} | {fmt(*c.interval)} | {dict(c.severities) or '-'} | "
                 f"{c.verdict()} | {', '.join(c.failures) or '-'} |"
             )
         misread = right_wrong = 0
@@ -128,7 +147,7 @@ def main() -> None:
         L.append(
             f"Wording invariance: the decision changed between the two wordings in {sum(p['0'] != p['1'] for p in full)}/{len(full)} pairs.\n"
         )
-        hits = cases_to_evidence(cases, ans, family=lambda c: c["family"], failed=severity)
+        hits = cases_to_evidence(cases, ans, family=lambda c: c["family"], failed=severity, unit=unit)
         L.append(
             f"Cases-to-evidence (random order, {len(hits)} replays): median {hits[len(hits) // 2]} cases until a family's failure-rate "
             f"lower bound exceeded 0.2; the screen ran {len(ans)}.\n"
@@ -144,19 +163,30 @@ def main() -> None:
                 same = sum(a[k]["choice"] == b[k]["choice"] for k in common)
                 ra = [severity(cases[k], a[k]) == "ok" for k in common]
                 rb = [severity(cases[k], b[k]) == "ok" for k in common]
-                only_a = sum(x and not y for x, y in zip(ra, rb, strict=True))
-                only_b = sum(y and not x for x, y in zip(ra, rb, strict=True))
-                m = only_a + only_b
-                p_pair = min(1.0, 2 * binom_cdf(min(only_a, only_b), m, 0.5)) if m else 1.0
+                case_a = sum(x and not y for x, y in zip(ra, rb, strict=True))
+                case_b = sum(y and not x for x, y in zip(ra, rb, strict=True))
+                ua: dict = {}
+                ub: dict = {}
+                for k, x, y in zip(common, ra, rb, strict=True):
+                    for d, ok in ((ua, x), (ub, y)):
+                        c = d.setdefault(unit(cases[k]), [0, 0])
+                        c[0] += ok
+                        c[1] += 1
+                only_a = sum(ua[u][0] / ua[u][1] > ub[u][0] / ub[u][1] for u in ua)
+                only_b = sum(ub[u][0] / ub[u][1] > ua[u][0] / ua[u][1] for u in ua)
+                p_pair = mcnemar_exact(only_a, only_b)
                 L.append(
                     f"{names[i]} and {names[j]} chose the same option on {same}/{len(common)} cases. Right only for "
-                    f"{names[i]}: {only_a}; right only for {names[j]}: {only_b}; exact paired test p = {p_pair:.4f}.\n"
+                    f"{names[i]}: {case_a} cases; right only for {names[j]}: {case_b}. Counted once per independent "
+                    f"case ({len(ua)}): better for {names[i]} on {only_a}, for {names[j]} on {only_b}; exact paired "
+                    f"test p = {p_pair:.4f}.\n"
                 )
 
     L.append("\n## Can it act alone? The reliance certificate\n")
     L.append(
         "Above a cut-off of how sure the model is, it acts alone; below it, a person decides. A silent error is a wrong "
-        "answer the model handled alone, counted per case processed. For each target the table gives the lowest cut-off "
+        "answer the model handled alone. The test counts independent cases: a case and its rewording are one, and "
+        "count as a silent error if either is one. For each target the table gives the lowest cut-off "
         "at which we are 95% sure silent errors stay below the target (an exact binomial test, applied from the strictest "
         "cut-off down), and the share of cases the model could then handle alone. Unsafe-only counts only the errors that "
         "would harm a patient. These cases are synthetic: the certificate is for this case set, not for a deployment.\n"
@@ -175,15 +205,16 @@ def main() -> None:
         L.append(f"### {name}\n")
         L.append(f"Calibration on {len(ids)} cases: ECE {e:.3f} (5 bins), Brier {b:.3f}.\n")
         L.append(
-            "| silent errors at most | cut-off | handled alone | silent errors seen | unsafe-only: cut-off | unsafe-only: handled alone |"
+            "| silent errors at most | cut-off | handled alone | independent cases with a silent error | unsafe-only: cut-off | unsafe-only: handled alone |"
         )
         L.append("|---|---|---|---|---|---|")
         for alpha in (0.10, 0.05, 0.03):
-            c, u = certify(sc, wrong, alpha), certify(sc, unsafe, alpha)
+            us = [unit(cases[k]) for k in ids]
+            c, u = certify(sc, wrong, alpha, units=us), certify(sc, unsafe, alpha, units=us)
             cut = f"{c.threshold:.3f}" if c.certified else "none"
             ucut = f"{u.threshold:.3f}" if u.certified else "none"
             L.append(
-                f"| {alpha:.0%} | {cut} | {c.automated_rate:.0%} | {c.silent_errors} | {ucut} | {u.automated_rate:.0%} |"
+                f"| {alpha:.0%} | {cut} | {c.automated_rate:.0%} | {c.silent_units} | {ucut} | {u.automated_rate:.0%} |"
             )
             cert_rows.append((name, alpha, c.automated_rate, u.automated_rate))
         L.append("\n| cut-off | handled alone | silent errors | of which unsafe |\n|---|---|---|---|")
@@ -195,13 +226,14 @@ def main() -> None:
         L.append("")
     L.append("### How many cases a certificate needs\n")
     L.append(
-        "If the model makes no silent error at all, this many cases certify a silent-error rate below the target, at 95% confidence:\n"
+        "If the model makes no silent error at all, this many independent cases certify a silent-error rate below the target, at 95% confidence:\n"
     )
-    L.append("| target | cases needed |\n|---|---|")
+    L.append("| target | independent cases needed |\n|---|---|")
     for alpha in (0.05, 0.02, 0.01, 0.005, 0.001):
         L.append(f"| {alpha:.1%} | {cases_needed(alpha)} |")
     L.append(
-        f"\nThis study has {len(adjud)} cases, so the best rate it can ever certify is about {3 / len(adjud):.1%} even with no errors.\n"
+        f"\nThis study has {len({unit(cases[k]) for k in adjud})} independent cases ({len(adjud)} counting each wording), so the "
+        f"best rate it can ever certify is {upper_bound(0, len({unit(cases[k]) for k in adjud})):.2%}, and only with no errors at all.\n"
     )
 
     L.append(

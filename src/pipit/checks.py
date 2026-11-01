@@ -6,8 +6,9 @@ import math
 from typing import Any
 
 
-def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
-    """Wilson score interval for k successes in n trials; (0, 1) when n is 0."""
+def wilson(k: float, n: float, z: float = 1.96) -> tuple[float, float]:
+    """Wilson score interval for k successes in n trials; (0, 1) when n is 0. Counts may be fractional, as
+    when each independent unit adds the share of its cases that failed (`pipit.evidence`)."""
     if n == 0:
         return (0.0, 1.0)
     p = k / n
@@ -56,3 +57,14 @@ def severity(
     if expected == uncertain:
         return "false_certainty"
     return "other"
+
+
+def mcnemar_exact(only_first: int, only_second: int) -> float:
+    """Exact two-sided paired test on matched units: how surprising the split of discordant pairs is if both
+    sides were equally good. Count units, not rewordings, or the test is overconfident."""
+    from pipit.calibration import binom_cdf
+
+    m = only_first + only_second
+    if m == 0:
+        return 1.0
+    return min(1.0, 2 * binom_cdf(min(only_first, only_second), m, 0.5))
