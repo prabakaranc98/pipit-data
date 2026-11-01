@@ -112,21 +112,24 @@ def capped(ledger: list[dict], name: str, arm: str, key: str) -> set:
 
 def pinned_calls(ledger: list[dict], names: list[str]) -> dict[str, tuple[int, int]]:
     """For each model, its calls made by a run that pinned it to one provider, and all its calls. A call is
-    credited to the last run in runs/run_log.jsonl that started before it; a call older than the log came from
-    V1's first runs, which pinned none. Today's manifests are not read: they say what a run would do now, not
-    what the runs did."""
+    credited to the last run in runs/run_log.jsonl that started before it and ran its model, since V1 ran several
+    runs at once; a call older than the log came from V1's first runs, which pinned none. Today's manifests are
+    not read: they say what a run would do now, not what the runs did."""
     path = RUNS / "run_log.jsonl"
     runs = [json.loads(x) for x in path.read_text().splitlines() if x.strip()] if path.exists() else []
-    starts = [(datetime.datetime.fromisoformat(r["started"]).timestamp(), set(r["pinned"])) for r in runs]
+    starts = [
+        (datetime.datetime.fromisoformat(r["started"]).timestamp(), set(r["models"]), set(r["pinned"]))
+        for r in runs
+    ]
 
-    def pinned_by(t: float) -> set[str]:
-        before = [models for start, models in starts if start <= t]
-        return before[-1] if before else set()
+    def pinned_by(name: str, t: float) -> bool:
+        before = [pinned for start, models, pinned in starts if start <= t and name in models]
+        return bool(before) and name in before[-1]
 
     counts = {}
     for name in names:
         calls = [r["t"] for r in ledger if r.get("subject") == name and not r.get("cached")]
-        counts[name] = (sum(name in pinned_by(t) for t in calls), len(calls))
+        counts[name] = (sum(pinned_by(name, t) for t in calls), len(calls))
     return counts
 
 
