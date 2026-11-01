@@ -1,0 +1,10 @@
+# A candidate through OpenRouter, released 2026-04. Prices from OpenRouter's public list on 2026-11-01; the ledger
+# records the cost OpenRouter reports for each call. Each model runs in its provider's default setup.
+name: gemma4_26b_a4b
+id: google/gemma-4-26b-a4b-it
+revision: as-served
+adapter: pipit.adapters.openrouter:load
+placement: api
+key_env: OPENROUTER_API_KEY
+price_usd_per_million_in: 0.07
+price_usd_per_million_out: 0.22

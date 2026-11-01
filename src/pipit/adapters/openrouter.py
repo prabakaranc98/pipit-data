@@ -61,10 +61,14 @@ class OpenRouterChat:
         role: str = "lab",
         retries: int = 4,
         meta: dict[str, Any] | None = None,
+        system: str | None = None,
     ) -> dict[str, Any]:
+        messages = [{"role": "user", "content": prompt}]
+        if system is not None:
+            messages.insert(0, {"role": "system", "content": system})
         body = {
             "model": self.manifest.id,
-            "messages": [{"role": "user", "content": prompt}],
+            "messages": messages,
             "temperature": temperature,
             "max_tokens": max_tokens,
             "usage": {"include": True},
