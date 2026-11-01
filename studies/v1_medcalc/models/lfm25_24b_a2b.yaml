@@ -5,6 +5,7 @@ id: liquid/lfm-2.5-24b-a2b
 revision: as-served
 adapter: pipit.adapters.openrouter:load
 placement: api
+family: liquid
 key_env: OPENROUTER_API_KEY
 price_usd_per_million_in: 0.05
 price_usd_per_million_out: 0.70

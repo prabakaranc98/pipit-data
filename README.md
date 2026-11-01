@@ -35,20 +35,26 @@ Lab models are reached through hosted APIs: TypeSafe for decision models and Ope
 
 Both are reached through the same contract: a subject is a callable from a case to an answer, plus a manifest (identifier, revision, settings). Pipit's core imports no model library. Adapters are small, live at the edge, and are the only place a model's SDK appears. That is what makes Pipit reusable for any model, local or hosted.
 
-## Milestones
+## Releases
 
-One question each; a milestone groups the issues that answer it. Releases are smaller and come more often: the road
-to 0.1.0 in `docs/plan.md`, one question per release.
+Each release answers one question, and its issues sit in a GitHub milestone of the same name. The plan is in
+`docs/plan.md`.
 
-| | Question | Done when |
-| --- | --- | --- |
-| M0 | Can a change reach `main` only through an issue, a pull request, CI and review? | the first pull request merged green; tag `v0.0.1` |
-| M1 | Does the evidence ledger give the right verdict on a synthetic subject with planted limitations, defects and coverage holes? | verdict accuracy and false-claim rate reported |
-| M2 | Does any adaptive sampler beat uniform sampling at equal budget on that subject? | keep or kill, with the budget curve |
-| M3 | On one 4B candidate with dense prior evidence, does Pipit find a critical limitation with a fraction of the cases a full grid needs, confirmed on a protected split of case families? | one finding, or one documented insufficiency |
-| M4 | Can five niche studies on one candidate (clinical, legal, customer support, behavioural science, economics) run one protocol and be read as one programme? | five reports and the programme report, with lab models, costs and findings accounted; see `docs/programme.md` |
-| M5 | Can a reader see what a study found, at what evidence level and cost, without running anything? | `report.json` per study and a static viewer under `public/` |
-| M6 | Does an agentic study team find planted failures with fewer cases and dollars than the scripted loop, without more false claims? | keep or kill on the bench, after 0.1.0; see `docs/agentic.md` |
+| Release | Question |
+| --- | --- |
+| 0.0.3, released | Can Pipit's numbers be trusted? |
+| 0.0.4 | Can we trust a run? |
+| 0.0.5 | Can a report drift from its data? |
+| 0.0.6 | Can anyone read the code? |
+| 0.0.7 | Is the dose finding real? |
+| 0.0.8 | Can a small model approve alone at a stated clinical error rate, across reruns? |
+| 0.0.9 | Is Pipit more efficient than random sampling? |
+| 0.0.10 | Can it run unattended? |
+| 0.0.11 | Does data built from a confirmed gap fix it? |
+| 0.0.12 | Is our case design better than NeMo Data Designer's? |
+| 0.0.13 | Does the engine carry over to other industries? |
+| 0.0.14 | Can others use the data? |
+| 0.1.0 | Can someone else pick it up? |
 
 First candidate: Perplexity's 4B decider, in BF16 on this Mac. Qwen3.5-4B, the instruction-tuned LLM it was trained from, is the control, run in its native setup: thinking on, with its model card's sampling settings.
 
@@ -74,6 +80,17 @@ environment variable that holds the key) and resolved through an adapter at the 
 
 ## Where things stand (2026-11-01)
 
+Five industries by five uses. A row opens only when the one before it is done; shared machinery, the judges (J1) and
+the bench (B1), counts through the cells it serves.
+
+| | Data for post-training | Evaluation | Auditing | Alignment, interpretability, safety | Reliability and routing |
+| --- | --- | --- | --- | --- | --- |
+| **Clinical and biomedical** | planned (0.0.11) | P1, V1 | X1 | I1 | P1's certificate; 0.0.8 |
+| Legal | | | | | |
+| Finance and banking | | | | | |
+| Data and AI work | | | | | |
+| Human-centred AI | | | | P3 | |
+
 | Study | Question | Result so far | Report |
 | --- | --- | --- | --- |
 | P1, clinical decisions | Where does a 4B decision model's clinical safety decision break? | Both deciders fail weight-based dose checks. Counted once per case (#39), Jev could act alone on 60% of cases at no more than 5 silent errors per 100. Qwen3.5-4B in thinking mode made 5 mistakes in 30 against 8 in instruct mode, not distinguishable (p = 0.51), for 5.8 hours of compute. | `studies/p1_clinical/report.md` |
@@ -82,10 +99,10 @@ environment variable that holds the key) and resolved through an adapter at the 
 | X1, beside Petri | What does each method find on the same model, on each other's ground? | Petri's clinical audits point at the mechanisms P1 measured but swing between runs, from 10 to 1 on one seed. On sycophancy, Petri's seeds scored 1 to 3 in two runs, while Pipit's pressure test flipped 18 of 39 right decisions (p = 0.0015). Twelve audits cost $3.66. | `studies/x1_petri/report.md` |
 | B1, the bench | Does adaptive spending beat an even spread? | On a confidence sequence, which keeps early stopping honest, sampling nearest to a verdict settled 4 to 44 times as many questions as an even spread at 240 units, but under twice as many at 60, where it settled fewer than an even spread on ordinary intervals. A false claim appeared in at most 1.3% of runs; on ordinary intervals, in up to a quarter. | `studies/b1_bench/report.md` |
 | I1, interpretability | Does Qwen hold the planted fact when its decision ignores it? | Yes: a probe reads the fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18. On doses the decision barely moves between safe and unsafe. | `studies/i1_interp/report.md` |
+| V1, beside MedCalc-Bench | Do Pipit's written cases rank models the way a real-note benchmark does? | Not overall: across 12 models, Spearman 0.21 (p = 0.25). Where both measure calculation, yes: 0.61 (p = 0.020). Token caps, an answer key with 19 corrected calculators, and models served by up to 18 providers all shape the scores. It cost $6.90. | `studies/v1_medcalc/report.md` |
 
-Released as 0.0.3: #39 (counting a case once; Pipit against the field), #56 (the rules), #58 (native setups), #59
-(the engine design with J1, X1 and I1), #60 (the bench), #61 (study V1, registered before its runs) and #62 (the
-plan and the conventions). Next: 0.0.4, starting with V1's results (#57).
+Released as 0.0.3 on 2026-11-01: #39, #56, #58, #59, #60, #61, #63 and #64. In review: V1's results (#57). Next in
+0.0.4: the checks before a run.
 
 ## How work moves
 

@@ -1,0 +1,220 @@
+{"row": "9", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "9.67 mL/min", "correct": true, "provider": "Wafer"}
+{"row": "14", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "21.94 mL/min", "correct": true, "provider": "Wafer"}
+{"row": "18", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "6.07 mL/min", "correct": true, "provider": "Together"}
+{"row": "19", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "40.96 mL/min (approximately 41 mL/min)", "correct": true, "provider": "CoreWeave"}
+{"row": "28", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": null, "correct": false, "provider": "InferenceNet"}
+{"row": "35", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "68 mL/min/1.73 m\u00b2", "correct": true, "provider": "Wafer"}
+{"row": "37", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "74 mL/min/1.73 m\u00b2", "correct": true, "provider": "Wafer"}
+{"row": "39", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "Approximately 29.9 mL/min/1.73 m\u00b2 (about 30 mL/min/1.73 m\u00b2)", "correct": true, "provider": "InferenceNet"}
+{"row": "41", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "2", "correct": true, "provider": "Wafer"}
+{"row": "44", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "4", "correct": true, "provider": "Wafer"}
+{"row": "49", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "7", "correct": true, "provider": "Alibaba"}
+{"row": "56", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "0", "correct": true, "provider": "Relace"}
+{"row": "61", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "100 mmHg", "correct": true, "provider": "Wafer"}
+{"row": "68", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "100 mm Hg", "correct": true, "provider": "Alibaba"}
+{"row": "75", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "53.3 mm Hg", "correct": true, "provider": "Wafer"}
+{"row": "80", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "83 mm Hg", "correct": true, "provider": "Wafer"}
+{"row": "82", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "23.8 kg/m\u00b2", "correct": true, "provider": "Fireworks"}
+{"row": "85", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "23.95 kg/m\u00b2", "correct": true, "provider": "Wafer"}
+{"row": "94", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "24.45 kg/m\u00b2", "correct": true, "provider": "Wafer"}
+{"row": "98", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "13.2 kg/m\u00b2", "correct": true, "provider": "Wafer"}
+{"row": "101", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "9.32 mg/dL", "correct": true, "provider": "Together"}
+{"row": "103", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "8.66 mg/dL", "correct": true, "provider": "DeepInfra"}
+{"row": "108", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "7.84 mg/dL", "correct": true, "provider": "Wafer"}
+{"row": "115", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "7.86 mg/dL", "correct": true, "provider": "Wafer"}
+{"row": "121", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "1.5", "correct": true, "provider": "Wafer"}
+{"row": "128", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "1.5", "correct": false, "provider": "Wafer"}
+{"row": "135", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "1.5", "correct": true, "provider": "DigitalOcean"}
+{"row": "139", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "0", "correct": true, "provider": "CoreWeave"}
+{"row": "142", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "Approximately 50 mL/min/1.73 m\u00b2", "correct": true, "provider": "Wafer"}
+{"row": "145", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "44.4 mL/min/1.73 m\u00b2 (approximately 44 mL/min/1.73 m\u00b2)", "correct": true, "provider": "Crusoe"}
+{"row": "150", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "2.96 mL/min/1.73 m\u00b2", "correct": true, "provider": "Wafer"}
+{"row": "158", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "16.6 mL/min/1.73 m\u00b2", "correct": false, "provider": "Wafer"}
+{"row": "161", "category": "physical", "calculator": "Ideal Body Weight", "answer": "55.1 kg", "correct": true, "provider": "DeepInfra"}
+{"row": "163", "category": "physical", "calculator": "Ideal Body Weight", "answer": "66.8 kg", "correct": true, "provider": "Together"}
+{"row": "177", "category": "physical", "calculator": "Ideal Body Weight", "answer": "56.9 kg", "correct": true, "provider": "Wafer"}
+{"row": "179", "category": "physical", "calculator": "Ideal Body Weight", "answer": "56.9 kg", "correct": true, "provider": "Fireworks"}
+{"row": "184", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "331 msec", "correct": true, "provider": "Together"}
+{"row": "188", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "564 msec", "correct": true, "provider": "Wafer"}
+{"row": "193", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "223 msec", "correct": true, "provider": "Morph"}
+{"row": "200", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "288 msec", "correct": true, "provider": "Wafer"}
+{"row": "205", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "Child-Pugh score = 11 (Class C)", "correct": true, "provider": "Cohere"}
+{"row": "209", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "Child-Pugh Score: 12 (Class C)", "correct": true, "provider": "Wafer"}
+{"row": "218", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "Child-Pugh Score = 10 (Class C)", "correct": true, "provider": "Wafer"}
+{"row": "219", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "Child-Pugh score 8 (Class B)", "correct": true, "provider": "Venice"}
+{"row": "227", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "3", "correct": true, "provider": "Morph"}
+{"row": "228", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "3", "correct": true, "provider": "Fireworks"}
+{"row": "234", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "3", "correct": true, "provider": "Wafer"}
+{"row": "237", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "3", "correct": true, "provider": "DeepInfra"}
+{"row": "246", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "3", "correct": true, "provider": "Crusoe"}
+{"row": "255", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "2", "correct": false, "provider": "CoreWeave"}
+{"row": "257", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "2", "correct": true, "provider": "Wafer"}
+{"row": "260", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "1", "correct": false, "provider": "InferenceNet"}
+{"row": "265", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "5", "correct": false, "provider": "Alibaba"}
+{"row": "270", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "4", "correct": false, "provider": "Alibaba"}
+{"row": "272", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "7", "correct": false, "provider": "Wafer"}
+{"row": "276", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "6", "correct": true, "provider": "DigitalOcean"}
+{"row": "285", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "1.71", "correct": true, "provider": "Parasail"}
+{"row": "292", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "1.36", "correct": true, "provider": "Wafer"}
+{"row": "294", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "6.40", "correct": true, "provider": "Wafer"}
+{"row": "298", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "2.68", "correct": true, "provider": "Wafer"}
+{"row": "302", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "2", "correct": true, "provider": "Wafer"}
+{"row": "303", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "4", "correct": true, "provider": "Wafer"}
+{"row": "310", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "4", "correct": false, "provider": "Wafer"}
+{"row": "317", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "4", "correct": true, "provider": "Wafer"}
+{"row": "322", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "104 mL/hr", "correct": true, "provider": "Wafer"}
+{"row": "327", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "81 mL/hr", "correct": true, "provider": "Wafer"}
+{"row": "330", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "131 mL/hr", "correct": true, "provider": "Wafer"}
+{"row": "335", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "155.3 mL/hr", "correct": true, "provider": "Wafer"}
+{"row": "344", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "23", "correct": true, "provider": "Wafer"}
+{"row": "346", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "19", "correct": true, "provider": "Wafer"}
+{"row": "349", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "26", "correct": true, "provider": "Wafer"}
+{"row": "353", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "18", "correct": false, "provider": "Wafer"}
+{"row": "361", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "5", "correct": true, "provider": "Wafer"}
+{"row": "366", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "2", "correct": true, "provider": "DeepInfra"}
+{"row": "373", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "3", "correct": false, "provider": "Wafer"}
+{"row": "377", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "3", "correct": true, "provider": "Wafer"}
+{"row": "383", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "137.84 mEq/L", "correct": true, "provider": "InferenceNet"}
+{"row": "390", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "131.4 mEq/L", "correct": true, "provider": "Wafer"}
+{"row": "392", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "132.2 mEq/L", "correct": true, "provider": "Wafer"}
+{"row": "396", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "134.8 mEq/L", "correct": true, "provider": "InferenceNet"}
+{"row": "401", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "14", "correct": true, "provider": "Wafer"}
+{"row": "402", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "9", "correct": false, "provider": "Wafer"}
+{"row": "404", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "1", "correct": true, "provider": "Wafer"}
+{"row": "415", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "0", "correct": true, "provider": "InferenceNet"}
+{"row": "421", "category": "lab test", "calculator": "Serum Osmolality", "answer": "424.28 mOsm/kg", "correct": true, "provider": "DeepInfra"}
+{"row": "424", "category": "lab test", "calculator": "Serum Osmolality", "answer": "304.1 mOsm/kg", "correct": true, "provider": "CoreWeave"}
+{"row": "430", "category": "lab test", "calculator": "Serum Osmolality", "answer": "279.8 mOsm/kg", "correct": true, "provider": "InferenceNet"}
+{"row": "433", "category": "lab test", "calculator": "Serum Osmolality", "answer": "284 mOsm/kg", "correct": true, "provider": "DigitalOcean"}
+{"row": "442", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "1.96", "correct": true, "provider": "InferenceNet"}
+{"row": "453", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "4.5", "correct": true, "provider": "Wafer"}
+{"row": "454", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "1.14", "correct": true, "provider": "Wafer"}
+{"row": "458", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "6.17", "correct": true, "provider": "CoreWeave"}
+{"row": "464", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "0", "correct": true, "provider": "Wafer"}
+{"row": "466", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "6", "correct": false, "provider": "Wafer"}
+{"row": "469", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "4", "correct": true, "provider": "DeepInfra"}
+{"row": "478", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "0", "correct": false, "provider": "Parasail"}
+{"row": "481", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "4", "correct": true, "provider": "InferenceNet"}
+{"row": "484", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "4", "correct": true, "provider": "CoreWeave"}
+{"row": "490", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "1", "correct": false, "provider": "InferenceNet"}
+{"row": "494", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "3", "correct": true, "provider": "Morph"}
+{"row": "503", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.43 kg", "correct": true, "provider": "Wafer"}
+{"row": "504", "category": "lab test", "calculator": "Free Water Deficit", "answer": null, "correct": false, "error": "EmptyContent: deepseek/deepseek-v4.1-flash returned empty content (finish_reason=length)"}
+{"row": "505", "category": "lab test", "calculator": "Free Water Deficit", "answer": null, "correct": false, "error": "EmptyContent: deepseek/deepseek-v4.1-flash returned empty content (finish_reason=length)"}
+{"row": "520", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.225 kg", "correct": true, "provider": "DigitalOcean"}
+{"row": "523", "category": "lab test", "calculator": "Anion Gap", "answer": "14 mEq/L", "correct": true, "provider": "Wafer"}
+{"row": "534", "category": "lab test", "calculator": "Anion Gap", "answer": "28 mEq/L", "correct": true, "provider": "CoreWeave"}
+{"row": "537", "category": "lab test", "calculator": "Anion Gap", "answer": "30 mEq/L", "correct": true, "provider": "Wafer"}
+{"row": "538", "category": "lab test", "calculator": "Anion Gap", "answer": "14 mEq/L", "correct": true, "provider": "Wafer"}
+{"row": "541", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "1", "correct": true, "provider": "Together"}
+{"row": "551", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "3", "correct": true, "provider": "Wafer"}
+{"row": "552", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "0", "correct": true, "provider": "DigitalOcean"}
+{"row": "553", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "3", "correct": true, "provider": "CoreWeave"}
+{"row": "562", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.5%", "correct": true, "provider": "Wafer"}
+{"row": "565", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.48%", "correct": true, "provider": "CoreWeave"}
+{"row": "572", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.16%", "correct": true, "provider": "Cohere"}
+{"row": "578", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.30%", "correct": true, "provider": "DigitalOcean"}
+{"row": "582", "category": "lab test", "calculator": "LDL Calculated", "answer": "124.5 mg/dL (approximately 125 mg/dL)", "correct": true, "provider": "DigitalOcean"}
+{"row": "583", "category": "lab test", "calculator": "LDL Calculated", "answer": "154 mg/dL", "correct": true, "provider": "Wafer"}
+{"row": "584", "category": "lab test", "calculator": "LDL Calculated", "answer": "34.4 mg/dL", "correct": true, "provider": "Cohere"}
+{"row": "599", "category": "lab test", "calculator": "LDL Calculated", "answer": "91.4 mg/dL", "correct": true, "provider": "Wafer"}
+{"row": "603", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "4%", "correct": false, "provider": "CoreWeave"}
+{"row": "605", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "8%", "correct": false, "provider": "Relace"}
+{"row": "610", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "8%", "correct": false, "provider": "Wafer"}
+{"row": "619", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "4%", "correct": false, "provider": "Wafer"}
+{"row": "625", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "6", "correct": false, "provider": "DigitalOcean"}
+{"row": "631", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "0", "correct": true, "provider": "Together"}
+{"row": "632", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "1", "correct": true, "provider": "DigitalOcean"}
+{"row": "638", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "8", "correct": false, "provider": "Wafer"}
+{"row": "641", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "1", "correct": true, "provider": "CoreWeave"}
+{"row": "644", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "1", "correct": true, "provider": "Alibaba"}
+{"row": "645", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "0", "correct": true, "provider": "Together"}
+{"row": "656", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "3", "correct": true, "provider": "Together"}
+{"row": "664", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "364 msec", "correct": true, "provider": "InferenceNet"}
+{"row": "667", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "522 msec", "correct": true, "provider": "Reka"}
+{"row": "670", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "500 msec", "correct": true, "provider": "Crusoe"}
+{"row": "676", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "578 msec", "correct": true, "provider": "Wafer"}
+{"row": "683", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "307 msec", "correct": true, "provider": "InferenceNet"}
+{"row": "685", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "263 msec", "correct": true, "provider": "Wafer"}
+{"row": "692", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "339 msec", "correct": true, "provider": "CoreWeave"}
+{"row": "699", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "449.5 msec", "correct": true, "provider": "InferenceNet"}
+{"row": "702", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "460 msec", "correct": true, "provider": "Wafer"}
+{"row": "709", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "620 msec", "correct": true, "provider": "Wafer"}
+{"row": "717", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "443 msec", "correct": true, "provider": "Wafer"}
+{"row": "718", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "601.25 msec", "correct": true, "provider": "Wafer"}
+{"row": "723", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "638 msec", "correct": true, "provider": "Wafer"}
+{"row": "725", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "739 msec", "correct": true, "provider": "Wafer"}
+{"row": "729", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "228 msec", "correct": true, "provider": "Wafer"}
+{"row": "736", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "459 msec", "correct": true, "provider": "InferenceNet"}
+{"row": "744", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "2.00 m\u00b2", "correct": true, "provider": "Wafer"}
+{"row": "745", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "1.65 m\u00b2", "correct": true, "provider": "Wafer"}
+{"row": "748", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "1.23 m\u00b2", "correct": true, "provider": "Novita"}
+{"row": "753", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "2.44 m\u00b2", "correct": true, "provider": "Cohere"}
+{"row": "767", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "81 kg", "correct": true, "provider": "InferenceNet"}
+{"row": "769", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "63.85 kg", "correct": true, "provider": "Wafer"}
+{"row": "776", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "59.1 kg", "correct": true, "provider": "CoreWeave"}
+{"row": "780", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "61.2 kg", "correct": true, "provider": "Relace"}
+{"row": "792", "category": "lab test", "calculator": "Delta Gap", "answer": "-3.0 mEq/L", "correct": false, "provider": "CoreWeave"}
+{"row": "796", "category": "lab test", "calculator": "Delta Gap", "answer": "4 mEq/L", "correct": false, "provider": "InferenceNet"}
+{"row": "797", "category": "lab test", "calculator": "Delta Gap", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "799", "category": "lab test", "calculator": "Delta Gap", "answer": "1 mEq/L", "correct": false, "provider": "Cohere"}
+{"row": "802", "category": "lab test", "calculator": "Delta Ratio", "answer": "0.875 (7/8)", "correct": true, "provider": "InferenceNet"}
+{"row": "803", "category": "lab test", "calculator": "Delta Ratio", "answer": "1.43", "correct": true, "provider": "Wafer"}
+{"row": "804", "category": "lab test", "calculator": "Delta Ratio", "answer": "0.43", "correct": true, "provider": "Cohere"}
+{"row": "820", "category": "lab test", "calculator": "Delta Ratio", "answer": "-0.5", "correct": true, "provider": "Wafer"}
+{"row": "823", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "15 mEq/L", "correct": true, "provider": "Wafer"}
+{"row": "827", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "11.25 mEq/L", "correct": true, "provider": "Wafer"}
+{"row": "829", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "15 mEq/L", "correct": true, "provider": "Wafer"}
+{"row": "830", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "8.75 mEq/L", "correct": true, "provider": "Wafer"}
+{"row": "843", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "1.5 mEq/L", "correct": false, "provider": "Together"}
+{"row": "845", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "3.5 mEq/L", "correct": false, "provider": "Cohere"}
+{"row": "846", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "-5.25 mEq/L", "correct": false, "provider": "Relace"}
+{"row": "857", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "-6 mEq/L", "correct": false, "provider": "Wafer"}
+{"row": "864", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "1.12", "correct": true, "provider": "Relace"}
+{"row": "867", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "0.58", "correct": true, "provider": "Wafer"}
+{"row": "872", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "1.45", "correct": true, "provider": "Wafer"}
+{"row": "873", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "1.46", "correct": true, "provider": "Together"}
+{"row": "887", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "PSI score = 119; Risk Class IV", "correct": true, "provider": "Wafer"}
+{"row": "890", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "PSI score 106, Risk Class IV", "correct": true, "provider": "DigitalOcean"}
+{"row": "892", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "PSI score = 141, Risk Class V", "correct": true, "provider": "CoreWeave"}
+{"row": "898", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "PSI score = 135, Risk Class V", "correct": true, "provider": "Wafer"}
+{"row": "901", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "GCS 8 (E2 V2 M4)", "correct": true, "provider": "Wafer"}
+{"row": "908", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "GCS 6 (E1 V2 M3)", "correct": true, "provider": "Reka"}
+{"row": "912", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "GCS 9 (E3 V2 M4)", "correct": true, "provider": "Wafer"}
+{"row": "913", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "3", "correct": true, "provider": "Wafer"}
+{"row": "925", "category": "risk", "calculator": "APACHE II Score", "answer": "13", "correct": false, "provider": "Wafer"}
+{"row": "927", "category": "risk", "calculator": "APACHE II Score", "answer": "12", "correct": true, "provider": "Wafer"}
+{"row": "929", "category": "risk", "calculator": "APACHE II Score", "answer": "14", "correct": true, "provider": "DeepInfra"}
+{"row": "931", "category": "risk", "calculator": "APACHE II Score", "answer": "26", "correct": true, "provider": "Wafer"}
+{"row": "942", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "9", "correct": true, "provider": "DigitalOcean"}
+{"row": "947", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "10", "correct": true, "provider": "CoreWeave"}
+{"row": "951", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "9", "correct": true, "provider": "Wafer"}
+{"row": "956", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "5", "correct": true, "provider": "Wafer"}
+{"row": "961", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": "9", "correct": true, "provider": "Wafer"}
+{"row": "962", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": "14", "correct": true, "provider": "Wafer"}
+{"row": "969", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": null, "correct": false, "error": "EmptyContent: deepseek/deepseek-v4.1-flash returned empty content (finish_reason=length)"}
+{"row": "978", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": null, "correct": false, "error": "EmptyContent: deepseek/deepseek-v4.1-flash returned empty content (finish_reason=length)"}
+{"row": "983", "category": "date", "calculator": "Estimated Due Date", "answer": "11/17/2002", "correct": true, "provider": "Wafer"}
+{"row": "984", "category": "date", "calculator": "Estimated Due Date", "answer": "03/20/2012", "correct": false, "provider": "DeepInfra"}
+{"row": "990", "category": "date", "calculator": "Estimated Due Date", "answer": "12/01/2007", "correct": true, "provider": "Reka"}
+{"row": "997", "category": "date", "calculator": "Estimated Due Date", "answer": "08/21/2023", "correct": true, "provider": "Wafer"}
+{"row": "1002", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "6.11 mg Dexamethasone PO", "correct": true, "provider": "Crusoe"}
+{"row": "1005", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "183.208 mg", "correct": true, "provider": "Wafer"}
+{"row": "1007", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "4.3996875 mg (approximately 4.4 mg) of Betamethasone IV", "correct": true, "provider": "InferenceNet"}
+{"row": "1008", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "7.82991 mg", "correct": true, "provider": "Wafer"}
+{"row": "1030", "category": "physical", "calculator": "Target weight", "answer": "74.9 kg", "correct": true, "provider": "InferenceNet"}
+{"row": "1032", "category": "physical", "calculator": "Target weight", "answer": "38.9 kg", "correct": true, "provider": "DeepInfra"}
+{"row": "1033", "category": "physical", "calculator": "Target weight", "answer": "43.13 kg", "correct": true, "provider": "InferenceNet"}
+{"row": "1040", "category": "physical", "calculator": "Target weight", "answer": "69.53 kg", "correct": true, "provider": "Wafer"}
+{"row": "1041", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "248 mg MME per day", "correct": false, "provider": "Wafer"}
+{"row": "1042", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "5530 MME", "correct": false, "provider": "Wafer"}
+{"row": "1050", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "2964 MME", "correct": false, "provider": "Together"}
+{"row": "1054", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "40 mg", "correct": true, "provider": "Wafer"}
+{"row": "1061", "category": "date", "calculator": "Estimated of Conception", "answer": "01/26/2006", "correct": true, "provider": "Makora"}
+{"row": "1067", "category": "date", "calculator": "Estimated of Conception", "answer": "07/01/2003", "correct": true, "provider": "Wafer"}
+{"row": "1078", "category": "date", "calculator": "Estimated of Conception", "answer": "05/12/2020", "correct": true, "provider": "Wafer"}
+{"row": "1079", "category": "date", "calculator": "Estimated of Conception", "answer": "10/21/2011", "correct": true, "provider": "Wafer"}
+{"row": "1086", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(28 weeks, 4 days)", "correct": true, "provider": "Wafer"}
+{"row": "1092", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(34 weeks, 0 days)", "correct": true, "provider": "Parasail"}
+{"row": "1097", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(36 weeks, 3 days)", "correct": true, "provider": "Wafer"}
+{"row": "1100", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(14 weeks, 2 days)", "correct": true, "provider": "InferenceNet"}

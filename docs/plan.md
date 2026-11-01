@@ -39,6 +39,17 @@ do, builds trusted data around exactly that, and measures what changed. The same
 5. **Reliability, trust, decisions and routing:** which model may do a job alone, at a stated error rate, and when it
    should hand a case to a larger model or a person; for decision models and LLMs alike.
 
+**As the field defines them** (read at abstract level on 2026-11-01; borders, open problems and sources in
+`docs/landscape.md`):
+
+| Use | The field's definition | Source |
+| --- | --- | --- |
+| Data for post-training | examples used after pre-training to change behaviour: demonstrations, better-and-worse pairs, prompts with a checker or a rubric | Tülu 3 (Lambert et al., 2024); Rubrics as Rewards (Gunjal et al., 2025) |
+| Evaluation | "scenarios (i.e. use cases) and metrics (i.e. desiderata)", held to construct validity | HELM (Liang et al., 2022); Bean et al., 2025 |
+| Auditing | "a systematic and independent process of obtaining and evaluating evidence regarding an entity's actions or properties and communicating the results of that evaluation to relevant stakeholders" | Mökander et al., 2023 |
+| Alignment, interpretability, safety | aligned when "'trying' to behave as intended"; interpretability seeks "the computational mechanisms underlying neural networks' capabilities" | Anwar et al., 2024; Sharkey et al., 2025 |
+| Reliability and routing | "ability of an item to perform as required, without failure, for a given time interval, under given conditions"; selective prediction "rejects instances as needed, to grant the desired risk" | NIST AI RMF 1.0, quoting ISO; Geifman and El-Yaniv, 2017 |
+
 The scope for now is instruction following, reasoning, preferences and decisions. Agentic work, with environments and
 rubrics for multi-step tasks, comes at 0.2.5 to 0.3.
 
@@ -319,17 +330,17 @@ Each release answers one question and is tagged once its pull requests have merg
 | --- | --- | --- |
 | 0.0.3 | Can Pipit's numbers be trusted? | counting a case once and the comparison with the field (#39); the rules in code (#56); native setups (#58); the engine design with J1, X1 and I1 (#59); the bench (#60); V1 registered (#61); this plan (#62) |
 | 0.0.4 | Can we trust a run? | V1's results, with the providers that served each model; the rules checked before a run, so every API model has a pinned provider and a family; a time limit per call; results saved as each item finishes |
-| 0.0.5 | Can a report drift from its data? | CI rebuilds every report from its recorded runs; `report.json` with a schema (#18); the numbers in the README and docs checked against it |
+| 0.0.5 | Can a report drift from its data? | CI rebuilds every report from its recorded runs; `report.json` with a schema (#18); the study registry (#54), the model inventory (#20) and the programme tables (#17) generated from it; the numbers in the README and docs checked against it |
 | 0.0.6 | Can anyone read the code? | the conventions in `CONTRIBUTING.md`; modules by concept and plain names, below; type checks and docstrings in CI; studies importable without editing `sys.path`; every report regenerates byte-identical |
-| 0.0.7 | Is the dose finding real? | the confirm round on fresh dose families (#10); a second, independent writer for each family, and how much the writer changes the result; a domain expert's review of P1's answers |
-| 0.0.8 | Can a small model take part of a job with a stated error bound? | a certified hand-off from Qwen3.5-4B to a large model, computed from recorded runs |
-| 0.0.9 | Is Pipit more efficient than random sampling? | Pipit's allocation against random subsets of MedCalc-Bench, on V1's data; the bench with failures that cluster by family and writer |
-| 0.0.10 | Can it run unattended? | the supervisor (#53), the study registry (#54), the canary set (#23) |
+| 0.0.7 | Is the dose finding real? | the family spec (#22); the confirm round on fresh dose families (#10), scored with more than one right answer where the record allows it (#11); a second, independent writer for each family, and how much the writer changes the result; a domain expert's review of P1's answers |
+| 0.0.8 | Can a small model approve alone at a stated clinical error rate, across reruns? | the certificate for Qwen3.5-4B from recorded runs, with reruns to measure consistency, and the cases it hands on; routing between models is not new (FrugalGPT, RouteLLM), so it is not claimed |
+| 0.0.9 | Is Pipit more efficient than random sampling? | Pipit's allocation against random subsets of MedCalc-Bench, on V1's data; the bench with failures that cluster by family and writer, its defects and thin families, and a CI job (#8); P1's dose family (#9); the evidence code reading the confidence sequence (#25) |
+| 0.0.10 | Can it run unattended? | the supervisor (#53), the canary set (#23), and the decision on Inspect (#46) |
 | 0.0.11 | Does data built from a confirmed gap fix it? | training data in the formats above, with source, licence and leak checks; one tutorial that trains with an outside tool and hands the model back to be measured |
 | 0.0.12 | Is our case design better than NeMo Data Designer's? | the same job and budget: labels verifiably right, real failures found, near-duplicates, realism, leaks and cost |
 | 0.0.13 | Does the engine carry over to other industries? | extraction and a computed number (G1, #47); pressure and injection variants (#48) |
-| 0.0.14 | Can others use the data? | the first Hub release (#51) and the examples (#52) |
-| 0.1.0 | Can someone else pick it up? | the rest of the definition below: one manifest and one command; a study as YAML only (#12, #22); the bench in CI (#8); P3's dossier confirmed |
+| 0.0.14 | Can others use the data? | the first Hub release (#51), the examples (#52) and the viewer (#19) |
+| 0.1.0 | Can someone else pick it up? | the rest of the definition below: one manifest and one command; a study as YAML only (#12); remote engines (#55); P3's dossier confirmed (#14) |
 
 **Plain names, proposed for 0.0.6, for the study owner to approve.** Modules by concept: `models` (manifests, loading,
 roles), `adapters` (one per engine), `cases` (questions and families), `stats` (intervals, exact tests, confidence
@@ -412,15 +423,16 @@ Taken on 2026-11-01:
     then.
 11. The five industries: clinical and biomedical, legal, finance and banking decisions, data and AI work, and
     human-centred AI.
+12. V1 is reported as run, with the providers that served each model shown, and finished runs are not rerun. The
+    calls the API key refused were sent again once its limit was raised, which completes the run.
 
 Open:
 
 1. Runner: run on Inspect with Pipit as the statistics on top, or keep our runner and read Inspect logs (#46).
-2. V1: report it as run, with the providers that served each model (recommended), or rerun it with each model pinned.
-3. The plain names and module layout proposed for 0.0.6.
-4. Who reviews P1's clinical answers before any release.
-5. The order of the industries after clinical.
-6. The explore split on the Hub: public, or gated behind accepted terms.
-7. The confirm split: run only by us, or shared under agreement.
-8. The lead agent: may it be a model behind an API for studies that touch a business's data?
-9. Examples: notebooks or scripts.
+2. The plain names and module layout proposed for 0.0.6.
+3. Who reviews P1's clinical answers before any release.
+4. The order of the industries after clinical.
+5. The explore split on the Hub: public, or gated behind accepted terms.
+6. The confirm split: run only by us, or shared under agreement.
+7. The lead agent: may it be a model behind an API for studies that touch a business's data?
+8. Examples: notebooks or scripts.

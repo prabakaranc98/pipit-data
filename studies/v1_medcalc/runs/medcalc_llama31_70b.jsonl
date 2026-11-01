@@ -1,0 +1,220 @@
+{"row": "9", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "11.1", "correct": false, "provider": "DeepInfra"}
+{"row": "14", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "25.8", "correct": false, "provider": "DeepInfra"}
+{"row": "18", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "7.3", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "19", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "44.1", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "28", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "8.31", "correct": false, "provider": "DeepInfra"}
+{"row": "35", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "94.4 mL/min/1.73 m\u00b2", "correct": false, "provider": "DeepInfra"}
+{"row": "37", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "83.4 mL/min/1.73 m\u00b2", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "39", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "The patient's GFR is approximately 24 mL/min/1.73 m\u00b2.", "correct": false, "provider": "DeepInfra"}
+{"row": "41", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "2", "correct": true, "provider": "DeepInfra"}
+{"row": "44", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "5", "correct": false, "provider": "DeepInfra"}
+{"row": "49", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "5", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "56", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "1", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "61", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "MAP = (2*80 + 140) / 3 = 100 mmHg", "correct": false, "provider": "DeepInfra"}
+{"row": "68", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "The patient's mean arterial pressure is (2*75 + 150) / 3 = 100 mm Hg.", "correct": false, "provider": "DeepInfra"}
+{"row": "75", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "The patient's mean arterial pressure is (2*40 + 80) / 3 = 53.33 mm Hg.", "correct": false, "provider": "DeepInfra"}
+{"row": "80", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "MAP = (2*67 + 115) / 3 = (134 + 115) / 3 = 249 / 3 = 83 mmHg", "correct": false, "provider": "DeepInfra"}
+{"row": "82", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "24.0 kg/m\u00b2", "correct": true, "provider": "DeepInfra"}
+{"row": "85", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "24 kg/m\u00b2", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "94", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "24.4 kg/m\u00b2", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "98", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "13.2 kg/m\u00b2", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "101", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "9.32 mg/dL", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "103", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "8.66", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "108", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "7.84", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "115", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "7.86", "correct": true, "provider": "DeepInfra"}
+{"row": "121", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "5.5", "correct": false, "provider": "DeepInfra"}
+{"row": "128", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "1.5", "correct": false, "provider": "DeepInfra"}
+{"row": "135", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "1.5", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "139", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "3", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "142", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "44", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "145", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "The patient's Glomerular Filtration Rate (GFR) is approximately 34.6 mL/min/1.73 m\u00b2.", "correct": false, "provider": "DeepInfra"}
+{"row": "150", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "7.5 mL/min/1.73 m\u00b2", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "158", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "24.6 mL/min/1.73 m\u00b2", "correct": false, "provider": "DeepInfra"}
+{"row": "161", "category": "physical", "calculator": "Ideal Body Weight", "answer": "The patient's ideal body weight is 54.09 kg.", "correct": true, "provider": "DeepInfra"}
+{"row": "163", "category": "physical", "calculator": "Ideal Body Weight", "answer": "The patient's ideal body weight is 64.19 kg.", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "177", "category": "physical", "calculator": "Ideal Body Weight", "answer": "57 kg", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "179", "category": "physical", "calculator": "Ideal Body Weight", "answer": "57 kg", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "184", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "331.4 msec", "correct": true, "provider": "DeepInfra"}
+{"row": "188", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "564 msec", "correct": true, "provider": "DeepInfra"}
+{"row": "193", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "223", "correct": true, "provider": "DeepInfra"}
+{"row": "200", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "288.7 msec", "correct": true, "provider": "DeepInfra"}
+{"row": "205", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "Child-Pugh class C", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "209", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "11", "correct": false, "provider": "DeepInfra"}
+{"row": "218", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "9", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "219", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "8", "correct": true, "provider": "DeepInfra"}
+{"row": "227", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "3", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "228", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "3", "correct": true, "provider": "DeepInfra"}
+{"row": "234", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "3", "correct": true, "provider": "DeepInfra"}
+{"row": "237", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "4", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "246", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "Class IV", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "255", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "2", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "257", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "3", "correct": false, "provider": "DeepInfra"}
+{"row": "260", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "2", "correct": true, "provider": "DeepInfra"}
+{"row": "265", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "5", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "270", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "4", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "272", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "10", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "276", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "7", "correct": false, "provider": "DeepInfra"}
+{"row": "285", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "1.7", "correct": true, "provider": "DeepInfra"}
+{"row": "292", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "1.37", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "294", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "FIB-4 score = (64 x 128) / (115 x \u221a124) = 8192 / (115 x 11.14) = 8192 / 1280.6 = 6.39", "correct": false, "provider": "DeepInfra"}
+{"row": "298", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "1.09", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "302", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "2", "correct": true, "provider": "DeepInfra"}
+{"row": "303", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "3", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "310", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "4", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "317", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "3", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "322", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "94", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "327", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "81", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "330", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "131", "correct": true, "provider": "DeepInfra"}
+{"row": "335", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "145.3 mL/hr", "correct": false, "provider": "DeepInfra"}
+{"row": "344", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "The patient's MELD Na score is 24.", "correct": true, "provider": "DeepInfra"}
+{"row": "346", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "26", "correct": false, "provider": "DeepInfra"}
+{"row": "349", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "29", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "353", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "21", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "361", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "6", "correct": false, "provider": "DeepInfra"}
+{"row": "366", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "4", "correct": false, "provider": "DeepInfra"}
+{"row": "373", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "5", "correct": false, "provider": "DeepInfra"}
+{"row": "377", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "2", "correct": false, "provider": "DeepInfra"}
+{"row": "383", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "130.56 mEq/L", "correct": false, "provider": "DeepInfra"}
+{"row": "390", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "Corrected sodium (mEq/L) = 121 + (533 - 100) / 3.4 = 121 + 433 / 3.4 = 121 + 127.35 = 248.35 mEq/L", "correct": false, "provider": "DeepInfra"}
+{"row": "392", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "Corrected sodium (mEq/L) = 125 + (1.6 x (400 - 100) / 100) = 125 + (1.6 x 300 / 100) = 125 + 4.8 = 129.8 mEq/L", "correct": false, "provider": "DeepInfra"}
+{"row": "396", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "Corrected sodium (mEq/L) = 127 + (1.6 x (425 - 100) / 100) = 127 + (1.6 x 325 / 100) = 127 + 5.2 = 132.2 mEq/L", "correct": false, "provider": "DeepInfra"}
+{"row": "401", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "9", "correct": false, "provider": "DeepInfra"}
+{"row": "402", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "12", "correct": false, "provider": "DeepInfra"}
+{"row": "404", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "3", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "415", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "0", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "421", "category": "lab test", "calculator": "Serum Osmolality", "answer": "424", "correct": true, "provider": "DeepInfra"}
+{"row": "424", "category": "lab test", "calculator": "Serum Osmolality", "answer": "304.14", "correct": true, "provider": "DeepInfra"}
+{"row": "430", "category": "lab test", "calculator": "Serum Osmolality", "answer": "313.5 mOsm/kg", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "433", "category": "lab test", "calculator": "Serum Osmolality", "answer": "284 mOsm/kg", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "442", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "The patient's HOMA-IR score is 1.96.", "correct": true, "provider": "DeepInfra"}
+{"row": "453", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "4.57", "correct": true, "provider": "DeepInfra"}
+{"row": "454", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "1.14", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "458", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "6.18", "correct": true, "provider": "DeepInfra"}
+{"row": "464", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "1", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "466", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "3", "correct": false, "provider": "DeepInfra"}
+{"row": "469", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "1", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "478", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "5", "correct": false, "provider": "DeepInfra"}
+{"row": "481", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "5", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "484", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "4", "correct": true, "provider": "DeepInfra"}
+{"row": "490", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "1", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "494", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "2", "correct": false, "provider": "DeepInfra"}
+{"row": "503", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.43", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "504", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.2", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "505", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.53", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "520", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.27", "correct": false, "provider": "DeepInfra"}
+{"row": "523", "category": "lab test", "calculator": "Anion Gap", "answer": "14", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "534", "category": "lab test", "calculator": "Anion Gap", "answer": "34.7 mEq/L", "correct": false, "provider": "DeepInfra"}
+{"row": "537", "category": "lab test", "calculator": "Anion Gap", "answer": "33.8 mEq/L", "correct": false, "provider": "DeepInfra"}
+{"row": "538", "category": "lab test", "calculator": "Anion Gap", "answer": "14 mEq/L", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "541", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "1", "correct": true, "provider": "DeepInfra"}
+{"row": "551", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "4", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "552", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "0", "correct": true, "provider": "DeepInfra"}
+{"row": "553", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "2", "correct": false, "provider": "DeepInfra"}
+{"row": "562", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "1.12", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "565", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.19%", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "572", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "1.33%", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "578", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.79%", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "582", "category": "lab test", "calculator": "LDL Calculated", "answer": "The patient's LDL cholesterol concentration is 183.66 - 39.83 - (96.53/5) = 183.66 - 39.83 - 19.31 = 124.52 mg/dL.", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "583", "category": "lab test", "calculator": "LDL Calculated", "answer": "LDL = 210 - 37 - (97/5) = 210 - 37 - 19.4 = 153.6 mg/dL", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "584", "category": "lab test", "calculator": "LDL Calculated", "answer": "LDL = 116 - 74 - (38/5) = 116 - 74 - 7.6 = 34.4 mg/dL", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "599", "category": "lab test", "calculator": "LDL Calculated", "answer": "LDL = 162 - 64 - (33/5) = 162 - 64 - 6.6 = 91.4 mg/dL", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "603", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "5.4%", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "605", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "4.56%", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "610", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "10-20%", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "619", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "12%", "correct": false, "provider": "DeepInfra"}
+{"row": "625", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "1", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "631", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "0", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "632", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "1", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "638", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "0", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "641", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "2", "correct": false, "provider": "DeepInfra"}
+{"row": "644", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "1", "correct": true, "provider": "DeepInfra"}
+{"row": "645", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "0", "correct": true, "provider": "DeepInfra"}
+{"row": "656", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "3", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "664", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "395 msec", "correct": false, "provider": "DeepInfra"}
+{"row": "667", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "The patient's corrected QT interval is approximately 546.5 msec.", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "670", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "502", "correct": true, "provider": "DeepInfra"}
+{"row": "676", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "582.5 msec", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "683", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "312", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "685", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "273", "correct": true, "provider": "DeepInfra"}
+{"row": "692", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "The patient's corrected QT interval is approximately 271 msec.", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "699", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "444", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "702", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "470", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "709", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "675", "correct": false, "provider": "DeepInfra"}
+{"row": "717", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "668.42 msec", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "718", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "The patient's corrected QT interval is 400 / (0.3429)^0.33 = 400 / 0.6234 = 641.7 msec.", "correct": false, "provider": "DeepInfra"}
+{"row": "723", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": null, "correct": false, "provider": "DeepInfra"}
+{"row": "725", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "The patient's corrected QT interval is approximately 739 msec.", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "729", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "229", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "736", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "502.1 msec", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "744", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "1.87", "correct": false, "provider": "DeepInfra"}
+{"row": "745", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "1.62", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "748", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "1.23", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "753", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "2.34", "correct": true, "provider": "DeepInfra"}
+{"row": "767", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "79.11 kg", "correct": true, "provider": "DeepInfra"}
+{"row": "769", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "64.07", "correct": true, "provider": "DeepInfra"}
+{"row": "776", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "59.14", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "780", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "61.42 kg", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "792", "category": "lab test", "calculator": "Delta Gap", "answer": "4.1 mEq/L", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "796", "category": "lab test", "calculator": "Delta Gap", "answer": "22", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "797", "category": "lab test", "calculator": "Delta Gap", "answer": "4.7 mEq/L", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "799", "category": "lab test", "calculator": "Delta Gap", "answer": "7", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "802", "category": "lab test", "calculator": "Delta Ratio", "answer": "19 mmol/L", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "803", "category": "lab test", "calculator": "Delta Ratio", "answer": "-0.955", "correct": false, "provider": "DeepInfra"}
+{"row": "804", "category": "lab test", "calculator": "Delta Ratio", "answer": "5", "correct": false, "provider": "DeepInfra"}
+{"row": "820", "category": "lab test", "calculator": "Delta Ratio", "answer": "0.1375", "correct": false, "provider": "DeepInfra"}
+{"row": "823", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "The patient's albumin-corrected anion gap is (129 - (99 + 18)) - (0.25 x 28) = 12 - 7 = 5 mEq/L.", "correct": false, "provider": "DeepInfra"}
+{"row": "827", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "Albumin-corrected anion gap = (137 - (100 + 25)) - (0.25 x (4.3 - 4.4)) = 12 - (-0.025) = 12.025 mEq/L", "correct": false, "provider": "DeepInfra"}
+{"row": "829", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "14.2 mEq/L", "correct": false, "provider": "DeepInfra"}
+{"row": "830", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "8.75", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "843", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "15.8", "correct": false, "provider": "DeepInfra"}
+{"row": "845", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "4.95", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "846", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "-4.1", "correct": false, "provider": "DeepInfra"}
+{"row": "857", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "The patient's sodium level is 144 mmol/L, chloride level is 119 mmol/L, bicarbonate level is 12 mmol/L, and albumin level is 2 g/dL. The anion gap is 144 - (119 + 12) = 13 mEq/L. The delta gap is 13 - 10 = 3 mEq/L. The albumin-corrected delta gap is 3 + 2.5 x (4 - 2) = 6 mEq/L.", "correct": false, "provider": "DeepInfra"}
+{"row": "864", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "1.35", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "867", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "-1", "correct": false, "provider": "DeepInfra"}
+{"row": "872", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "Albumin-corrected calcium = 2.2 + 0.8 * (4 - 2.7) = 2.2 + 0.8 * 1.3 = 2.2 + 1.04 = 3.24 mmol/L", "correct": false, "provider": "DeepInfra"}
+{"row": "873", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "-0.16", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "887", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "Class II", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "890", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "5 points, risk class III", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "892", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "7", "correct": false, "provider": "DeepInfra"}
+{"row": "898", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "The patient's Pneumonia Severity Index (PSI) score is 124, which corresponds to a high-risk category (Class IV or V). This suggests that the patient is at high risk for complications and mortality from pneumonia and may require more aggressive treatment and monitoring.", "correct": false, "provider": "DeepInfra"}
+{"row": "901", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "8", "correct": true, "provider": "DeepInfra"}
+{"row": "908", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "7", "correct": false, "provider": "DeepInfra"}
+{"row": "912", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "8", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "913", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "3", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "925", "category": "risk", "calculator": "APACHE II Score", "answer": "14", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "927", "category": "risk", "calculator": "APACHE II Score", "answer": "The patient's APACHE II score is 14.", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "929", "category": "risk", "calculator": "APACHE II Score", "answer": "17", "correct": false, "provider": "DeepInfra"}
+{"row": "931", "category": "risk", "calculator": "APACHE II Score", "answer": "21", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "942", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "6", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "947", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "11", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "951", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "9", "correct": true, "provider": "DeepInfra"}
+{"row": "956", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "4", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "961", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": null, "correct": false, "provider": "Amazon Bedrock"}
+{"row": "962", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": "9", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "969", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": "The patient's Caprini Score for Venous Thromboembolism is 8.", "correct": false, "provider": "DeepInfra"}
+{"row": "978", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": "7", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "983", "category": "date", "calculator": "Estimated Due Date", "answer": "11/20/2002", "correct": false, "provider": "DeepInfra"}
+{"row": "984", "category": "date", "calculator": "Estimated Due Date", "answer": "04/08/2012", "correct": false, "provider": "DeepInfra"}
+{"row": "990", "category": "date", "calculator": "Estimated Due Date", "answer": "12/07/2007", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "997", "category": "date", "calculator": "Estimated Due Date", "answer": "08/25/2023", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "1002", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "24.4 mg Dexamethasone PO", "correct": false, "provider": "DeepInfra"}
+{"row": "1005", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "The patient has taken 45.802 mg of PredniSONE PO, which is equivalent to 45.802 x 4 = 183.208 mg of Hydrocortisone IV.", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "1007", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "4.693 mg", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "1008", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "195.74775 mg", "correct": false, "provider": "Amazon Bedrock"}
+{"row": "1030", "category": "physical", "calculator": "Target weight", "answer": "weight = 24.4 kg/m^2 * (1.7526 m)^2 = 75.47 kg", "correct": false, "provider": "DeepInfra"}
+{"row": "1032", "category": "physical", "calculator": "Target weight", "answer": "38.9 kg", "correct": true, "provider": "DeepInfra"}
+{"row": "1033", "category": "physical", "calculator": "Target weight", "answer": "43.19 kg", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "1040", "category": "physical", "calculator": "Target weight", "answer": "69.5 kg", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "1041", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "128", "correct": false, "provider": "DeepInfra"}
+{"row": "1042", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "320", "correct": false, "provider": "DeepInfra"}
+{"row": "1050", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "The patient takes 20 mg of Methadone 1 time a day, which is 20 mg x 4 MME/mg x 1 dose/day = 80 MME/day. The patient takes 30 mg of OxyMORphone 3 times a day, which is 30 mg x 3 MME/mg x 3 doses/day = 270 MME/day. The patient takes 20 mg of FentaNYL buccal 1 time a day, which is 20 mcg x 0.18 MME/mcg x 1 dose/day = 3.6 MME/day. The total daily MME is 80 MME/day + 270 MME/day + 3.6 MME/day = 353.6 MME/day.", "correct": false, "provider": "DeepInfra"}
+{"row": "1054", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "40", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "1061", "category": "date", "calculator": "Estimated of Conception", "answer": "01/26/2006", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "1067", "category": "date", "calculator": "Estimated of Conception", "answer": "07/01/2003", "correct": true, "provider": "DeepInfra"}
+{"row": "1078", "category": "date", "calculator": "Estimated of Conception", "answer": "05/12/2020", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "1079", "category": "date", "calculator": "Estimated of Conception", "answer": "09/23/2011", "correct": false, "provider": "DeepInfra"}
+{"row": "1086", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(28 weeks, 4 days)", "correct": true, "provider": "DeepInfra"}
+{"row": "1092", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(34 weeks, 1 day)", "correct": true, "provider": "Amazon Bedrock"}
+{"row": "1097", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(39 weeks, 2 days)", "correct": true, "provider": "DeepInfra"}
+{"row": "1100", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(14 weeks, 2 days)", "correct": true, "provider": "DeepInfra"}

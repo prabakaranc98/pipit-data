@@ -61,3 +61,28 @@ registered scores.
 
 Found while writing this: the permutation test returned its p-value with a note on how it was computed, and the
 report did not unpack it, so the analysis would have stopped at the correlations. Fixed before the first analysis.
+
+## Amendment, before any accuracy was computed: an audit of MedCalc-Bench's answer key
+
+Krohn-Grimberghe (2026), "MedCalc-Bench Doesn't Measure What You Think" (arXiv 2603.02222), audited the code behind
+all 55 calculators on the 1,100-row test split and reports "fixing over 20 errors ranging from critical formula
+inaccuracies to runtime bugs". It names 19 calculators. For two, the Charlson Comorbidity Index and APACHE II, it says
+the error changes the answer for every patient it touches; for the others it does not say how many test answers
+change, and no corrected labels are linked. Found by a literature search on 2026-11-01, while the runs were going.
+
+The 19 calculators, as named in the test set: APACHE II Score; CKD-EPI Equations for Glomerular Filtration Rate; CURB-65 Score for Pneumonia Severity; Charlson Comorbidity Index (CCI); Child-Pugh Score for Cirrhosis Mortality; Fibrosis-4 (FIB-4) Index for Liver Fibrosis; Framingham Risk Score for Hard Coronary Heart Disease; Glasgow Coma Score (GCS); Glasgow-Blatchford Bleeding Score (GBS); HEART Score for Major Cardiac Events; HOMA-IR (Homeostatic Model Assessment for Insulin Resistance); MDRD GFR Equation; MELD Na (UNOS/OPTN); Morphine Milligram Equivalents (MME) Calculator; QTc Framingham Calculator; Revised Cardiac Risk Index for Pre-Operative Risk; SIRS Criteria; Sequential Organ Failure Assessment (SOFA) Score; Steroid Conversion Calculator. They hold 76 of the 220 items.
+
+The registered scores stay on all 220 items. The report adds, per model, accuracy on the 144 items from the other 36
+calculators and on the 76 audited items alone, and the rank correlation with P1 using the 144. A reader can then see
+how much a possibly wrong answer key could move each result.
+
+## Amendment, when the API key's limit stopped the runs
+
+The OpenRouter key had a $10 limit, shared with the day's other studies. It ran out during the runs, and from then on
+every call was refused with `403 Forbidden`: all of DeepSeek V4.1 Flash, DeepSeek V4 Pro and LFM 2.5, 271 calls of
+Granite 4.2, 110 of Qwen3.5 9B and 8 of Qwen3.5 397B. A refusal is not the model's answer. Once the limit is raised,
+only the refused calls are sent again (`run.py --resume`); every other recorded result is kept as it is, including
+replies cut off at the token cap. The runner now stops at the first refusal instead of recording the rest as failures.
+
+Written before any accuracy was computed. The runner's summary lines, which print each finished model's MedCalc-Bench
+count, had been seen for the models finished by then; nothing in the analysis changes.

@@ -4,6 +4,16 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Added
+
+- Study V1's results (`studies/v1_medcalc`, #57): twelve models on 220 MedCalc-Bench items and on P1's 112 cases, for $6.90. Across 12 models the two do not rank the models alike overall (Spearman 0.21, p = 0.25); where both measure calculation they agree (0.61, p = 0.020). Llama 3.1 70B reproduces the paper's overall score (39% against 36%). Every model scores lower on the 19 calculators whose code an audit corrected. The report shows the providers behind each model, up to 18, and ends with a hand-written reading.
+- `run.py --resume` in V1: after the API key's spending limit refused 1,385 calls, only those were sent again; a run now stops at the first refusal. Every V1 manifest declares its `family`.
+- `docs/landscape.md`: the five uses as the field defines them, with their borders, and the loop as others built it in 2025 and 2026.
+
+### Changed
+
+- `docs/plan.md`: the five uses' definitions from the field; 0.0.8 now asks whether a small model can approve alone at a stated clinical error rate across reruns; the registry, model inventory and programme tables move to 0.0.5, the viewer to 0.0.14; V1 is reported as run. README: the industries by uses grid, V1's result, and the releases in place of milestones M0 to M6.
+
 ## [0.0.3] - 2026-11-01
 
 ### Fixed
@@ -12,6 +22,7 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ### Added
 
+- Study V1's amendment before any accuracy was computed (#64): its report counts the replies cut off at the token cap and the failed calls for each model, and its permutation test states how it was run.
 - `CONTRIBUTING.md`: how work moves, plain names, code, studies and reports, data, and a glossary of Pipit's words (#62).
 - `pipit.allocate`: where the next cases go. An even spread, the thresholding rule, and a rule that samples the open question nearest to a verdict (#9).
 - `pipit.sequential`: a confidence sequence for a failure rate, valid at every sample size, so a question may stop as soon as its evidence clears; the node rule reads it with `sequential=True` (#25).

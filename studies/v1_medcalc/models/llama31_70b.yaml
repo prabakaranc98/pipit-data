@@ -5,6 +5,7 @@ id: meta-llama/llama-3.1-70b-instruct
 revision: as-served
 adapter: pipit.adapters.openrouter:load
 placement: api
+family: llama
 key_env: OPENROUTER_API_KEY
 price_usd_per_million_in: 0.40
 price_usd_per_million_out: 0.40

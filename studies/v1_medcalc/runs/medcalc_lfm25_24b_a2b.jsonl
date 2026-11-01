@@ -1,0 +1,220 @@
+{"row": "9", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "14", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "21.9 mL/min", "correct": true, "provider": "Liquid"}
+{"row": "18", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "6.1 mL/min", "correct": true, "provider": "Liquid"}
+{"row": "19", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "28", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "35", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "37", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "39", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "34 mL/min/1.73 m\u00b2", "correct": false, "provider": "Liquid"}
+{"row": "41", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "44", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "4", "correct": true, "provider": "Liquid"}
+{"row": "49", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "56", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "0", "correct": true, "provider": "Liquid"}
+{"row": "61", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "100", "correct": true, "provider": "Liquid"}
+{"row": "68", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "100 mm Hg", "correct": true, "provider": "Liquid"}
+{"row": "75", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "53.3 mm Hg", "correct": true, "provider": "Liquid"}
+{"row": "80", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "83 mmHg", "correct": true, "provider": "Liquid"}
+{"row": "82", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "23.8 kg/m\u00b2", "correct": true, "provider": "Liquid"}
+{"row": "85", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "23.96 kg/m\u00b2", "correct": true, "provider": "Liquid"}
+{"row": "94", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "24.5 kg/m\u00b2", "correct": true, "provider": "Liquid"}
+{"row": "98", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "13.2 kg/m\u00b2", "correct": true, "provider": "Liquid"}
+{"row": "101", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "9.3 mg/dL", "correct": true, "provider": "Liquid"}
+{"row": "103", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "8.7 mg/dL", "correct": true, "provider": "Liquid"}
+{"row": "108", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "7.84", "correct": true, "provider": "Liquid"}
+{"row": "115", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "7.86 mg/dL", "correct": true, "provider": "Liquid"}
+{"row": "121", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "128", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "135", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "1.5", "correct": true, "provider": "Liquid"}
+{"row": "139", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "0", "correct": true, "provider": "Liquid"}
+{"row": "142", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "53 mL/min/1.73 m\u00b2", "correct": false, "provider": "Liquid"}
+{"row": "145", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "44.4 mL/min/1.73 m\u00b2", "correct": true, "provider": "Liquid"}
+{"row": "150", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "3.0", "correct": true, "provider": "Liquid"}
+{"row": "158", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "161", "category": "physical", "calculator": "Ideal Body Weight", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "163", "category": "physical", "calculator": "Ideal Body Weight", "answer": "66.9 kg", "correct": true, "provider": "Liquid"}
+{"row": "177", "category": "physical", "calculator": "Ideal Body Weight", "answer": "57 kg", "correct": true, "provider": "Liquid"}
+{"row": "179", "category": "physical", "calculator": "Ideal Body Weight", "answer": "57 kg", "correct": true, "provider": "Liquid"}
+{"row": "184", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "332 msec", "correct": true, "provider": "Liquid"}
+{"row": "188", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "564 msec", "correct": true, "provider": "Liquid"}
+{"row": "193", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "223 msec", "correct": true, "provider": "Liquid"}
+{"row": "200", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "289 msec", "correct": true, "provider": "Liquid"}
+{"row": "205", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "11", "correct": true, "provider": "Liquid"}
+{"row": "209", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "12", "correct": true, "provider": "Liquid"}
+{"row": "218", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "10", "correct": true, "provider": "Liquid"}
+{"row": "219", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "8", "correct": true, "provider": "Liquid"}
+{"row": "227", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "2", "correct": false, "provider": "Liquid"}
+{"row": "228", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "234", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "237", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "246", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "2", "correct": false, "provider": "Liquid"}
+{"row": "255", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "3", "correct": false, "provider": "Liquid"}
+{"row": "257", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "2", "correct": true, "provider": "Liquid"}
+{"row": "260", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "265", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "4", "correct": true, "provider": "Liquid"}
+{"row": "270", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "272", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "276", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "7", "correct": false, "provider": "Liquid"}
+{"row": "285", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "292", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "294", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "6.4", "correct": true, "provider": "Liquid"}
+{"row": "298", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "302", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "303", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "4", "correct": true, "provider": "Liquid"}
+{"row": "310", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "4", "correct": false, "provider": "Liquid"}
+{"row": "317", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "3", "correct": false, "provider": "Liquid"}
+{"row": "322", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "104 mL/hr", "correct": true, "provider": "Liquid"}
+{"row": "327", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "51 mL/hr", "correct": false, "provider": "Liquid"}
+{"row": "330", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "131 mL/hr", "correct": true, "provider": "Liquid"}
+{"row": "335", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "155 mL/hr", "correct": true, "provider": "Liquid"}
+{"row": "344", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "346", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "349", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "353", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "23", "correct": false, "provider": "Liquid"}
+{"row": "361", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "5", "correct": true, "provider": "Liquid"}
+{"row": "366", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "2", "correct": true, "provider": "Liquid"}
+{"row": "373", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "5", "correct": false, "provider": "Liquid"}
+{"row": "377", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "383", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "130.6 mEq/L", "correct": false, "provider": "Liquid"}
+{"row": "390", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "131.4 mEq/L", "correct": true, "provider": "Liquid"}
+{"row": "392", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "129.8 mEq/L", "correct": true, "provider": "Liquid"}
+{"row": "396", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "132.2 mEq/L", "correct": true, "provider": "Liquid"}
+{"row": "401", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "5", "correct": false, "provider": "Liquid"}
+{"row": "402", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "3", "correct": false, "provider": "Liquid"}
+{"row": "404", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "2", "correct": false, "provider": "Liquid"}
+{"row": "415", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "0", "correct": true, "provider": "Liquid"}
+{"row": "421", "category": "lab test", "calculator": "Serum Osmolality", "answer": "424 mOsm/kg", "correct": true, "provider": "Liquid"}
+{"row": "424", "category": "lab test", "calculator": "Serum Osmolality", "answer": "304 mOsm/kg", "correct": true, "provider": "Liquid"}
+{"row": "430", "category": "lab test", "calculator": "Serum Osmolality", "answer": "280 mOsm/kg", "correct": true, "provider": "Liquid"}
+{"row": "433", "category": "lab test", "calculator": "Serum Osmolality", "answer": "277 mOsm/kg", "correct": true, "provider": "Liquid"}
+{"row": "442", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "1.96", "correct": true, "provider": "Liquid"}
+{"row": "453", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "454", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "1.14", "correct": true, "provider": "Liquid"}
+{"row": "458", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "1.11", "correct": false, "provider": "Liquid"}
+{"row": "464", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "466", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "4", "correct": false, "provider": "Liquid"}
+{"row": "469", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "478", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "481", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "4", "correct": true, "provider": "Liquid"}
+{"row": "484", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "4", "correct": true, "provider": "Liquid"}
+{"row": "490", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "0", "correct": false, "provider": "Liquid"}
+{"row": "494", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "4", "correct": false, "provider": "Liquid"}
+{"row": "503", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.43 kg", "correct": true, "provider": "Liquid"}
+{"row": "504", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.2 kg", "correct": false, "provider": "Liquid"}
+{"row": "505", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.77 kg", "correct": false, "provider": "Liquid"}
+{"row": "520", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.27 kg", "correct": false, "provider": "Liquid"}
+{"row": "523", "category": "lab test", "calculator": "Anion Gap", "answer": "14 mEq/L", "correct": true, "provider": "Liquid"}
+{"row": "534", "category": "lab test", "calculator": "Anion Gap", "answer": "28 mEq/L", "correct": true, "provider": "Liquid"}
+{"row": "537", "category": "lab test", "calculator": "Anion Gap", "answer": "30 mEq/L", "correct": true, "provider": "Liquid"}
+{"row": "538", "category": "lab test", "calculator": "Anion Gap", "answer": "14", "correct": true, "provider": "Liquid"}
+{"row": "541", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "1", "correct": true, "provider": "Liquid"}
+{"row": "551", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "3", "correct": true, "provider": "Liquid"}
+{"row": "552", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "0", "correct": true, "provider": "Liquid"}
+{"row": "553", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "2", "correct": false, "provider": "Liquid"}
+{"row": "562", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "565", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.48%", "correct": true, "provider": "Liquid"}
+{"row": "572", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.16%", "correct": true, "provider": "Liquid"}
+{"row": "578", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.3%", "correct": true, "provider": "Liquid"}
+{"row": "582", "category": "lab test", "calculator": "LDL Calculated", "answer": "135 mg/dL", "correct": false, "provider": "Liquid"}
+{"row": "583", "category": "lab test", "calculator": "LDL Calculated", "answer": "153.6 mg/dL", "correct": true, "provider": "Liquid"}
+{"row": "584", "category": "lab test", "calculator": "LDL Calculated", "answer": "34 mg/dL", "correct": true, "provider": "Liquid"}
+{"row": "599", "category": "lab test", "calculator": "LDL Calculated", "answer": "91 mg/dL", "correct": true, "provider": "Liquid"}
+{"row": "603", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "605", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "610", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "619", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "625", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "7", "correct": false, "provider": "Liquid"}
+{"row": "631", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "0", "correct": true, "provider": "Liquid"}
+{"row": "632", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "7", "correct": false, "provider": "Liquid"}
+{"row": "638", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "8", "correct": false, "provider": "Liquid"}
+{"row": "641", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "1", "correct": true, "provider": "Liquid"}
+{"row": "644", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "1", "correct": true, "provider": "Liquid"}
+{"row": "645", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "0", "correct": true, "provider": "Liquid"}
+{"row": "656", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "3", "correct": true, "provider": "Liquid"}
+{"row": "664", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "276 msec", "correct": false, "provider": "Liquid"}
+{"row": "667", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "522 msec", "correct": true, "provider": "Liquid"}
+{"row": "670", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "500 msec", "correct": true, "provider": "Liquid"}
+{"row": "676", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "578 msec", "correct": true, "provider": "Liquid"}
+{"row": "683", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "270", "correct": false, "provider": "Liquid"}
+{"row": "685", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "317.4 msec", "correct": false, "provider": "Liquid"}
+{"row": "692", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "241 msec", "correct": false, "provider": "Liquid"}
+{"row": "699", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "702", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "464.6 msec", "correct": true, "provider": "Liquid"}
+{"row": "709", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "442.74 msec", "correct": false, "provider": "Liquid"}
+{"row": "717", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "344.3", "correct": false, "provider": "Liquid"}
+{"row": "718", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "326.4 msec", "correct": false, "provider": "Liquid"}
+{"row": "723", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "475 msec", "correct": false, "provider": "Liquid"}
+{"row": "725", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "729", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "736", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "389.85 msec", "correct": false, "provider": "Liquid"}
+{"row": "744", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "745", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "1.65 m\u00b2", "correct": true, "provider": "Liquid"}
+{"row": "748", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "753", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "2.44 m\u00b2", "correct": true, "provider": "Liquid"}
+{"row": "767", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "79 kg", "correct": true, "provider": "Liquid"}
+{"row": "769", "category": "physical", "calculator": "Adjusted Body Weight", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "776", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "59.1 kg", "correct": true, "provider": "Liquid"}
+{"row": "780", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "61.2 kg", "correct": true, "provider": "Liquid"}
+{"row": "792", "category": "lab test", "calculator": "Delta Gap", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "796", "category": "lab test", "calculator": "Delta Gap", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "797", "category": "lab test", "calculator": "Delta Gap", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "799", "category": "lab test", "calculator": "Delta Gap", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "802", "category": "lab test", "calculator": "Delta Ratio", "answer": "1.33", "correct": false, "provider": "Liquid"}
+{"row": "803", "category": "lab test", "calculator": "Delta Ratio", "answer": "1.43", "correct": true, "provider": "Liquid"}
+{"row": "804", "category": "lab test", "calculator": "Delta Ratio", "answer": "0.43", "correct": true, "provider": "Liquid"}
+{"row": "820", "category": "lab test", "calculator": "Delta Ratio", "answer": "9.8", "correct": false, "provider": "Liquid"}
+{"row": "823", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "15", "correct": true, "provider": "Liquid"}
+{"row": "827", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "11.3 mEq/L", "correct": true, "provider": "Liquid"}
+{"row": "829", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "15 mEq/L", "correct": true, "provider": "Liquid"}
+{"row": "830", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "8.75 mEq/L", "correct": true, "provider": "Liquid"}
+{"row": "843", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "845", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "846", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "-3.3", "correct": false, "provider": "Liquid"}
+{"row": "857", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "864", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "867", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "872", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "873", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "887", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "890", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "3", "correct": false, "provider": "Liquid"}
+{"row": "892", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "898", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "PSI score: 100 (Class V)", "correct": false, "provider": "Liquid"}
+{"row": "901", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "8", "correct": true, "provider": "Liquid"}
+{"row": "908", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "6", "correct": true, "provider": "Liquid"}
+{"row": "912", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "9", "correct": true, "provider": "Liquid"}
+{"row": "913", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "3", "correct": true, "provider": "Liquid"}
+{"row": "925", "category": "risk", "calculator": "APACHE II Score", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "927", "category": "risk", "calculator": "APACHE II Score", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "929", "category": "risk", "calculator": "APACHE II Score", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "931", "category": "risk", "calculator": "APACHE II Score", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "942", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "947", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": null, "correct": false, "provider": "Liquid"}
+{"row": "951", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "9", "correct": true, "provider": "Liquid"}
+{"row": "956", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "961", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "962", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "969", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "978", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "983", "category": "date", "calculator": "Estimated Due Date", "answer": "11/17/2002", "correct": true, "provider": "Liquid"}
+{"row": "984", "category": "date", "calculator": "Estimated Due Date", "answer": "03/20/2012", "correct": false, "provider": "Liquid"}
+{"row": "990", "category": "date", "calculator": "Estimated Due Date", "answer": "12/03/2007", "correct": false, "provider": "Liquid"}
+{"row": "997", "category": "date", "calculator": "Estimated Due Date", "answer": "08/21/2023", "correct": true, "provider": "Liquid"}
+{"row": "1002", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "6.5174 mg", "correct": false, "provider": "Liquid"}
+{"row": "1005", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "183.208 mg", "correct": true, "provider": "Liquid"}
+{"row": "1007", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "1008", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "1030", "category": "physical", "calculator": "Target weight", "answer": "75 kg", "correct": true, "provider": "Liquid"}
+{"row": "1032", "category": "physical", "calculator": "Target weight", "answer": "38.9 kg", "correct": true, "provider": "Liquid"}
+{"row": "1033", "category": "physical", "calculator": "Target weight", "answer": "43.13 kg", "correct": true, "provider": "Liquid"}
+{"row": "1040", "category": "physical", "calculator": "Target weight", "answer": "69.5 kg", "correct": true, "provider": "Liquid"}
+{"row": "1041", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "250", "correct": false, "provider": "Liquid"}
+{"row": "1042", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "4330 MME", "correct": false, "provider": "Liquid"}
+{"row": "1050", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "2295", "correct": false, "provider": "Liquid"}
+{"row": "1054", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "40 MME", "correct": true, "provider": "Liquid"}
+{"row": "1061", "category": "date", "calculator": "Estimated of Conception", "answer": "01/26/2006", "correct": true, "provider": "Liquid"}
+{"row": "1067", "category": "date", "calculator": "Estimated of Conception", "answer": "07/01/2003", "correct": true, "provider": "Liquid"}
+{"row": "1078", "category": "date", "calculator": "Estimated of Conception", "answer": "05/12/2020", "correct": true, "provider": "Liquid"}
+{"row": "1079", "category": "date", "calculator": "Estimated of Conception", "answer": "10/21/2011", "correct": true, "provider": "Liquid"}
+{"row": "1086", "category": "date", "calculator": "Estimated Gestational Age", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "1092", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(34 weeks, 0 days)", "correct": true, "provider": "Liquid"}
+{"row": "1097", "category": "date", "calculator": "Estimated Gestational Age", "answer": null, "correct": false, "error": "EmptyContent: liquid/lfm-2.5-24b-a2b returned empty content (finish_reason=length)"}
+{"row": "1100", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(14 weeks, 2 days)", "correct": true, "provider": "Liquid"}

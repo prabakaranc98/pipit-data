@@ -1,0 +1,220 @@
+{"row": "9", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "9.67", "correct": true, "provider": "PrimeIntellect"}
+{"row": "14", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "21.94", "correct": true, "provider": "PrimeIntellect"}
+{"row": "18", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "6.07", "correct": true, "provider": "PrimeIntellect"}
+{"row": "19", "category": "lab test", "calculator": "Creatinine Clearance (Cockcroft-Gault Equation)", "answer": "41.0", "correct": true, "provider": "PrimeIntellect"}
+{"row": "28", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "10.6", "correct": true, "provider": "PrimeIntellect"}
+{"row": "35", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "94", "correct": false, "provider": "PrimeIntellect"}
+{"row": "37", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "74", "correct": true, "provider": "PrimeIntellect"}
+{"row": "39", "category": "lab test", "calculator": "CKD-EPI Equations for Glomerular Filtration Rate", "answer": "30", "correct": true, "provider": "PrimeIntellect"}
+{"row": "41", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "44", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "4", "correct": true, "provider": "PrimeIntellect"}
+{"row": "49", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "56", "category": "risk", "calculator": "CHA2DS2-VASc Score for Atrial Fibrillation Stroke Risk", "answer": "0", "correct": true, "provider": "PrimeIntellect"}
+{"row": "61", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "100", "correct": true, "provider": "PrimeIntellect"}
+{"row": "68", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "100", "correct": true, "provider": "PrimeIntellect"}
+{"row": "75", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "53", "correct": true, "provider": "PrimeIntellect"}
+{"row": "80", "category": "physical", "calculator": "Mean Arterial Pressure (MAP)", "answer": "83", "correct": true, "provider": "PrimeIntellect"}
+{"row": "82", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "23.8 kg/m\u00b2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "85", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "23.95 kg/m\u00b2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "94", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "24.5 kg/m\u00b2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "98", "category": "physical", "calculator": "Body Mass Index (BMI)", "answer": "13.2 kg/m\u00b2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "101", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "9.32 mg/dL", "correct": true, "provider": "PrimeIntellect"}
+{"row": "103", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "8.58", "correct": true, "provider": "PrimeIntellect"}
+{"row": "108", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "7.84 mg/dL", "correct": true, "provider": "PrimeIntellect"}
+{"row": "115", "category": "lab test", "calculator": "Calcium Correction for Hypoalbuminemia", "answer": "7.86 mg/dL", "correct": true, "provider": "PrimeIntellect"}
+{"row": "121", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "1.5", "correct": true, "provider": "PrimeIntellect"}
+{"row": "128", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "1.5", "correct": false, "provider": "PrimeIntellect"}
+{"row": "135", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "1.5", "correct": true, "provider": "PrimeIntellect"}
+{"row": "139", "category": "risk", "calculator": "Wells' Criteria for Pulmonary Embolism", "answer": "0", "correct": true, "provider": "PrimeIntellect"}
+{"row": "142", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "60", "correct": false, "provider": "PrimeIntellect"}
+{"row": "145", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "49.5", "correct": false, "provider": "PrimeIntellect"}
+{"row": "150", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "2.7", "correct": false, "provider": "PrimeIntellect"}
+{"row": "158", "category": "lab test", "calculator": "MDRD GFR Equation", "answer": "19 mL/min/1.73 m\u00b2", "correct": false, "provider": "PrimeIntellect"}
+{"row": "161", "category": "physical", "calculator": "Ideal Body Weight", "answer": "55.06 kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "163", "category": "physical", "calculator": "Ideal Body Weight", "answer": "66.84 kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "177", "category": "physical", "calculator": "Ideal Body Weight", "answer": "56.9 kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "179", "category": "physical", "calculator": "Ideal Body Weight", "answer": "56.9 kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "184", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "331", "correct": true, "provider": "PrimeIntellect"}
+{"row": "188", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "564", "correct": true, "provider": "PrimeIntellect"}
+{"row": "193", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "223", "correct": true, "provider": "PrimeIntellect"}
+{"row": "200", "category": "physical", "calculator": "QTc Bazett Calculator", "answer": "288", "correct": true, "provider": "PrimeIntellect"}
+{"row": "205", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "11", "correct": true, "provider": "PrimeIntellect"}
+{"row": "209", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "12", "correct": true, "provider": "PrimeIntellect"}
+{"row": "218", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "9", "correct": false, "provider": "PrimeIntellect"}
+{"row": "219", "category": "severity", "calculator": "Child-Pugh Score for Cirrhosis Mortality", "answer": "9", "correct": false, "provider": "PrimeIntellect"}
+{"row": "227", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "3", "correct": true, "provider": "PrimeIntellect"}
+{"row": "228", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "4", "correct": false, "provider": "PrimeIntellect"}
+{"row": "234", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "4", "correct": false, "provider": "PrimeIntellect"}
+{"row": "237", "category": "risk", "calculator": "Wells' Criteria for DVT", "answer": "2", "correct": false, "provider": "PrimeIntellect"}
+{"row": "246", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "3", "correct": true, "provider": "PrimeIntellect"}
+{"row": "255", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "2", "correct": false, "provider": "PrimeIntellect"}
+{"row": "257", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "260", "category": "risk", "calculator": "Revised Cardiac Risk Index for Pre-Operative Risk", "answer": "1", "correct": false, "provider": "PrimeIntellect"}
+{"row": "265", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "5", "correct": false, "provider": "PrimeIntellect"}
+{"row": "270", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "5", "correct": false, "provider": "PrimeIntellect"}
+{"row": "272", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "6", "correct": true, "provider": "PrimeIntellect"}
+{"row": "276", "category": "risk", "calculator": "HEART Score for Major Cardiac Events", "answer": "7", "correct": false, "provider": "PrimeIntellect"}
+{"row": "285", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "1.71", "correct": true, "provider": "PrimeIntellect"}
+{"row": "292", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "1.36", "correct": true, "provider": "PrimeIntellect"}
+{"row": "294", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "0.006", "correct": false, "provider": "PrimeIntellect"}
+{"row": "298", "category": "lab test", "calculator": "Fibrosis-4 (FIB-4) Index for Liver Fibrosis", "answer": "0.003", "correct": false, "provider": "PrimeIntellect"}
+{"row": "302", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "303", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "3", "correct": false, "provider": "PrimeIntellect"}
+{"row": "310", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "4", "correct": false, "provider": "PrimeIntellect"}
+{"row": "317", "category": "severity", "calculator": "Centor Score (Modified/McIsaac) for Strep Pharyngitis", "answer": "3", "correct": false, "provider": "PrimeIntellect"}
+{"row": "322", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "104 mL/hr", "correct": true, "provider": "PrimeIntellect"}
+{"row": "327", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "81", "correct": true, "provider": "PrimeIntellect"}
+{"row": "330", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "131 mL/hr", "correct": true, "provider": "PrimeIntellect"}
+{"row": "335", "category": "physical", "calculator": "Maintenance Fluids Calculations", "answer": "155.3 mL/hr", "correct": true, "provider": "PrimeIntellect"}
+{"row": "344", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "23", "correct": true, "provider": "PrimeIntellect"}
+{"row": "346", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "19", "correct": true, "provider": "PrimeIntellect"}
+{"row": "349", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "8", "correct": false, "provider": "PrimeIntellect"}
+{"row": "353", "category": "lab test", "calculator": "MELD Na (UNOS/OPTN)", "answer": "18", "correct": false, "provider": "PrimeIntellect"}
+{"row": "361", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "5", "correct": true, "provider": "PrimeIntellect"}
+{"row": "366", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "373", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "377", "category": "risk", "calculator": "HAS-BLED Score for Major Bleeding Risk", "answer": "3", "correct": true, "provider": "PrimeIntellect"}
+{"row": "383", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "137.8 mEq/L", "correct": true, "provider": "PrimeIntellect"}
+{"row": "390", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "127.9 mEq/L", "correct": true, "provider": "PrimeIntellect"}
+{"row": "392", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "132.2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "396", "category": "lab test", "calculator": "Sodium Correction for Hyperglycemia", "answer": "132.2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "401", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "7", "correct": false, "provider": "PrimeIntellect"}
+{"row": "402", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "7", "correct": false, "provider": "PrimeIntellect"}
+{"row": "404", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "1", "correct": true, "provider": "PrimeIntellect"}
+{"row": "415", "category": "risk", "calculator": "Glasgow-Blatchford Bleeding Score (GBS)", "answer": "0", "correct": true, "provider": "PrimeIntellect"}
+{"row": "421", "category": "lab test", "calculator": "Serum Osmolality", "answer": "406 mOsm/kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "424", "category": "lab test", "calculator": "Serum Osmolality", "answer": "304 mOsm/kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "430", "category": "lab test", "calculator": "Serum Osmolality", "answer": "280", "correct": true, "provider": "PrimeIntellect"}
+{"row": "433", "category": "lab test", "calculator": "Serum Osmolality", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "442", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "1.96", "correct": true, "provider": "PrimeIntellect"}
+{"row": "453", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "4.50", "correct": true, "provider": "PrimeIntellect"}
+{"row": "454", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "1.14", "correct": true, "provider": "PrimeIntellect"}
+{"row": "458", "category": "lab test", "calculator": "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)", "answer": "6.17", "correct": true, "provider": "PrimeIntellect"}
+{"row": "464", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "466", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "6", "correct": false, "provider": "PrimeIntellect"}
+{"row": "469", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "478", "category": "risk", "calculator": "Charlson Comorbidity Index (CCI)", "answer": "3", "correct": true, "provider": "PrimeIntellect"}
+{"row": "481", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "3", "correct": false, "provider": "PrimeIntellect"}
+{"row": "484", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "4", "correct": true, "provider": "PrimeIntellect"}
+{"row": "490", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "0", "correct": false, "provider": "PrimeIntellect"}
+{"row": "494", "category": "diagnosis", "calculator": "FeverPAIN Score for Strep Pharyngitis", "answer": "3", "correct": true, "provider": "PrimeIntellect"}
+{"row": "503", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.43", "correct": true, "provider": "PrimeIntellect"}
+{"row": "504", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0", "correct": false, "provider": "PrimeIntellect"}
+{"row": "505", "category": "lab test", "calculator": "Free Water Deficit", "answer": "-0.76", "correct": true, "provider": "PrimeIntellect"}
+{"row": "520", "category": "lab test", "calculator": "Free Water Deficit", "answer": "0.225", "correct": true, "provider": "PrimeIntellect"}
+{"row": "523", "category": "lab test", "calculator": "Anion Gap", "answer": "14", "correct": true, "provider": "PrimeIntellect"}
+{"row": "534", "category": "lab test", "calculator": "Anion Gap", "answer": "28", "correct": true, "provider": "PrimeIntellect"}
+{"row": "537", "category": "lab test", "calculator": "Anion Gap", "answer": "30", "correct": true, "provider": "PrimeIntellect"}
+{"row": "538", "category": "lab test", "calculator": "Anion Gap", "answer": "14", "correct": true, "provider": "PrimeIntellect"}
+{"row": "541", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "1", "correct": true, "provider": "PrimeIntellect"}
+{"row": "551", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "3", "correct": true, "provider": "PrimeIntellect"}
+{"row": "552", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "0", "correct": true, "provider": "PrimeIntellect"}
+{"row": "553", "category": "risk", "calculator": "CURB-65 Score for Pneumonia Severity", "answer": "2", "correct": false, "provider": "PrimeIntellect"}
+{"row": "562", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.50%", "correct": true, "provider": "PrimeIntellect"}
+{"row": "565", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.48%", "correct": true, "provider": "PrimeIntellect"}
+{"row": "572", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.16%", "correct": true, "provider": "PrimeIntellect"}
+{"row": "578", "category": "lab test", "calculator": "Fractional Excretion of Sodium (FENa)", "answer": "0.30%", "correct": true, "provider": "SiliconFlow"}
+{"row": "582", "category": "lab test", "calculator": "LDL Calculated", "answer": "125 mg/dL", "correct": true, "provider": "PrimeIntellect"}
+{"row": "583", "category": "lab test", "calculator": "LDL Calculated", "answer": "153.6 mg/dL", "correct": true, "provider": "DeepInfra"}
+{"row": "584", "category": "lab test", "calculator": "LDL Calculated", "answer": "34.4", "correct": true, "provider": "PrimeIntellect"}
+{"row": "599", "category": "lab test", "calculator": "LDL Calculated", "answer": "91.4", "correct": true, "provider": "PrimeIntellect"}
+{"row": "603", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "Cannot be determined", "correct": false, "provider": "PrimeIntellect"}
+{"row": "605", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "20.5%", "correct": false, "provider": "PrimeIntellect"}
+{"row": "610", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "4.4%", "correct": false, "provider": "PrimeIntellect"}
+{"row": "619", "category": "lab test", "calculator": "Framingham Risk Score for Hard Coronary Heart Disease", "answer": "0.0%", "correct": false, "provider": "PrimeIntellect"}
+{"row": "625", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "1", "correct": true, "provider": "PrimeIntellect"}
+{"row": "631", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "0", "correct": true, "provider": "PrimeIntellect"}
+{"row": "632", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "1", "correct": true, "provider": "PrimeIntellect"}
+{"row": "638", "category": "diagnosis", "calculator": "PERC Rule for Pulmonary Embolism", "answer": "0", "correct": true, "provider": "PrimeIntellect"}
+{"row": "641", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "1", "correct": true, "provider": "PrimeIntellect"}
+{"row": "644", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "1", "correct": true, "provider": "PrimeIntellect"}
+{"row": "645", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "0", "correct": true, "provider": "PrimeIntellect"}
+{"row": "656", "category": "diagnosis", "calculator": "SIRS Criteria", "answer": "3", "correct": true, "provider": "PrimeIntellect"}
+{"row": "664", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "364", "correct": true, "provider": "PrimeIntellect"}
+{"row": "667", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "522", "correct": true, "provider": "PrimeIntellect"}
+{"row": "670", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "500", "correct": true, "provider": "PrimeIntellect"}
+{"row": "676", "category": "physical", "calculator": "QTc Fridericia Calculator", "answer": "579", "correct": true, "provider": "PrimeIntellect"}
+{"row": "683", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "273 msec", "correct": false, "provider": "PrimeIntellect"}
+{"row": "685", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "263", "correct": true, "provider": "PrimeIntellect"}
+{"row": "692", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "339", "correct": true, "provider": "PrimeIntellect"}
+{"row": "699", "category": "physical", "calculator": "QTc Framingham Calculator", "answer": "449.5", "correct": true, "provider": "PrimeIntellect"}
+{"row": "702", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "460.25", "correct": true, "provider": "PrimeIntellect"}
+{"row": "709", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "619.75", "correct": true, "provider": "PrimeIntellect"}
+{"row": "717", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "442.75", "correct": true, "provider": "PrimeIntellect"}
+{"row": "718", "category": "physical", "calculator": "QTc Hodges Calculator", "answer": "601.25", "correct": true, "provider": "PrimeIntellect"}
+{"row": "723", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "638", "correct": true, "provider": "PrimeIntellect"}
+{"row": "725", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "739 msec", "correct": true, "provider": "PrimeIntellect"}
+{"row": "729", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "228.38", "correct": true, "provider": "PrimeIntellect"}
+{"row": "736", "category": "physical", "calculator": "QTc Rautaharju Calculator", "answer": "459.33", "correct": true, "provider": "PrimeIntellect"}
+{"row": "744", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "2.00 m\u00b2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "745", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "1.65 m\u00b2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "748", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "1.23 m\u00b2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "753", "category": "physical", "calculator": "Body Surface Area Calculator", "answer": "2.44 m\u00b2", "correct": true, "provider": "PrimeIntellect"}
+{"row": "767", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "81 kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "769", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "66.3", "correct": true, "provider": "PrimeIntellect"}
+{"row": "776", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "61", "correct": true, "provider": "PrimeIntellect"}
+{"row": "780", "category": "physical", "calculator": "Adjusted Body Weight", "answer": "61.19 kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "792", "category": "lab test", "calculator": "Delta Gap", "answer": "2.1", "correct": true, "provider": "PrimeIntellect"}
+{"row": "796", "category": "lab test", "calculator": "Delta Gap", "answer": "22", "correct": true, "provider": "PrimeIntellect"}
+{"row": "797", "category": "lab test", "calculator": "Delta Gap", "answer": "4.7", "correct": true, "provider": "PrimeIntellect"}
+{"row": "799", "category": "lab test", "calculator": "Delta Gap", "answer": "7", "correct": true, "provider": "PrimeIntellect"}
+{"row": "802", "category": "lab test", "calculator": "Delta Ratio", "answer": "0.88", "correct": true, "provider": "PrimeIntellect"}
+{"row": "803", "category": "lab test", "calculator": "Delta Ratio", "answer": "1.43", "correct": true, "provider": "PrimeIntellect"}
+{"row": "804", "category": "lab test", "calculator": "Delta Ratio", "answer": "0.43", "correct": true, "provider": "PrimeIntellect"}
+{"row": "820", "category": "lab test", "calculator": "Delta Ratio", "answer": "-0.5", "correct": true, "provider": "PrimeIntellect"}
+{"row": "823", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "15", "correct": true, "provider": "PrimeIntellect"}
+{"row": "827", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "12", "correct": false, "provider": "PrimeIntellect"}
+{"row": "829", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "15", "correct": true, "provider": "PrimeIntellect"}
+{"row": "830", "category": "lab test", "calculator": "Albumin Corrected Anion Gap", "answer": "8.75", "correct": true, "provider": "PrimeIntellect"}
+{"row": "843", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "19.5", "correct": true, "provider": "PrimeIntellect"}
+{"row": "845", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "5.5", "correct": true, "provider": "PrimeIntellect"}
+{"row": "846", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "-1.25", "correct": true, "provider": "PrimeIntellect"}
+{"row": "857", "category": "lab test", "calculator": "Albumin Corrected Delta Gap", "answer": "6", "correct": true, "provider": "PrimeIntellect"}
+{"row": "864", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "1.12", "correct": true, "provider": "PrimeIntellect"}
+{"row": "867", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "0.58", "correct": true, "provider": "PrimeIntellect"}
+{"row": "872", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "1.45", "correct": true, "provider": "PrimeIntellect"}
+{"row": "873", "category": "lab test", "calculator": "Albumin Corrected Delta Ratio", "answer": "1.46", "correct": true, "provider": "PrimeIntellect"}
+{"row": "887", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "Risk Class IV", "correct": false, "provider": "PrimeIntellect"}
+{"row": "890", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "70", "correct": false, "provider": "PrimeIntellect"}
+{"row": "892", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": "151", "correct": false, "provider": "PrimeIntellect"}
+{"row": "898", "category": "severity", "calculator": "PSI Score: Pneumonia Severity Index for CAP", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "901", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "908", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "6", "correct": true, "provider": "PrimeIntellect"}
+{"row": "912", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "10", "correct": false, "provider": "PrimeIntellect"}
+{"row": "913", "category": "severity", "calculator": "Glasgow Coma Score (GCS)", "answer": "3", "correct": true, "provider": "PrimeIntellect"}
+{"row": "925", "category": "risk", "calculator": "APACHE II Score", "answer": "55", "correct": false, "provider": "PrimeIntellect"}
+{"row": "927", "category": "risk", "calculator": "APACHE II Score", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "929", "category": "risk", "calculator": "APACHE II Score", "answer": "17", "correct": false, "provider": "PrimeIntellect"}
+{"row": "931", "category": "risk", "calculator": "APACHE II Score", "answer": "17", "correct": false, "provider": "PrimeIntellect"}
+{"row": "942", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "947", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "8", "correct": false, "provider": "PrimeIntellect"}
+{"row": "951", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "8", "correct": false, "provider": "PrimeIntellect"}
+{"row": "956", "category": "risk", "calculator": "Sequential Organ Failure Assessment (SOFA) Score", "answer": "4", "correct": false, "provider": "PrimeIntellect"}
+{"row": "961", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "962", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": "11", "correct": false, "provider": "PrimeIntellect"}
+{"row": "969", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": null, "correct": false, "provider": "PrimeIntellect"}
+{"row": "978", "category": "risk", "calculator": "Caprini Score for Venous Thromboembolism (2005)", "answer": "6", "correct": false, "provider": "Together"}
+{"row": "983", "category": "date", "calculator": "Estimated Due Date", "answer": "11/17/2002", "correct": true, "provider": "PrimeIntellect"}
+{"row": "984", "category": "date", "calculator": "Estimated Due Date", "answer": "03/20/2012", "correct": false, "provider": "PrimeIntellect"}
+{"row": "990", "category": "date", "calculator": "Estimated Due Date", "answer": "12/03/2007", "correct": false, "provider": "PrimeIntellect"}
+{"row": "997", "category": "date", "calculator": "Estimated Due Date", "answer": "08/21/2023", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1002", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "6.11 mg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1005", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "183.208", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1007", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "35.1975 mg", "correct": false, "provider": "PrimeIntellect"}
+{"row": "1008", "category": "dosage", "calculator": "Steroid Conversion Calculator", "answer": "0.260997 mg", "correct": false, "provider": "PrimeIntellect"}
+{"row": "1030", "category": "physical", "calculator": "Target weight", "answer": "74.95 kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1032", "category": "physical", "calculator": "Target weight", "answer": "38.89625", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1033", "category": "physical", "calculator": "Target weight", "answer": "43.13 kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1040", "category": "physical", "calculator": "Target weight", "answer": "69.53 kg", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1041", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "38", "correct": false, "provider": "PrimeIntellect"}
+{"row": "1042", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": null, "correct": false, "provider": "DeepInfra"}
+{"row": "1050", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "2290", "correct": false, "provider": "PrimeIntellect"}
+{"row": "1054", "category": "dosage", "calculator": "Morphine Milligram Equivalents (MME) Calculator", "answer": "40", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1061", "category": "date", "calculator": "Estimated of Conception", "answer": "01/26/2006", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1067", "category": "date", "calculator": "Estimated of Conception", "answer": "07/01/2003", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1078", "category": "date", "calculator": "Estimated of Conception", "answer": "05/10/2020", "correct": false, "provider": "PrimeIntellect"}
+{"row": "1079", "category": "date", "calculator": "Estimated of Conception", "answer": "10/21/2011", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1086", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(28 weeks, 4 days)", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1092", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(21 weeks, 0 days)", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1097", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(36 weeks, 3 days)", "correct": true, "provider": "PrimeIntellect"}
+{"row": "1100", "category": "date", "calculator": "Estimated Gestational Age", "answer": "(14 weeks, 2 days)", "correct": true, "provider": "PrimeIntellect"}

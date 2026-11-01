@@ -5,6 +5,7 @@ id: qwen/qwen3.6-35b-a3b
 revision: as-served
 adapter: pipit.adapters.openrouter:load
 placement: api
+family: qwen
 key_env: OPENROUTER_API_KEY
 price_usd_per_million_in: 0.10
 price_usd_per_million_out: 0.90
