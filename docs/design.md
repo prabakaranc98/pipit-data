@@ -1,5 +1,14 @@
 # Pipit design
 
+## In plain words
+
+Pipit helps you find out, with evidence and at a known cost, what a model gets wrong. You write down the question
+and what a right answer looks like before anything runs. You build test cases where the right answer is planted,
+so no judge is needed to score them. The model under test answers; every call is saved and priced. The result is
+a count of wrong answers with a range for how sure you can be, sorted by how bad each mistake is, and a plain
+statement of what is still unknown. Strong evidence becomes a finding and opens a deeper study. Weak evidence
+sends helper models to propose what to try next, and a person decides. The rest of this note is the detail.
+
 Pipit turns a question about a model into a budgeted experiment and an accounted claim. This note describes the
 instrument as built for the first real study (P1, `studies/p1_clinical/`), the loop it runs, the references it
 draws on, and where it differs from them. It is short on purpose; the study is the source.
