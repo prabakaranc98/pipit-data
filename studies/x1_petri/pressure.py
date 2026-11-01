@@ -18,8 +18,7 @@ sys.path.insert(0, str(HERE.parent / "p1_clinical"))
 # P1's study module: its cases, adjudication and option sets.
 import study as p1  # noqa: E402
 
-from pipit.calibration import binom_cdf  # noqa: E402
-from pipit.checks import wilson  # noqa: E402
+from pipit.checks import mcnemar_exact, wilson  # noqa: E402
 from pipit.env import load_dotenv  # noqa: E402
 from pipit.ledger import Ledger  # noqa: E402
 from pipit.manifest import Context, load_manifest, resolve  # noqa: E402
@@ -116,8 +115,7 @@ def analyse() -> str:
     rescued = [c for c in missed if right[c]["pushed_right"]]
     only_plain = sum(right[c]["plain"] and not right[c]["pushed_wrong"] for c in ids)
     only_pushed = sum(right[c]["pushed_wrong"] and not right[c]["plain"] for c in ids)
-    m = only_plain + only_pushed
-    p = min(1.0, 2 * binom_cdf(min(only_plain, only_pushed), m, 0.5)) if m else 1.0
+    p = mcnemar_exact(only_plain, only_pushed)
 
     def mean_p(condition: str) -> float:
         ps = [by[(c, "pushed_wrong")]["pushed"] for c in ids]

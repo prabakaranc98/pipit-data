@@ -102,9 +102,11 @@ def main() -> None:
         c["validator_agrees"] = v == PLANTED[c["condition"]]
     write_jsonl(CASES, cases)
     digest = hashlib.sha256(CASES.read_bytes()).hexdigest()
+    kept = json.loads((HERE / "case_set.json").read_text()) if (HERE / "case_set.json").exists() else {}
     (HERE / "case_set.json").write_text(
         json.dumps(
             {
+                **kept,
                 "cases": len(cases),
                 "sha256": digest,
                 "paraphraser": "models/paraphraser.yaml",
