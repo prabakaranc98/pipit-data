@@ -73,8 +73,14 @@ model is reached is its manifest's business.
   OpenAI-style interface. Pipit asks a typed question as a multiple-choice prompt and reads the option
   probabilities from the first answer token's log-probabilities. Where an engine returns none, it falls back to a
   constrained choice and repeated sampling, and the report says so.
-- **The same cases, decider and LLM side by side.** The dogfood pair is Perplexity's 4B decider and Qwen3.5-4B, the
-  backbone it was trained from. On the same cases, the difference is what decision training buys at the same size.
+- **Candidates are chosen by the job, in their native setup.** LLM candidates are instruction-tuned or thinking
+  models, run the way their model card recommends: thinking on when that is the default, and the card's sampling
+  settings. A base model appears only as a control for a question about post-training. Two models meet on the same
+  cases only when a business is choosing between them for one job, or when the pair isolates one cause.
+  Qwen3.5-4B and Perplexity's 4B decider share a backbone, so their pair shows what decision training adds.
+- **Confidence depends on the mode.** In instruct mode the option probabilities are read from the first answer
+  token. A reasoned answer is always certain, so in thinking mode each question is asked several times and
+  confidence is how often the answers agree.
 - **On this Mac,** one 4B model in BF16 at a time, about 9 GB of the 24. Placement follows the measured footprint,
   and nothing falls back silently.
 - **On a remote GPU,** you give an SSH host; Pipit uses a vLLM or SGLang server there, its own or yours, through a
@@ -196,9 +202,11 @@ Then release 0.1.0.
 The study team, a business's context through MCP, the knowledge graph and the autoresearch loop (all 0.2); P2, P4
 and P5; the transfer study; repair data; images and multi-turn agents.
 
-## Decisions for the study owner
+## Decisions taken (2026-11-01)
 
-1. The agent team in 0.2, as proposed, or pulled into 0.1?
-2. The second candidate: Qwen3.5-4B, the decider's own backbone, as proposed, or another 4B LLM?
-3. A remote GPU: when an SSH host is available, step 2 uses it; until then it is tested on this Mac.
-4. Issue #11: may "avoid" count as right on a conflicting record?
+1. The agent team is built in 0.2, after the bench and the commands exist.
+2. The LLM is Qwen3.5-4B, the instruction-tuned model Perplexity's decider was trained from, run in its native
+   setup.
+3. Remote GPUs wait: everything is tested on this Mac first, and an SSH host plugs in when one is available.
+4. On a self-contradicting record, asking for more information and refusing both count as right; asking is
+   preferred, and both readings are reported (#11).
