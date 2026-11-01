@@ -21,6 +21,29 @@ from pipit.ledger import Ledger  # noqa: E402
 
 RUNS = HERE / "runs"
 CATEGORIES = ["lab test", "physical", "dosage", "date", "risk", "severity", "diagnosis"]
+# Calculators whose code Krohn-Grimberghe (2026, arXiv 2603.02222) reports correcting; their answer keys may be
+# wrong. Registered in preregistration.md before any accuracy was computed.
+AUDITED = {
+    "APACHE II Score",
+    "CKD-EPI Equations for Glomerular Filtration Rate",
+    "CURB-65 Score for Pneumonia Severity",
+    "Charlson Comorbidity Index (CCI)",
+    "Child-Pugh Score for Cirrhosis Mortality",
+    "Fibrosis-4 (FIB-4) Index for Liver Fibrosis",
+    "Framingham Risk Score for Hard Coronary Heart Disease",
+    "Glasgow Coma Score (GCS)",
+    "Glasgow-Blatchford Bleeding Score (GBS)",
+    "HEART Score for Major Cardiac Events",
+    "HOMA-IR (Homeostatic Model Assessment for Insulin Resistance)",
+    "MDRD GFR Equation",
+    "MELD Na (UNOS/OPTN)",
+    "Morphine Milligram Equivalents (MME) Calculator",
+    "QTc Framingham Calculator",
+    "Revised Cardiac Risk Index for Pre-Operative Risk",
+    "SIRS Criteria",
+    "Sequential Organ Failure Assessment (SOFA) Score",
+    "Steroid Conversion Calculator",
+}
 # The paper's Table 2, zero-shot chain of thought, Llama 3 70B, on v1.0's 1,047 items.
 PAPER_LLAMA3_70B = {
     "lab test": 33.94,
@@ -128,6 +151,14 @@ def main() -> None:
                 sum(r.get("error") is not None for r in dec),
             ),
             "medcalc_clean": (sum(r["correct"] for r in clean), len(clean)),
+            "medcalc_unaudited": (
+                sum(r["correct"] for r in calc if r["calculator"] not in AUDITED),
+                sum(r["calculator"] not in AUDITED for r in calc),
+            ),
+            "medcalc_audited": (
+                sum(r["correct"] for r in calc if r["calculator"] in AUDITED),
+                sum(r["calculator"] in AUDITED for r in calc),
+            ),
         }
     L = ["# Study V1: do Pipit's written cases rank models the way MedCalc-Bench's real notes do?\n"]
     L.append(
@@ -154,6 +185,19 @@ def main() -> None:
         L.append(
             f"| {name} | {t['cut'][0]} | {t['failed'][0]} | {share(*t['medcalc_clean'])} | {t['cut'][1]} | "
             f"{t['failed'][1]} |"
+        )
+    L.append("\n## Calculators whose code an audit corrected\n")
+    L.append(
+        "Krohn-Grimberghe (2026) reports fixing errors in the code of 19 of MedCalc-Bench's 55 calculators, without "
+        "saying how many test answers each changes. Their items are shown apart here; the registered score above "
+        "keeps them.\n"
+    )
+    L.append("| model | all items | without the 19 audited calculators | the 19 audited calculators only |")
+    L.append("|---|---|---|---|")
+    for name in names:
+        t = table[name]
+        L.append(
+            f"| {name} | {share(*t['medcalc'])} | {share(*t['medcalc_unaudited'])} | {share(*t['medcalc_audited'])} |"
         )
     L.append("\n## MedCalc-Bench by category\n")
     L.append("| model | " + " | ".join(CATEGORIES) + " |")
@@ -190,15 +234,21 @@ def main() -> None:
             for n in names
         ]
         h2 = [table[n]["p1_h2"][0] / table[n]["p1_h2"][1] for n in names]
+        kept = [table[n]["medcalc_unaudited"][0] / max(1, table[n]["medcalc_unaudited"][1]) for n in names]
         L.append("\n## Do the two rank the models alike?\n")
         (p_all, how), (p_h2, _) = permutation_p(mc, pp), permutation_p(lab, h2)
+        p_kept, _ = permutation_p(kept, pp)
         L.append(
             f"Spearman's correlation across {len(names)} models, with a one-sided permutation test over {how}:\n"
         )
         L.append(f"- MedCalc-Bench overall against P1 overall: {spearman(mc, pp):.2f}, p = {p_all:.3f}.")
         L.append(
             f"- MedCalc-Bench lab and dosage against P1's computing hypothesis: {spearman(lab, h2):.2f}, "
-            f"p = {p_h2:.3f}.\n"
+            f"p = {p_h2:.3f}."
+        )
+        L.append(
+            f"- MedCalc-Bench without the 19 audited calculators against P1 overall: {spearman(kept, pp):.2f}, "
+            f"p = {p_kept:.3f}.\n"
         )
     text = "\n".join(L) + "\n"
     (HERE / "report.md").write_text(text)
