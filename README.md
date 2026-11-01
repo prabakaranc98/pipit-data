@@ -4,7 +4,7 @@ A data-first workbench for measuring and improving AI systems.
 
 Pipit treats data as an experimental instrument. It turns a question about a model into a small, efficient experiment: a constructed set of cases, a budgeted sample, and a claim whose evidence is accounted for, including where the evidence is not enough.
 
-**Status:** `v0.0.3` (2026-11-01). Working toward 0.1.0, the first version others can use, through small releases
+**Status:** `v0.0.4` (2026-11-01). Working toward 0.1.0, the first version others can use, through small releases
 that each answer one question: see `docs/plan.md`.
 
 **Read in this order:** `docs/plan.md` (what Pipit is for, whom it helps, the path to 0.1), `docs/methodology.md`
@@ -43,7 +43,7 @@ Each release answers one question, and its issues sit in a GitHub milestone of t
 | Release | Question |
 | --- | --- |
 | 0.0.3, released | Can Pipit's numbers be trusted? |
-| 0.0.4 | Can we trust a run? |
+| 0.0.4, released | Can we trust a run? |
 | 0.0.5 | Can a report drift from its data? |
 | 0.0.6 | Can anyone read the code? |
 | 0.0.7 | Is the dose finding real? |
@@ -101,8 +101,8 @@ the bench (B1), counts through the cells it serves.
 | I1, interpretability | Does Qwen hold the planted fact when its decision ignores it? | Yes: a probe reads the fact at the decision point from about layer 16, on 11 of 13 wrong decisions too; patching shows the decision gathered there from layer 18. On doses the decision barely moves between safe and unsafe. | `studies/i1_interp/report.md` |
 | V1, beside MedCalc-Bench | Do Pipit's written cases rank models the way a real-note benchmark does? | Not overall: across 12 models, Spearman 0.21 (p = 0.25). Where both measure calculation, yes: 0.61 (p = 0.020). Token caps, an answer key with 19 corrected calculators, and models served by up to 18 providers all shape the scores. It cost $6.90. | `studies/v1_medcalc/report.md` |
 
-Released as 0.0.3 on 2026-11-01: #39, #56, #58, #59, #60, #61, #63 and #64. In review: V1's results (#57). Next in
-0.0.4: the checks before a run.
+Released on 2026-11-01: 0.0.3 (#39, #56, #58, #59, #60, #61, #63, #64) and 0.0.4 (V1's results, #65, and the
+checks before a run, #66). Next: 0.0.5, can a report drift from its data?
 
 ## How work moves
 
@@ -119,7 +119,7 @@ Three things carry versions, separately.
 
 | Thing | Scheme | Now |
 | --- | --- | --- |
-| Code | SemVer. Small `0.0.z` releases, one question each, on the road to `0.1.0` (`docs/plan.md`); `0.1.0` when someone else can register any model, declare a study in YAML and get a confirmed reliance dossier; `1.0.0` when the claim schema is stable | `0.0.3` |
+| Code | SemVer. Small `0.0.z` releases, one question each, on the road to `0.1.0` (`docs/plan.md`); `0.1.0` when someone else can register any model, declare a study in YAML and get a confirmed reliance dossier; `1.0.0` when the claim schema is stable | `0.0.4` |
 | Schemas (case, claim, manifest) | an integer `schema_version` inside every artifact, bumped on any breaking change | not yet defined |
 | Case sets and runs | content hash plus generator seed; immutable once a claim references them | not yet defined |
 

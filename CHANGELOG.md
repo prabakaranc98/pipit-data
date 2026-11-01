@@ -4,14 +4,20 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [0.0.4] - 2026-11-01
+
 ### Added
 
+- `pipit.preflight` (#66): checks before a run. Every model declares a family, every API model is pinned to a provider (otherwise an explicit flag, which the report states), no helper shares a candidate's family, and an upper bound on the cost fits the key's budget.
+- `pipit.results` (#66): results saved as each item finishes, so a run that stops resumes where it stopped.
+- The OpenRouter adapter (#66): a refused key raises `KeyRefused` at once instead of being retried; each call has a total time limit, `settings.deadline_s` (600 s unless set), because keep-alive padding defeats the socket's timeout; `budget_left` reads what is left on the key. V1's runner uses all of them, and its result files replay unchanged.
 - Study V1's results (`studies/v1_medcalc`, #57): twelve models on 220 MedCalc-Bench items and on P1's 112 cases, for $6.90. Across 12 models the two do not rank the models alike overall (Spearman 0.21, p = 0.25); where both measure calculation they agree (0.61, p = 0.020). Llama 3.1 70B reproduces the paper's overall score (39% against 36%). Every model scores lower on the 19 calculators whose code an audit corrected. The report shows the providers behind each model, up to 18, and ends with a hand-written reading.
 - `run.py --resume` in V1: after the API key's spending limit refused 1,385 calls, only those were sent again; a run now stops at the first refusal. Every V1 manifest declares its `family`.
 - `docs/landscape.md`: the five uses as the field defines them, with their borders, and the loop as others built it in 2025 and 2026.
 
 ### Changed
 
+- `docs/plan.md` (#66): no step waits for a person. Each human check is replaced by an automatic one grounded in a reference, and a panel of measured model families and decision models such as Jev stands in for reviewers; finance comes after clinical. `docs/methodology.md`: the new checks.
 - `docs/plan.md`: the five uses' definitions from the field; 0.0.8 now asks whether a small model can approve alone at a stated clinical error rate across reruns; the registry, model inventory and programme tables move to 0.0.5, the viewer to 0.0.14; V1 is reported as run. README: the industries by uses grid, V1's result, and the releases in place of milestones M0 to M6.
 
 ## [0.0.3] - 2026-11-01
@@ -68,7 +74,8 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 - M0, the repository contract: the `pipit` package skeleton at version 0.0.1, lint and tests in CI, issue and pull-request templates, and the README with the discipline, the two model roles, the milestone ladder and the versioning scheme.
 - Lab models reach Pipit through hosted APIs: TypeSafe for decision models, OpenRouter for LLMs of every size.
 
-[Unreleased]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.3...HEAD
+[Unreleased]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.4...HEAD
+[0.0.4]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/prabakaranc98/pipit-data/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/prabakaranc98/pipit-data/releases/tag/v0.0.1
