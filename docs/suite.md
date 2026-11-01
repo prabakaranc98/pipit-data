@@ -15,9 +15,9 @@ Status: **reproduced** (Pipit's cases show the documented effect), **agrees** (m
 
 How the sources were read: by research agents on 2026-11-01, at abstract level or by keyword search of the full
 text, never end to end by a person. The reading list has 125 entries, citing 123 sources (two papers are cited
-twice), with 127 quotes. A script checked every quote as an exact substring of its source on the research draft the
-list was cut from, which held 135 quotes; each of the 127 kept matches that draft word for word. A venue marked †
-comes only from Semantic Scholar's record.
+twice), with 127 quotes, each word for word from the research draft. A script checked 135 quotes gathered for that
+draft, these 127 among them, as exact substrings of their saved sources. A venue marked † comes only from Semantic
+Scholar's record.
 
 ## Status at 0.0.4
 

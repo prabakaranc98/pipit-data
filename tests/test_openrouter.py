@@ -233,15 +233,16 @@ def test_a_rejected_key_stops_at_once(tmp_path, monkeypatch) -> None:
 
 
 def test_a_stall_after_an_error_is_not_blamed_on_the_error(tmp_path, monkeypatch) -> None:
-    import time
     import types
 
     from pipit.adapters import openrouter
 
     monkeypatch.setenv("PIPIT_TEST_OR_KEY", "k")
-    # No wait between attempts, so the 503 is got past and the stall alone runs out the time.
+    # A clock the test moves, and no wait between attempts: the 503 is got past, and the stall alone runs out
+    # the time.
+    clock = [0.0]
     monkeypatch.setattr(
-        openrouter, "time", types.SimpleNamespace(perf_counter=time.perf_counter, sleep=lambda s: None)
+        openrouter, "time", types.SimpleNamespace(perf_counter=lambda: clock[0], sleep=lambda s: None)
     )
     served = []
 
@@ -249,7 +250,7 @@ def test_a_stall_after_an_error_is_not_blamed_on_the_error(tmp_path, monkeypatch
         served.append(1)
         if len(served) % 2 == 1:
             raise urllib.error.HTTPError("u", 503, "Service Unavailable", {}, None)  # type: ignore[arg-type]
-        time.sleep(0.11)  # what the real transport does with a reply that never finishes
+        clock[0] += 0.2  # what the real transport does with a reply that never finishes
         raise TooSlow("no complete reply within 0 s")
 
     chat = OpenRouterChat(

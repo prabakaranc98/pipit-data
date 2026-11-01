@@ -113,8 +113,9 @@ def capped(ledger: list[dict], name: str, arm: str, key: str) -> set:
 def pinned_calls(ledger: list[dict], names: list[str]) -> dict[str, tuple[int, int]]:
     """For each model, its calls made by a run that pinned it to one provider, and all its calls. A call is
     credited to the last run in runs/run_log.jsonl that started before it and ran its model, since V1 ran several
-    runs at once; a call older than the log came from V1's first runs, which pinned none. Today's manifests are
-    not read: they say what a run would do now, not what the runs did."""
+    runs at once; a call older than the log came from V1's first runs, which pinned none. Two runs of one model at
+    the same time cannot be told apart, because a ledger row names no run: the later run gets the credit. Today's
+    manifests are not read: they say what a run would do now, not what the runs did."""
     path = RUNS / "run_log.jsonl"
     runs = [json.loads(x) for x in path.read_text().splitlines() if x.strip()] if path.exists() else []
     starts = [
