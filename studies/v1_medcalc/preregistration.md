@@ -75,3 +75,14 @@ The 19 calculators, as named in the test set: APACHE II Score; CKD-EPI Equations
 The registered scores stay on all 220 items. The report adds, per model, accuracy on the 144 items from the other 36
 calculators and on the 76 audited items alone, and the rank correlation with P1 using the 144. A reader can then see
 how much a possibly wrong answer key could move each result.
+
+## Amendment, when the API key's limit stopped the runs
+
+The OpenRouter key had a $10 limit, shared with the day's other studies. It ran out during the runs, and from then on
+every call was refused with `403 Forbidden`: all of DeepSeek V4.1 Flash, DeepSeek V4 Pro and LFM 2.5, 271 calls of
+Granite 4.2, 110 of Qwen3.5 9B and 8 of Qwen3.5 397B. A refusal is not the model's answer. Once the limit is raised,
+only the refused calls are sent again (`run.py --resume`); every other recorded result is kept as it is, including
+replies cut off at the token cap. The runner now stops at the first refusal instead of recording the rest as failures.
+
+Written before any accuracy was computed. The runner's summary lines, which print each finished model's MedCalc-Bench
+count, had been seen for the models finished by then; nothing in the analysis changes.
