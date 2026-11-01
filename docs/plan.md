@@ -83,13 +83,13 @@ model is reached is its manifest's business.
 - **Engines are checked against each other.** The same model on two engines answers the same cases, and the
   agreement and the size of the probability differences are recorded before a study relies on the faster one.
 
-**Tested on this Mac on 2026-11-01.** Qwen3.5-4B in BF16, at the revision the decision-models lab pinned, served by
-MLX 0.31 through its OpenAI-style endpoint: ready in about 6 seconds, about 9.3 GB of memory, about 0.6 seconds per
-question after the first. The answer letters carried almost all of the first token's probability, so option
-probabilities can be read directly. The adapter has to handle two things: thinking must be switched off in the chat
-template, and the log-probabilities come back in coarse BF16 steps, so they are renormalised over the options and
-their resolution is recorded. It answered 7 of 12 sampled P1 questions as expected. That is a feasibility check,
-not a result; the full P1 run on this model is step 1.
+**Tested on this Mac on 2026-11-01, then run in full as step 1.** Qwen3.5-4B in BF16, at the revision the
+decision-models lab pinned, served by MLX through its OpenAI-style endpoint and launched by its own manifest: ready in
+about 5 seconds, about 9.4 GB of memory, about 0.4 seconds per question. On every one of P1's 224 questions the answer
+letters carried at least 94% of the first token's probability, so option probabilities are read directly. The
+adapter switches thinking off in the chat template and renormalises the coarse BF16 log-probabilities over the
+options. On P1's 112 cases the LLM made 36 mistakes against its decision-trained sibling's 19 (exact paired test
+p = 0.006); `studies/p1_clinical/report.md` has the breakdown.
 
 ## Studies as data
 
