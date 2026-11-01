@@ -4,7 +4,10 @@ A data-first workbench for measuring and improving AI systems.
 
 Pipit treats data as an experimental instrument. It turns a question about a model into a small, efficient experiment: a constructed set of cases, a budgeted sample, and a claim whose evidence is accounted for, including where the evidence is not enough.
 
-**Status:** `v0.0.2` (2026-10-31): the core and the first real study, P1, are on `main` under M3; M1 and M2 remain open. See `docs/design.md`.
+**Status:** `v0.0.2` (2026-10-31). Working toward 0.1.0, the first version others can use: see `docs/plan.md`.
+
+**Read in this order:** `docs/plan.md` (what Pipit is for, whom it helps, the path to 0.1), `docs/design.md` (the loop
+and the instrument), `docs/programme.md` (the studies), `docs/agentic.md` (the study team, for 0.2).
 
 ![A Pipit study is a loop](public/assets/loop.svg)
 
@@ -22,7 +25,7 @@ Pipit treats data as an experimental instrument. It turns a question about a mod
 | **Candidate** | the model under test | only queried; its outputs never shape gold, cases or judgments |
 | **Lab model** | a model Pipit uses as a tool, small or large: generating or paraphrasing cases, judging where no executable check exists, embedding for coverage | declared in the manifest with its version and settings; used only where an executable check cannot do the job; its judgments are calibrated against executable checks or adjudicated cases before they count; never the candidate it judges |
 
-Lab models are reached through hosted APIs: TypeSafe for decision models and OpenRouter for small, medium and large LLMs. That keeps references and use cases across sizes without Pipit hosting inference. Keys live in the environment, never in the repository.
+Lab models are reached through hosted APIs: TypeSafe for decision models and OpenRouter for small, medium and large LLMs. That keeps references and use cases across sizes without Pipit hosting inference. Keys live in the environment, never in the repository. Candidates can be decision models or LLMs, on this Mac (PyTorch on MPS, MLX) or remote (vLLM, SGLang, any OpenAI-style API); see `docs/plan.md`.
 
 Both are reached through the same contract: a subject is a callable from a case to an answer, plus a manifest (identifier, revision, settings). Pipit's core imports no model library. Adapters are small, live at the edge, and are the only place a model's SDK appears. That is what makes Pipit reusable for any model, local or hosted.
 
@@ -38,8 +41,9 @@ One question each. A milestone closes with a tagged release and a note on what c
 | M3 | On one 4B candidate with dense prior evidence, does Pipit find a critical limitation with a fraction of the cases a full grid needs, confirmed on a protected split of case families? | one finding, or one documented insufficiency |
 | M4 | Can five niche studies on one candidate (clinical, legal, customer support, behavioural science, economics) run one protocol and be read as one programme? | five reports and the programme report, with lab models, costs and findings accounted; see `docs/programme.md` |
 | M5 | Can a reader see what a study found, at what evidence level and cost, without running anything? | `report.json` per study and a static viewer under `public/` |
+| M6 | Does an agentic study team find planted failures with fewer cases and dollars than the scripted loop, without more false claims? | keep or kill on the bench, after 0.1.0; see `docs/agentic.md` |
 
-First candidates: typed decision models around 4B parameters.
+First candidates: Perplexity's 4B decider and Qwen3.5-4B, the LLM it was trained from, both in BF16 on this Mac.
 
 ## Studies
 
@@ -72,7 +76,7 @@ Three things carry versions, separately.
 
 | Thing | Scheme | Now |
 | --- | --- | --- |
-| Code | SemVer. `0.0.z` while the instrument is unproven on a real model (M0 to M2); `0.1.0` at M3; `1.0.0` when the claim schema is stable | `0.0.2` |
+| Code | SemVer. `0.0.z` while the instrument is unproven on a real model (M0 to M2); `0.1.0` when someone else can register any model, declare a study in YAML and get a confirmed reliance dossier (`docs/plan.md`); `1.0.0` when the claim schema is stable | `0.0.2` |
 | Schemas (case, claim, manifest) | an integer `schema_version` inside every artifact, bumped on any breaking change | not yet defined |
 | Case sets and runs | content hash plus generator seed; immutable once a claim references them | not yet defined |
 
