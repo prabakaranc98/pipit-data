@@ -60,8 +60,9 @@ and when to stop. Code computes every right answer and grades every reply. A per
 - **Interpretability:** verified minimal pairs with planted truth, ready for activation patching and probing.
 - **Alignment and safety evaluation:** elicitation with planted truth wherever possible, and measured judges only
   where not.
-- **Benchmarks:** item banks with difficulty estimated by item response theory, so a hundred well-chosen items say
-  what thousands would, and threshold fits in the spirit of METR's time-horizon measurements.
+- **Benchmarks:** threshold fits on difficulty set by construction, in the spirit of METR's time-horizon
+  measurements; item banks fitted by item response theory only once tens of models have answered the same items,
+  since that method needs such a population (`docs/landscape.md`).
 - **Comparisons:** configurations and cost recorded for every endpoint, as Artificial Analysis does, but on the
   cases of the job at hand.
 

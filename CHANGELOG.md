@@ -4,7 +4,14 @@ All notable changes to Pipit are recorded here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Fixed
+
+- Intervals, replays, paired tests and the reliance certificate now count a case and its rewordings once (`pipit.evidence`, `pipit.calibration`). In P1 the two wordings of a case agreed in 51 to 53 of 53 pairs, so counting both claimed too much: 8 of 68 verdicts move to insufficient, grouping the questions is no longer shown to hurt (p = 0.021 becomes 0.18), and certificates at 5% silent errors shrink (Jev 64% to 60%). Two simulations in `tests/test_units.py` show the old counting covering 88% instead of 95%, and certifying 12% of models that sit at the limit instead of at most 5%.
+
 ### Added
+
+- `docs/landscape.md`: Pipit against the field, from six research passes over about seventy tools and papers: what it gets wrong, ranked; what it adds and what is prior art; the literature by line of work, kept apart as known, open and ours; the loop for automatic data research; why item banks wait for a population of models.
+- `pipit.checks.mcnemar_exact`: the exact paired test, moved from the study scripts into the core.
 
 - `docs/architecture.md`: the components by layer (interfaces, control plane, agent team, core, engines, data, quality), built or planned; three loops at three speeds; how configuration flows from a machine profile to a study file to manifests; memory on a laptop, measured, and the rules that keep a run out of swap; one diagram.
 - `docs/methodology.md`: the playbook. Models write, statistics allocate, code grades, people decide; eight steps from framing to report, each with an owner and a check; how agents carry it through skills, tested prompts, scoped context and coordination through the record; what it enables for research; and three experiments that will show whether it works. `docs/plan.md`: the path to 0.1.0 reordered around it.
