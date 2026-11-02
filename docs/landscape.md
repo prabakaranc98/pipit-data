@@ -28,7 +28,7 @@ vendor's questions is no longer shown to hurt, and three hypotheses we had calle
 | --- | --- | --- | --- |
 | 1 | Rewordings counted as independent cases | P1's wording pairs agree 96–100%; two simulations | fixed here |
 | 2 | Building our own runner, log and viewer | Inspect has them, with 28 providers, agents, sandboxes and a viewer | run on Inspect or read its logs; your decision |
-| 3 | Treating planted truth as the end of judging | harm cannot be graded by code; measured judges agree with people 59–93% of the time | judges scored against published human labels, their error carried into the number |
+| 3 | Treating planted truth as the end of judging | harm cannot be graded by code; measured judges agree with people 59–93% of the time | judges scored against published human labels where they fit, otherwise on planted items and against a measured panel, their error carried into the number |
 | 4 | Attack rates without their budget | success keeps rising with the number of tries | every attack claim names the attack class and the tries allowed |
 | 5 | Item banks fitted by item response theory as a near-term plan | they need hundreds of earlier models answering the same items | adaptive measurement on difficulty set by construction |
 | 6 | Two case families per question | two templates are a sample of two | many cheap rewordings, their spread reported |
@@ -156,7 +156,7 @@ Not new, and cited as prior art:
 | Frame | position papers, open-problem lists | hypotheses by mechanism and a tolerance, written before data | keep |
 | Write cases | Data Designer; PyRIT converters; garak probes; promptfoo plugins; Bloom; Petri | planted truth, minimal pairs, difficulty settings | generator: Data Designer or our own (#22), your call |
 | Run | Inspect; lm-evaluation-harness; promptfoo | adapters for MLX and the Perplexity decider | runner: Inspect, your call |
-| Grade | code scorers; LLM judges; Llama Guard; HarmBench's classifier | code against planted truth; judges measured against published human labels | keep, extend to judges |
+| Grade | code scorers; LLM judges; Llama Guard; HarmBench's classifier | code against planted truth; judges measured against published human labels where they fit, otherwise on planted items and against a measured panel | keep, extend to judges |
 | Decide | nothing found | tolerance tests, certificate, paired tests, cases needed, allocation | Pipit's core |
 | Keep | Inspect logs; DVC; Hugging Face datasets | cost per role, case-set hash, dataset card | keep; card to build |
 

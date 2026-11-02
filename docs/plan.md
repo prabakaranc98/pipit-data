@@ -146,7 +146,7 @@ model is reached is its manifest's business.
 - **Engines are checked against each other.** The same model on two engines answers the same cases, and the
   agreement and the size of the probability differences are recorded before a study relies on the faster one.
 
-**Tested on this Mac on 2026-11-01, then run in full as step 1.** Qwen3.5-4B in BF16, at the revision the
+**Tested on this Mac on 2026-11-01, then run in full for 0.0.3 (#58).** Qwen3.5-4B in BF16, at the revision the
 decision-models lab pinned, served by MLX through its OpenAI-style endpoint and launched by its own manifest: ready in
 about 5 seconds, about 9.4 GB of memory, about 0.4 seconds per question. On every one of P1's 224 questions the answer
 letters carried at least 94% of the first token's probability, so option probabilities are read directly. The
@@ -314,7 +314,7 @@ the ledger.
 | Role | Does | Model today | Evidence so far | Next test |
 | --- | --- | --- | --- | --- |
 | Candidate | is measured | Perplexity's decider, Qwen3.5-4B in both modes; Jev as reference | P1, P3, X1 | G1 (#47) |
-| Lead | drafts and grows the tree, chooses the next action | not built; DeepSeek V4 Pro proposed | none | E1 on the bench (#8, #9) |
+| Lead | drafts and grows the tree, chooses the next action | not built; DeepSeek V4 Pro proposed | none | proposing key questions, on planted items, in 0.0.6; E1 on the bench (#8, #9) |
 | Case writer | writes families from specs | gpt-oss-120b paraphrases today | P1: code caught 6 broken paraphrases | family specs (#22) |
 | Validator | checks a planted fact survives a rewrite | qwen3-235b, the same family as P1's candidates | wrong on 25 of its 31 flags; the family rule now flags it (#43) | E3: the same cases checked by another family |
 | Judge | grades where code cannot | DeepSeek V4.1 Flash first; V4 Pro only where replies cannot instruct it | J1 | injection resistance in the bar (#41) |
@@ -332,23 +332,25 @@ is measured against the reference problem suite in `docs/suite.md`, whose status
 **This cycle's finish line**, set on 2026-11-01: one cell, clinical × reliability, end to end with no person in the
 loop. May a 4B model act alone on a medication order, and where must it hand off? The loop closes in 0.0.6, its
 findings face fresh, held-back families in 0.0.7, and 0.0.8 delivers the reliance dossier on about 500 cases, with
-the dataset and one write-up of what changed in our understanding. About 500 is the planned budget: refuting a key
-question takes at least 22 independent cases, and P1's tree has twelve.
+the dataset and one write-up of what changed in our understanding. About 500 is a planned budget, not a guarantee:
+on the confidence sequence the loop stops by, refuting a key question takes at least 33 independent cases even with
+no failures (22 on fixed intervals), P1's tree has twelve, and a question whose failure rate sits near the line can
+take hundreds of cases or stay insufficient.
 
 | Release | The question | The work |
 | --- | --- | --- |
 | 0.0.3 | Can Pipit's numbers be trusted? | counting a case once and the comparison with the field (#39); the rules in code (#56); native setups (#58); the engine design with J1, X1 and I1 (#59); the bench (#60); V1 registered (#61); this plan (#62) |
-| 0.0.4 | Can we trust a run? | V1's results, with the providers that served each model; one time limit per call and a stop at a refused key, in the OpenRouter adapter, for every study; checks before a run and results saved per item, in V1's runner, which the other runners adopt when they next run, P1's in 0.0.7 |
+| 0.0.4 | Can we trust a run? | V1's results, with the providers that served each model; one time limit per call and a stop at a refused key, in the OpenRouter adapter, for every study; checks before a run and results saved per item, in V1's runner, which the other runners adopt when they next run, and the loop runner (0.0.6) from the start |
 | 0.0.5 | Can a report drift from its data? | every report rebuilt from its recorded runs by one script: six of the seven in CI on every pull request, and I1's, which needs its activations file, at the release gate (#74); the numbers in the README and docs checked against the reports |
-| 0.0.6 | Does the loop close? | one runner for one cell, clinical × reliability, joining the steps the studies ran apart: new cases go to the key question nearest a verdict (B1's rule), are answered and graded by code, and update the evidence; a question stops early only by a rule that stays valid when the loop looks early (#25); the proposer adds key questions through the partition check; cases come from family specs with answers computed by code (#22), starting with four families: renal threshold, urgent result, weight-based dose and drug interaction; done when one command takes the specs to verdicts with no person in between, and the report rebuilds from its records |
-| 0.0.7 | Is the dose finding real? | the confirm round on fresh, held-back dose families (#10), scored with more than one right answer where the record allows it (#11); a second, independent writer for each family, and how much the writer changes the result; P1's planted answers checked by a second, independent implementation and against published reference values |
-| 0.0.8 | Can a small model approve alone at a stated clinical error rate, across reruns? | the reliance dossier from the confirmed run: the certificate for Qwen3.5-4B, with reruns to measure consistency, and the cases it hands on; routing between models is not new (FrugalGPT, RouteLLM), so it is not claimed |
+| 0.0.6 | Does the loop close? | one runner for one cell, clinical × reliability, joining the steps the studies ran apart: new cases go to the key question nearest a verdict (B1's rule), are answered by the candidate and graded by code, and update the evidence; a question stops early only by a rule that stays valid when the loop looks early (#25); the proposer, once measured in its role on planted items, adds key questions through the partition check; cases come from family specs with answers computed by code (#22), starting with four families: renal threshold, urgent result, weight-based dose and drug interaction; checks before a run and results saved per item; done when one command takes the specs to verdicts with no person in between, and the report rebuilds from its records |
+| 0.0.7 | Is the dose finding real? | the confirm round on fresh, held-back families for every finding the 0.0.8 dossier relies on, the dose finding first (#10), scored with more than one right answer where the record allows it (#11); a second, independent writer for each family, and how much the writer changes the result; P1's planted answers checked by a second, independent implementation and against published reference values |
+| 0.0.8 | Can a small model approve alone at a stated clinical error rate, across reruns? | the reliance dossier from the confirmed run: the certificate for Qwen3.5-4B, with reruns to measure consistency, and the cases it hands on; the dataset, kept in this repository until the Hub release (0.0.14), and one write-up of what changed in our understanding; routing between models is not new (FrugalGPT, RouteLLM), so it is not claimed |
 | 0.0.9 | Is Pipit more efficient than random sampling? | Pipit's allocation against random subsets of MedCalc-Bench, on V1's data; the bench with failures that cluster by family and writer, its defects and thin families, and a CI job (#8); P1's dose family (#9) |
 | 0.0.10 | Can it run unattended? | the supervisor (#53), the canary set (#23), and the decision on Inspect (#46) |
 | 0.0.11 | Does data built from a confirmed gap fix it? | training data in the formats above, with source, licence and leak checks; one tutorial that trains with an outside tool and hands the model back to be measured; the judges' bar with injection resistance (#41); the panel that stands in for human reviewers: model families and decision models such as Jev, each measured on planted items, with votes weighted by their measured error rates |
 | 0.0.12 | Is our case design better than NeMo Data Designer's? | the same job and budget: labels verifiably right, real failures found, near-duplicates, realism measured by whether a classifier can tell the cases from real records (#50), leaks and cost |
 | 0.0.13 | Does the engine carry over to other industries? | extraction and a computed number (G1, #47); pressure and injection variants (#48) |
-| 0.0.14 | Can others use the data? | `report.json` with a schema (#18), and the study registry (#54), the model inventory (#20) and the programme tables (#17) generated from it; the first Hub release (#51), the examples (#52) and the viewer (#19) |
+| 0.0.14 | Can others use the data? | `report.json` with a schema (#18), which the numbers check then reads, and the study registry (#54), the model inventory (#20) and the programme tables (#17) generated from it; the first Hub release (#51), the examples (#52) and the viewer (#19) |
 | 0.1.0 | Can someone else pick it up? | the rest of the definition below: one manifest and one command; a study as YAML only (#12); remote engines (#55); P3's dossier confirmed (#14); modules by concept and plain names, below; type checks and docstrings in CI; studies importable without editing `sys.path` |
 
 **Plain names, proposed for 0.1.0, for the study owner to approve.** New code follows the naming rules in
@@ -381,7 +383,7 @@ Honest gaps, as of 2026-11-01, each with the work that closes it:
 | Every result is on cases we wrote | a model can pass written cases and fail on real traffic | V1 against MedCalc-Bench's real notes (0.0.4), then the transfer study on real complaints (#28) |
 | One person set the clinical truth | a planted answer is only as right as its author | no reviewer is available, so each planted answer is checked by a second, independent implementation and against published reference values, and each family gets a second writer (0.0.7) |
 | Nothing has been confirmed | every claim so far is exploratory | the confirm round on fresh dose families (0.0.7, #10) |
-| The loop does not close | each study ran its own script, and no result chooses the next cases; sending cases where a verdict is closest has won only on simulated models (B1) | the loop runner (0.0.6) |
+| The loop does not close | each study ran its own script, and no result chooses the next cases; sending cases where a verdict is closest has been tested only on simulated models (B1) | the loop runner (0.0.6) |
 | Studies are small, and rewordings add little | P1 settles one or two of twelve key questions per model; its two wordings agreed on 51 to 53 of 53 cases | new scenarios from family specs instead of rewordings (#22) and cases sent where a verdict is closest, both in the loop (0.0.6); fewer and deeper key questions |
 | Reports and docs can drift from the data | I1's report could not be rebuilt from its script, and the docs overstated B1 | every report rebuilt from its recorded runs, six of the seven in CI and I1's at the release gate, and the numbers checked (0.0.5) |
 | No judge is certified | where code cannot grade, the number is only as good as the judge | J1 with 30 to 60 more unsafe items, and injection resistance in the bar (#41) |

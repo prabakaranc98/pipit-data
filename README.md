@@ -82,7 +82,7 @@ skips I1's, which needs its activations file.
 Models are registered by YAML manifest (identifier, revision, adapter, placement, device, dtype, the name of the
 environment variable that holds the key) and resolved through an adapter at the edge; see `docs/design.md`.
 
-## Where things stand (2026-11-01)
+## Where things stand (2026-11-02)
 
 Five industries by five uses. Rows open one at a time, clinical first and finance next; P3, an earlier pilot, sits in
 the human-centred row. Shared machinery, the judges (J1) and the bench (B1), counts through the cells it serves.

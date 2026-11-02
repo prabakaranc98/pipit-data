@@ -1,7 +1,7 @@
 # Architecture
 
 Written 2026-11-01. What Pipit is made of, how its parts talk, how you control it, and how it stays inside a
-laptop's memory. Solid boxes in the picture exist today; dashed boxes are planned, each tied to a step of
+laptop's memory. Solid boxes in the picture exist today; dashed boxes are planned, each tied to a release in
 `docs/plan.md`.
 
 ## In plain words
@@ -20,18 +20,18 @@ Python library, study files, a command line, a viewer, and access over MCP.
 | Layer | Component | Today | Next |
 | --- | --- | --- | --- |
 | Interfaces | Python SDK | the core's functions | stable entry points with the command line |
-| | Study files | model manifests | study files and family specs (plan steps 6 and 7) |
+| | Study files | model manifests | family specs (0.0.6, #22) and study files (0.1.0, #12) |
 | | Command line | per-study scripts | `pipit plan`, `build`, `run`, `report`, `certify`, `models check`, `view` |
-| | Viewer | report pages and SVG pictures | `report.json` and a static TypeScript and D3 viewer (step 5) |
+| | Viewer | report pages and SVG pictures | `report.json` and a static TypeScript and D3 viewer (0.0.14, #18, #19) |
 | | Agent access | none | MCP and HTTP over the record and the tools (0.2) |
-| Control plane | Study loop and gates | scripted runs per study | modes and gates as a state machine (step 4) |
-| | Statistics | intervals, paired tests, reliance certificate | allocation, staircases, valid early stopping, false-discovery control (step 4) |
+| Control plane | Study loop and gates | scripted runs per study | modes and gates as a state machine: the loop runner (0.0.6) and the confirm round (0.0.7) |
+| | Statistics | intervals, paired tests, reliance certificate | allocation and valid early stopping in the loop (0.0.6, #25); staircases and false-discovery control later |
 | | Resource manager | rules followed by hand | admission by measured footprint, stream caps, swap watch (below) |
 | Agent team | Lead, specialists, workers, council | helper models: paraphraser, validator, proposer | the team in 0.2, carrying `docs/methodology.md` |
 | Core | Contracts, checks, evidence, calibration, ledger, cache, pictures | built and tested | versioned schemas; field and number graders; cases still needed per node |
 | Engines | MLX, PyTorch on MPS, hosted APIs | built | vLLM and SGLang on a GPU when a host is available |
 | Data | Study record, case sets in git | built | dataset cards and diffs; DVC for caches and raw runs; a knowledge graph |
-| Quality | Tests in CI | built | the bench (step 3) and instrument metrics |
+| Quality | Tests in CI | built | the bench (0.0.9, #8) and instrument metrics |
 
 ## Three loops, three speeds
 
