@@ -61,19 +61,24 @@ different surfaces and the same mechanism, so that a finding has to replicate.
 
 **4. Depth and width are set by the budget.** A node is settled only with enough independent cases:
 
-| To settle a node | Independent cases for an 80% chance |
-| --- | --- |
-| support a limitation whose true failure rate is 50% | 17 |
-| support one whose true failure rate is 35% | 59 |
-| refute a limitation when the true failure rate is 0% | 22 |
-| refute it when the true failure rate is 5% | 74 |
-| certify silent errors below 5%, with none seen | 59 |
+| To settle a node | Independent cases for an 80% chance, on fixed intervals | On the confidence sequence the loop stops by (#25), looking after every case |
+| --- | --- | --- |
+| support a limitation whose true failure rate is 50% | 17 | 31 |
+| support one whose true failure rate is 35% | 59 | 126 |
+| refute a limitation when the true failure rate is 0% | 22 | 33 |
+| refute it when the true failure rate is 5% | 74 | 138 |
+| certify silent errors below 5%, with none seen | 59 | 59: the certificate is an exact test on the confirm round |
 
-So the number of key questions a study can settle is roughly its budget divided by 30 to 60. A budget of 500
-independent cases settles about a dozen: three or four hypotheses of three or four questions each, a tree of depth
-three. P1 wrote twelve key questions with 59 independent cases in all, three to five each, and eleven of the twelve
-stayed open for Jev. Deeper levels are grown, not written: a node is split only where its evidence divides or where a
-supported finding needs its cause, the split is made on explore data, and it is tested on fresh confirm families.
+Computed exactly from the binomial with `pipit.allocate.status`, and the certificate row with
+`pipit.calibration.cases_needed`.
+
+So on fixed intervals, when failure rates sit far from the line, the number of key questions a study can settle is
+roughly its budget divided by 30 to 60: a budget of 500 independent cases settles about a dozen, three or four
+hypotheses of three or four questions each, a tree of depth three. The confidence sequence the loop stops by needs
+about twice as many cases per node, so with an even spread the same budget settles about half as many. P1 wrote twelve
+key questions with 59 independent cases in all, three to five each, and eleven of the twelve stayed open for Jev.
+Deeper levels are grown, not written: a node is split only where its evidence divides or where a supported finding
+needs its cause, the split is made on explore data, and it is tested on fresh confirm families.
 
 **5. Cases and splits.** A family crosses scenarios, conditions, difficulty settings and rewordings; the independent
 unit is a scenario under one condition. Before anything runs, each family and scenario goes to explore or confirm by

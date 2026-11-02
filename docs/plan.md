@@ -1,8 +1,9 @@
 # Pipit 0.1: the plan
 
-Written 2026-11-01 and revised the same day. This is the plan to reach version 0.1.0, the first version someone else
-can pick up and use, through small releases that each answer one question: 0.0.3, 0.0.4 and so on. Each step gets
-its issue when it starts, and its pull requests merge one at a time.
+Written 2026-11-01 and revised the same day; on 2026-11-02 the releases were reordered to close the evidence loop
+first (decision 15). This is the plan to reach version 0.1.0, the first version someone else can pick up and use,
+through small releases that each answer one question: 0.0.3, 0.0.4 and so on. Each step gets its issue when it
+starts, and its pull requests merge one at a time.
 
 ## In plain words
 
@@ -145,7 +146,7 @@ model is reached is its manifest's business.
 - **Engines are checked against each other.** The same model on two engines answers the same cases, and the
   agreement and the size of the probability differences are recorded before a study relies on the faster one.
 
-**Tested on this Mac on 2026-11-01, then run in full as step 1.** Qwen3.5-4B in BF16, at the revision the
+**Tested on this Mac on 2026-11-01, then run in full for 0.0.3 (#33).** Qwen3.5-4B in BF16, at the revision the
 decision-models lab pinned, served by MLX through its OpenAI-style endpoint and launched by its own manifest: ready in
 about 5 seconds, about 9.4 GB of memory, about 0.4 seconds per question. On every one of P1's 224 questions the answer
 letters carried at least 94% of the first token's probability, so option probabilities are read directly. The
@@ -193,7 +194,7 @@ passed, and its own hash. A case set is frozen once a claim cites it, and every 
 | Exact paired tests | whether one model or setting really differs from another on the same cases | built |
 | The reliance certificate | how much a model can do alone at a stated error rate, and how many cases that needs | built |
 | Calibration | whether its confidence means what it says | built |
-| A stopping rule that stays valid when we look early | when the evidence is enough, even in an adaptive loop | 0.1 (#25) |
+| A stopping rule that stays valid when we look early | when the evidence is enough, even in an adaptive loop | 0.0.6 (#25) |
 | Adaptive allocation against uniform at equal budget | where to spend the next cases | 0.1 (#9) |
 | Anchors to public benchmarks | where the model stands on an established benchmark, from about 100 items | after 0.1.0; V1 is the first comparison |
 | The bench | whether all of the above give the right verdicts when the truth is known | 0.1 (#8) |
@@ -314,6 +315,7 @@ the ledger.
 | --- | --- | --- | --- | --- |
 | Candidate | is measured | Perplexity's decider, Qwen3.5-4B in both modes; Jev as reference | P1, P3, X1 | G1 (#47) |
 | Lead | drafts and grows the tree, chooses the next action | not built; DeepSeek V4 Pro proposed | none | E1 on the bench (#8, #9) |
+| Proposer | proposes key questions from the evidence | gpt-oss-120b, in P1's `propose.py` | none measured | on planted items, in 0.0.6 |
 | Case writer | writes families from specs | gpt-oss-120b paraphrases today | P1: code caught 6 broken paraphrases | family specs (#22) |
 | Validator | checks a planted fact survives a rewrite | qwen3-235b, the same family as P1's candidates | wrong on 25 of its 31 flags; the family rule now flags it (#43) | E3: the same cases checked by another family |
 | Judge | grades where code cannot | DeepSeek V4.1 Flash first; V4 Pro only where replies cannot instruct it | J1 | injection resistance in the bar (#41) |
@@ -328,23 +330,33 @@ the ledger.
 Each release answers one question. It is tagged only when it passes the release gate in `CONTRIBUTING.md`, and it
 is measured against the reference problem suite in `docs/suite.md`, whose statuses its notes report.
 
+**This cycle's finish line**, set on 2026-11-01: one cell, clinical × reliability, end to end with no person in the
+loop. May a 4B model act alone on a medication order, and where must it hand off? The loop closes in 0.0.6, its
+findings face fresh, held-back families in 0.0.7, and 0.0.8 delivers the reliance dossier on about 500 cases, with
+the dataset and one write-up of what changed in our understanding. About 500 is a planned budget, not a guarantee:
+on the confidence sequence the loop stops by, refuting a key question takes at least 33 independent cases even with
+no failures (22 on fixed intervals), and a question whose failure rate sits near the line can take hundreds of cases
+or stay insufficient. At about twice the fixed-interval cost per question (`docs/methodology.md`), 500 cases settle
+roughly half of a twelve-question tree like P1's, which is why the plan favours fewer and deeper key questions.
+
 | Release | The question | The work |
 | --- | --- | --- |
 | 0.0.3 | Can Pipit's numbers be trusted? | counting a case once and the comparison with the field (#39); the rules in code (#56); native setups (#58); the engine design with J1, X1 and I1 (#59); the bench (#60); V1 registered (#61); this plan (#62) |
-| 0.0.4 | Can we trust a run? | V1's results, with the providers that served each model; one time limit per call and a stop at a refused key, in the OpenRouter adapter, for every study; checks before a run and results saved per item, in V1's runner, which the other runners adopt when they next run, P1's in 0.0.7 |
-| 0.0.5 | Can a report drift from its data? | CI rebuilds every report from its recorded runs; `report.json` with a schema (#18); the study registry (#54), the model inventory (#20) and the programme tables (#17) generated from it; the numbers in the README and docs checked against it |
-| 0.0.6 | Can anyone read the code? | the conventions in `CONTRIBUTING.md`; modules by concept and plain names, below; type checks and docstrings in CI; studies importable without editing `sys.path`; every report regenerates byte-identical |
-| 0.0.7 | Is the dose finding real? | the family spec (#22); the confirm round on fresh dose families (#10), scored with more than one right answer where the record allows it (#11); a second, independent writer for each family, and how much the writer changes the result; P1's planted answers checked by a second, independent implementation and against published reference values |
-| 0.0.8 | Can a small model approve alone at a stated clinical error rate, across reruns? | the certificate for Qwen3.5-4B from recorded runs, with reruns to measure consistency, and the cases it hands on; routing between models is not new (FrugalGPT, RouteLLM), so it is not claimed |
-| 0.0.9 | Is Pipit more efficient than random sampling? | Pipit's allocation against random subsets of MedCalc-Bench, on V1's data; the bench with failures that cluster by family and writer, its defects and thin families, and a CI job (#8); P1's dose family (#9); the evidence code reading the confidence sequence (#25) |
+| 0.0.4 | Can we trust a run? | V1's results, with the providers that served each model; one time limit per call and a stop at a refused key, in the OpenRouter adapter, for every study; checks before a run and results saved per item, in V1's runner, which the other runners adopt when they next run, and the loop runner (0.0.6) from the start |
+| 0.0.5 | Can a report drift from its data? | every report rebuilt from its recorded runs by one script: six of the seven in CI on every pull request, and I1's, which needs its activations file, at the release gate (#74); the numbers in the README and docs checked against the reports |
+| 0.0.6 | Does the loop close? | one runner for one cell, clinical × reliability, joining the steps the studies ran apart: new cases go to the key question nearest a verdict (B1's rule), are answered by the candidate and graded by code, and update the evidence; a question stops early only by a rule that stays valid when the loop looks early (#25); the proposer, once measured in its role on planted items, adds key questions through the partition check; cases come from family specs with answers computed by code (#22), starting with four families: renal threshold, urgent result, weight-based dose and drug interaction; checks before a run and results saved per item; done when one command takes the specs to verdicts with no person in between, and the report rebuilds from its records |
+| 0.0.7 | Is the dose finding real? | the confirm round on fresh, held-back families for every finding the 0.0.8 dossier relies on, the dose finding first (#10), scored with more than one right answer where the record allows it (#11); a second, independent writer for each family, and how much the writer changes the result; P1's planted answers checked by a second, independent implementation and against published reference values |
+| 0.0.8 | Can a small model approve alone at a stated clinical error rate, across reruns? | the reliance dossier from the confirmed run: the certificate for Qwen3.5-4B, with reruns to measure consistency, and the cases it hands on; the dataset, kept in this repository until the Hub release (0.0.14), and one write-up of what changed in our understanding; routing between models is not new (FrugalGPT, RouteLLM), so it is not claimed |
+| 0.0.9 | Is Pipit more efficient than random sampling? | Pipit's allocation against random subsets of MedCalc-Bench, on V1's data; the bench with failures that cluster by family and writer, its defects and thin families, and a CI job (#8); P1's dose family (#9) |
 | 0.0.10 | Can it run unattended? | the supervisor (#53), the canary set (#23), and the decision on Inspect (#46) |
 | 0.0.11 | Does data built from a confirmed gap fix it? | training data in the formats above, with source, licence and leak checks; one tutorial that trains with an outside tool and hands the model back to be measured; the judges' bar with injection resistance (#41); the panel that stands in for human reviewers: model families and decision models such as Jev, each measured on planted items, with votes weighted by their measured error rates |
 | 0.0.12 | Is our case design better than NeMo Data Designer's? | the same job and budget: labels verifiably right, real failures found, near-duplicates, realism measured by whether a classifier can tell the cases from real records (#50), leaks and cost |
 | 0.0.13 | Does the engine carry over to other industries? | extraction and a computed number (G1, #47); pressure and injection variants (#48) |
-| 0.0.14 | Can others use the data? | the first Hub release (#51), the examples (#52) and the viewer (#19) |
-| 0.1.0 | Can someone else pick it up? | the rest of the definition below: one manifest and one command; a study as YAML only (#12); remote engines (#55); P3's dossier confirmed (#14) |
+| 0.0.14 | Can others use the data? | `report.json` with a schema (#18), which the numbers check then reads, and the study registry (#54), the model inventory (#20) and the programme tables (#17) generated from it; the first Hub release (#51), the examples (#52) and the viewer (#19) |
+| 0.1.0 | Can someone else pick it up? | the rest of the definition below: one manifest and one command; a study as YAML only (#12); remote engines (#55); P3's dossier confirmed (#14); modules by concept and plain names, below; type checks and docstrings in CI; studies importable without editing `sys.path` |
 
-**Plain names, proposed for 0.0.6, for the study owner to approve.** Modules by concept: `models` (manifests, loading,
+**Plain names, proposed for 0.1.0, for the study owner to approve.** New code follows the naming rules in
+`CONTRIBUTING.md` from now on; existing code is renamed in 0.1.0. Modules by concept: `models` (manifests, loading,
 roles), `adapters` (one per engine), `cases` (questions and families), `stats` (intervals, exact tests, confidence
 sequences, certificates), `tree` (hypotheses, partition, evidence, verdicts), `allocation` (where the next cases go),
 `record` (cache, ledger, costs, providers) and `report` (tables, `report.json`, pictures). The names that change most:
@@ -360,9 +372,9 @@ sequences, certificates), `tree` (hypotheses, partition, evidence, verdicts), `a
 | `questions.noul` | `questions.yes_no` | "noul" is TypeSafe's word |
 | `checks.severity`, `checks.completeness` | P1's and P3's own code | the rules belong to the studies that use them |
 
-**Methods are read when the release that relies on them starts:** conformal risk control before 0.0.8; confidence
-sequences, thresholding bandits and tinyBenchmarks before 0.0.9. Each gets a short note: its claim, its conditions and
-where Pipit departs from it.
+**Methods are read when the release that relies on them starts:** confidence sequences before 0.0.6; conformal risk
+control before 0.0.8; thresholding bandits and tinyBenchmarks before 0.0.9. Each gets a short note: its claim, its
+conditions and where Pipit departs from it.
 
 ## Where this is still weak against the real world
 
@@ -372,9 +384,10 @@ Honest gaps, as of 2026-11-01, each with the work that closes it:
 | --- | --- | --- |
 | Every result is on cases we wrote | a model can pass written cases and fail on real traffic | V1 against MedCalc-Bench's real notes (0.0.4), then the transfer study on real complaints (#28) |
 | One person set the clinical truth | a planted answer is only as right as its author | no reviewer is available, so each planted answer is checked by a second, independent implementation and against published reference values, and each family gets a second writer (0.0.7) |
-| Nothing has been confirmed | every claim so far is exploratory | the confirm round on fresh dose families (0.0.7, #10) |
-| Studies are small, and rewordings add little | P1 settles one or two of twelve key questions per model; its two wordings agreed on 51 to 53 of 53 cases | new scenarios instead of rewordings (#22), fewer and deeper key questions, and adaptive spending (#9) |
-| Reports and docs can drift from the data | I1's report could not be rebuilt from its script, and the docs overstated B1 | reports rebuilt in CI and the numbers checked (0.0.5) |
+| Nothing has been confirmed | every claim so far is exploratory | the confirm round on fresh, held-back families for every finding the dossier relies on, dose first (0.0.7, #10) |
+| The loop does not close | each study ran its own script, and no result chooses the next cases; sending cases where a verdict is closest has been tested only on simulated models (B1) | the loop runner (0.0.6) |
+| Studies are small, and rewordings add little | P1 settles one or two of twelve key questions per model; its two wordings agreed on 51 to 53 of 53 cases | new scenarios from family specs instead of rewordings (#22) and cases sent where a verdict is closest, both in the loop (0.0.6); fewer and deeper key questions |
+| Reports and docs can drift from the data | I1's report could not be rebuilt from its script, and the docs overstated B1 | every report rebuilt from its recorded runs, six of the seven in CI and I1's at the release gate, and the numbers checked (0.0.5) |
 | No judge is certified | where code cannot grade, the number is only as good as the judge | J1 with 30 to 60 more unsafe items, and injection resistance in the bar (#41) |
 | The platform is fragile | a stopped server, a sleeping laptop or one stuck call cost hours | a time limit and a stop at a refused key on every OpenRouter call; checks before a run and results saved per item in V1's runner (0.0.4); the supervisor (0.0.10, #53) |
 
@@ -432,11 +445,16 @@ Taken on 2026-11-01:
     against real records; claims accepted only by gates registered in advance. Where a model must judge, a panel of
     model families and decision models such as Jev does it, each measured on planted items first.
 14. Industries open one at a time, and finance comes after clinical.
+15. The loop closes first. One cell, clinical × reliability, goes end to end before anything else: the loop runner
+    (0.0.6), the confirm round (0.0.7) and the reliance dossier (0.0.8). Sending cases where a verdict is closest
+    had sat at 0.0.9 and growing the tree at 0.2, and seven studies each proved one piece with nothing joining them.
+    `report.json`, the study registry, the model inventory and the programme tables move to 0.0.14, and the renames
+    to 0.1.0.
 
 Open:
 
 1. Runner: run on Inspect with Pipit as the statistics on top, or keep our runner and read Inspect logs (#46).
-2. The renames and module layout proposed for 0.0.6; `CONTRIBUTING.md` sets the naming rules, and the table above
+2. The renames and module layout proposed for 0.1.0; `CONTRIBUTING.md` sets the naming rules, and the table above
    lists the changes.
 3. The explore split on the Hub: public, or gated behind accepted terms.
 4. The confirm split: run only by us, or shared under agreement.
