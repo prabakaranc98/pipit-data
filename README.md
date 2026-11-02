@@ -39,15 +39,16 @@ Both are reached through the same contract: a subject is a callable from a case 
 ## Releases
 
 Each release answers one question. From 0.0.4 on, its issues sit in a GitHub milestone of the same name. 0.0.3's
-closed issues sit in the closed milestones M1, M3, M4 and M6; #8, #9 and #25, which it began, stay open in 0.0.9.
-The plan is in `docs/plan.md`.
+closed issues sit in the closed milestones M1, M3, M4 and M6; of three it began, #8 and #9 stay open in 0.0.9 and
+#25 in 0.0.6. This cycle ends at 0.0.8, with a confirmed reliance dossier for one cell, clinical × reliability, its
+dataset and one write-up. The plan is in `docs/plan.md`.
 
 | Release | Question |
 | --- | --- |
 | 0.0.3, released | Can Pipit's numbers be trusted? |
 | 0.0.4, released | Can we trust a run? |
 | 0.0.5 | Can a report drift from its data? |
-| 0.0.6 | Can anyone read the code? |
+| 0.0.6 | Does the loop close? |
 | 0.0.7 | Is the dose finding real? |
 | 0.0.8 | Can a small model approve alone at a stated clinical error rate, across reruns? |
 | 0.0.9 | Is Pipit more efficient than random sampling? |
@@ -105,9 +106,10 @@ the human-centred row. Shared machinery, the judges (J1) and the bench (B1), cou
 | V1, beside MedCalc-Bench | Do Pipit's written cases rank models the way a real-note benchmark does? | Not overall: across 12 models, Spearman 0.21 (p = 0.25). Where both measure calculation, yes: 0.61 (p = 0.020). Token caps, an answer key that an audit found errors in, and models served by up to 18 providers all shape the scores. It cost $6.90. | `studies/v1_medcalc/report.md` |
 
 Released on 2026-11-01: 0.0.3 (every pull request merged that day up to #64) and 0.0.4 (#65, V1's results, and #67,
-the checks before a run). In 0.0.5 so far: the quality pass (#68, merged in #69), the fixes from its independent
-review (#70, merged in #71), and the fixes from the review of #71 (#72). Next: the rest of 0.0.5, can a report drift
-from its data?
+the checks before a run). In 0.0.5: the quality pass (#68, merged in #69), the fixes from its independent review
+(#70, merged in #71), the fixes from the review of #71 (#72), every report rebuilt from its recorded runs (#74,
+merged in #75, with the fixes from its reviews in #77 and #79), and the plan reordered to close the loop first (#80).
+Next: 0.0.5's release gate, then 0.0.6, does the loop close?
 
 ## How work moves
 

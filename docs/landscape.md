@@ -219,8 +219,9 @@ distillation data only for a limitation that has been confirmed.
 1. One family spec compiles to cases, split by family and scenario into explore, focus and confirm. Confirm never
    feeds training, selection, prompts or the loop.
 2. Writers vary only what cannot change the answer, seeded from real material; code sets every label.
-3. Every helper is scored against planted truth in its role before use; every judge against published human labels
-   where code cannot grade.
+3. Every helper is scored against planted truth in its role before use. Where code cannot grade, every judge is
+   scored against published human labels where they fit, and otherwise on planted items and against a measured
+   panel.
 4. The allocator sends cases where the evidence straddles the tolerance, reweighted so rates stay unbiased, with
    stopping that stays valid when we look early.
 5. Confirm on fresh, frozen families, with tests registered in advance and e-BH across the tree, counted once per
@@ -264,7 +265,8 @@ models have answered the same Pipit items, an item bank becomes possible, and th
 
 1. The bench and adaptive measurement (#8, #9): the experiment above.
 2. Run on Inspect, or read its logs: a new issue, and your decision.
-3. Judges scored against published human labels, with their error carried into the interval: a new issue.
+3. Judges scored against published human labels where they fit, and otherwise on planted items and against a
+   measured panel, with their error carried into the interval: a new issue.
 4. Attack claims with their budget, with PyRIT or garak as the attacker: a new issue.
 5. The family spec: build on Data Designer or keep our own (#22): your decision.
 6. The evidence rule with e-BH and confidence sequences (#25).

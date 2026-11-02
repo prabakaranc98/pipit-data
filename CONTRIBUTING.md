@@ -1,14 +1,14 @@
 # Contributing to Pipit
 
 Pipit should be as easy to read and extend as pandas, NumPy or scikit-learn: plain words, names that say what they
-do, and one way to do each thing. This guide sets the rules. Where the code does not follow them yet, release 0.0.6 in
-`docs/plan.md` brings it in line.
+do, and one way to do each thing. This guide sets the rules. New code follows them now; where existing code does not
+yet, release 0.1.0 in `docs/plan.md` brings it in line.
 
 ## How work moves
 
 - Each step gets an issue when it starts, not before.
 - One branch per issue, named `<release>/<topic>`, such as `0.0.5/quality-pass`. One pull request open at a time, always against `main`.
-- CI must pass: lint, format and tests; type checks from 0.0.6.
+- CI must pass: lint, format, tests, the docstring examples and the rebuild check; type checks from 0.1.0.
 - Docs change in the same pull request as the code they describe. Every change goes in `CHANGELOG.md`, renames
   included.
 - Releases are small: 0.0.3, 0.0.4 and so on, each answering one question. The study owner tags them.
@@ -26,8 +26,9 @@ the claims the pull request makes, never the author's reasoning.
    skipped step. CI runs it without `--all` on every pull request and skips I1, since CI has neither numpy nor I1's
    activations file, `runs/hidden_last.npy`, which `extract.py` makes on the local model and git ignores. Three
    files are written outside the check and committed as inputs: I1's intervention section, with its model run; X1's
-   Petri section, from its Inspect logs in an environment with inspect-petri; and P1's proposals, by a model. A failed run leaves the rebuilt
-   files in place: commit them if the change is meant, or restore them with `git checkout`.
+   Petri section, from its Inspect logs in an environment with inspect-petri; and P1's proposals, by a model. A
+   failed run leaves the rebuilt files in place: commit them if the change is meant, or restore them with
+   `git checkout`.
 3. Every number in the README, the changelog and the docs is traced to the report it comes from, and matches.
 4. Every capability the release notes claim has been exercised, not only found to exist.
 5. The planted answers behind any claim in the release are checked by a second, independent implementation or
@@ -63,7 +64,8 @@ Step 2 is automated by `studies/rebuild.py`; until step 3 is automated too, the 
 - A report is written by its script from recorded runs and is never edited by hand. A hand-written reading goes in a
   separate file that the script includes. Each report's script is a step in `studies/rebuild.py`, and a test fails
   when a committed report has none.
-- Numbers in the README and docs are copied from a report; from 0.0.5 they are checked against its `report.json`.
+- Numbers in the README and docs are copied from a report, and the release gate checks them against it; from 0.0.14
+  the check reads its `report.json`.
 - An amendment to a pre-registration is written before the results it affects are read, and says what prompted it.
 
 ## Data
