@@ -8,9 +8,10 @@ Steps run in the order listed, and a step may read what an earlier one wrote: X1
 section. A failed run leaves the rebuilt files in the working tree, so `git diff` shows what the scripts write: commit
 them if the change is meant, or restore them with `git checkout -- <path>`.
 
-Only reports are rebuilt here. A section written together with a model run is committed as an input, like the
-hand-written parts of a report: I1's intervention section (`intervene.py`), X1's Petri section (`summarise_petri.py`,
-with inspect-petri) and P1's proposals (`propose.py`).
+Only reports are rebuilt here. Three files are written outside this check and committed as inputs, like the
+hand-written parts of a report: I1's intervention section, with its run on the local model (`intervene.py`); X1's
+Petri section, from its Inspect logs with inspect-petri (`summarise_petri.py`); and P1's proposals, by a model
+(`propose.py`). Rebuilding the first two here is #76.
 
 Usage: uv run python studies/rebuild.py [--list] [--all]"""
 
@@ -114,6 +115,8 @@ def describe(drifted: dict[str, str], root: Path = ROOT) -> str:
         cwd=root,
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         env={**os.environ, "GIT_LITERAL_PATHSPECS": "1"},
     ).stdout.splitlines()
     if len(diff) > DIFF_LINES:
@@ -130,18 +133,25 @@ def rebuild(step: Step, root: Path = ROOT) -> str | None:
         if (root / path).exists():
             stamps[path] = (root / path).stat().st_mtime_ns
             os.utime(root / path, ns=(0, 0))  # any write moves it, even where timestamps are coarse
+    sentinel = {p: (root / p).stat().st_mtime_ns for p in stamps}  # what the filesystem stored, 1980 on exFAT
     try:
         done = subprocess.run(
             [sys.executable, *step.command],
             cwd=root,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             env={**os.environ, "PYTHONUTF8": "1"},
             timeout=TIME_LIMIT_S,
         )
     except subprocess.TimeoutExpired:
         done = None
-    not_written = [p for p in step.outputs if not (root / p).exists() or (root / p).stat().st_mtime_ns == 0]
+    not_written = [
+        p
+        for p in step.outputs
+        if not (root / p).exists() or (root / p).stat().st_mtime_ns == sentinel.get(p, 0)
+    ]
     for path in not_written:
         if path in stamps and (root / path).exists():
             os.utime(root / path, ns=(stamps[path], stamps[path]))
@@ -194,7 +204,8 @@ def main(argv: Sequence[str] | None = None, steps: Sequence[Step] = STEPS, root:
         if lacking:
             if args.all:
                 failures += 1
-            print(f"{step.name}: skipped here, needs {', '.join(lacking)}", flush=True)
+            verdict = "cannot run here" if args.all else "skipped here"
+            print(f"{step.name}: {verdict}, needs {', '.join(lacking)}", flush=True)
             continue
         problem = rebuild(step, root)
         if problem is None:

@@ -25,8 +25,8 @@ the claims the pull request makes, never the author's reasoning.
    studies/rebuild.py --all` rebuilds them all and fails on any difference, on a file no step declares, and on a
    skipped step. CI runs it without `--all` on every pull request and skips I1, since CI has neither numpy nor I1's
    activations file, `runs/hidden_last.npy`, which `extract.py` makes on the local model and git ignores. Three
-   files are written with a model run and committed as inputs, not rebuilt: I1's intervention section, X1's Petri
-   section (which needs an environment with inspect-petri) and P1's proposals. A failed run leaves the rebuilt
+   files are written outside the check and committed as inputs: I1's intervention section, with its model run; X1's
+   Petri section, from its Inspect logs in an environment with inspect-petri; and P1's proposals, by a model. A failed run leaves the rebuilt
    files in place: commit them if the change is meant, or restore them with `git checkout`.
 3. Every number in the README, the changelog and the docs is traced to the report it comes from, and matches.
 4. Every capability the release notes claim has been exercised, not only found to exist.
