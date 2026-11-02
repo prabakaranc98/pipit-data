@@ -22,10 +22,12 @@ the claims the pull request makes, never the author's reasoning.
 
 1. CI passes: lint, format, tests and the docstring examples.
 2. Every study report rebuilds byte-identical from its recorded runs: `uv run --all-extras python
-   studies/rebuild.py` rebuilds them all and fails on any difference, and CI runs it on every pull request. CI
-   skips I1, which also needs its activations file, `runs/hidden_last.npy`, which `extract.py` makes on the local
-   model and git ignores; before a release the script runs where that file exists. X1's Petri section is a
-   recorded run output; rebuilding it needs an environment with inspect-petri.
+   studies/rebuild.py --all` rebuilds them all and fails on any difference, on a file no step declares, and on a
+   skipped step. CI runs it without `--all` on every pull request and skips I1, since CI has neither numpy nor I1's
+   activations file, `runs/hidden_last.npy`, which `extract.py` makes on the local model and git ignores. Three
+   files are written with a model run and committed as inputs, not rebuilt: I1's intervention section, X1's Petri
+   section (which needs an environment with inspect-petri) and P1's proposals. A failed run leaves the rebuilt
+   files in place: commit them if the change is meant, or restore them with `git checkout`.
 3. Every number in the README, the changelog and the docs is traced to the report it comes from, and matches.
 4. Every capability the release notes claim has been exercised, not only found to exist.
 5. The planted answers behind any claim in the release are checked by a second, independent implementation or
@@ -36,7 +38,7 @@ the claims the pull request makes, never the author's reasoning.
 8. Steps 2 to 4 are checked by independent verification agents that see only the repository and the claims. Their
    reports are kept with the release.
 
-Until 0.0.5 automates steps 2 and 3, the verification agents do them.
+Step 2 is automated by `studies/rebuild.py`; until step 3 is automated too, the verification agents do it.
 
 ## Names
 
