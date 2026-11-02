@@ -23,8 +23,9 @@ def _repo(tmp_path: Path) -> Path:
     (tmp_path / "out.md").write_text("same\n")
     for command in (
         ["init", "-q"],
+        ["config", "status.showUntrackedFiles", "no"],  # the check must not depend on this setting
         ["add", "-A"],
-        ["-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "s"],
+        ["-c", "user.name=t", "-c", "user.email=t@t", "-c", "commit.gpgsign=false", "commit", "-qm", "s"],
     ):
         subprocess.run(["git", *command], cwd=tmp_path, check=True)
     return tmp_path
