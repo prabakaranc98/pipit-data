@@ -65,7 +65,8 @@ First candidate: Perplexity's 4B decider, in BF16 on this Mac. Qwen3.5-4B, the i
 A study is a folder under `studies/` with a pre-registration, a hypothesis tree, model manifests, an immutable case
 set, the runs and the report. The first is `studies/p1_clinical/`: ten case families, 120 cases, the Perplexity
 4B decider as candidate, Jev as reference, two lab models for construction. P3's pilot, `studies/p3_support_crisis/`, tests
-crisis triage in a messy support queue on 24 hand-written cases (`pilot.py report` rebuilds its report).
+crisis triage in a messy support queue on 24 hand-written cases (`pilot.py report` rebuilds its report). Every
+study's report is rebuilt from its recorded runs by `studies/rebuild.py`, which CI runs on every pull request.
 
     uv sync --all-extras                              # every adapter's library; a plain `uv sync` removes them
     uv run python studies/p1_clinical/build_cases.py  # rebuilds the case set; free only with the local cache
