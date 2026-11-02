@@ -72,13 +72,13 @@ different surfaces and the same mechanism, so that a finding has to replicate.
 Computed exactly from the binomial with `pipit.allocate.status`, and the certificate row with
 `pipit.calibration.cases_needed`.
 
-So on fixed intervals the number of key questions a study can settle is roughly its budget divided by 30 to 60: a
-budget of 500 independent cases settles about a dozen, three or four hypotheses of three or four questions each, a
-tree of depth three. The confidence sequence the loop stops by needs about twice as many cases per node, so the same
-budget settles about half as many. P1 wrote twelve key questions with 59 independent cases in all, three to five each,
-and eleven of the twelve stayed open for Jev. Deeper levels are grown, not written: a node is split only where its
-evidence divides or where a supported finding needs its cause, the split is made on explore data, and it is tested on
-fresh confirm families.
+So on fixed intervals, when failure rates sit far from the line, the number of key questions a study can settle is
+roughly its budget divided by 30 to 60: a budget of 500 independent cases settles about a dozen, three or four
+hypotheses of three or four questions each, a tree of depth three. The confidence sequence the loop stops by needs
+about twice as many cases per node, so with an even spread the same budget settles about half as many. P1 wrote twelve
+key questions with 59 independent cases in all, three to five each, and eleven of the twelve stayed open for Jev.
+Deeper levels are grown, not written: a node is split only where its evidence divides or where a supported finding
+needs its cause, the split is made on explore data, and it is tested on fresh confirm families.
 
 **5. Cases and splits.** A family crosses scenarios, conditions, difficulty settings and rewordings; the independent
 unit is a scenario under one condition. Before anything runs, each family and scenario goes to explore or confirm by
