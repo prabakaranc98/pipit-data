@@ -24,7 +24,7 @@ Python library, study files, a command line, a viewer, and access over MCP.
 | | Command line | per-study scripts | `pipit plan`, `build`, `run`, `report`, `certify`, `models check`, `view` |
 | | Viewer | report pages and SVG pictures | `report.json` and a static TypeScript and D3 viewer (0.0.14, #18, #19) |
 | | Agent access | none | MCP and HTTP over the record and the tools (0.2) |
-| Control plane | Study loop and gates | scripted runs per study | modes and gates as a state machine: the loop runner (0.0.6) and the confirm round (0.0.7) |
+| Control plane | Study loop and gates | scripted runs per study | the loop runner (0.0.6) and the confirm round (0.0.7); modes as a state machine after 0.1.0 (`docs/agentic.md`) |
 | | Statistics | intervals, paired tests, reliance certificate | allocation and valid early stopping in the loop (0.0.6, #25); staircases and false-discovery control later |
 | | Resource manager | rules followed by hand | admission by measured footprint, stream caps, swap watch (below) |
 | Agent team | Lead, specialists, workers, council | helper models: paraphraser, validator, proposer | the team in 0.2, carrying `docs/methodology.md` |

@@ -146,7 +146,7 @@ model is reached is its manifest's business.
 - **Engines are checked against each other.** The same model on two engines answers the same cases, and the
   agreement and the size of the probability differences are recorded before a study relies on the faster one.
 
-**Tested on this Mac on 2026-11-01, then run in full for 0.0.3 (#58).** Qwen3.5-4B in BF16, at the revision the
+**Tested on this Mac on 2026-11-01, then run in full for 0.0.3 (#33).** Qwen3.5-4B in BF16, at the revision the
 decision-models lab pinned, served by MLX through its OpenAI-style endpoint and launched by its own manifest: ready in
 about 5 seconds, about 9.4 GB of memory, about 0.4 seconds per question. On every one of P1's 224 questions the answer
 letters carried at least 94% of the first token's probability, so option probabilities are read directly. The
@@ -314,7 +314,8 @@ the ledger.
 | Role | Does | Model today | Evidence so far | Next test |
 | --- | --- | --- | --- | --- |
 | Candidate | is measured | Perplexity's decider, Qwen3.5-4B in both modes; Jev as reference | P1, P3, X1 | G1 (#47) |
-| Lead | drafts and grows the tree, chooses the next action | not built; DeepSeek V4 Pro proposed | none | proposing key questions, on planted items, in 0.0.6; E1 on the bench (#8, #9) |
+| Lead | drafts and grows the tree, chooses the next action | not built; DeepSeek V4 Pro proposed | none | E1 on the bench (#8, #9) |
+| Proposer | proposes key questions from the evidence | gpt-oss-120b, in P1's `propose.py` | none measured | on planted items, in 0.0.6 |
 | Case writer | writes families from specs | gpt-oss-120b paraphrases today | P1: code caught 6 broken paraphrases | family specs (#22) |
 | Validator | checks a planted fact survives a rewrite | qwen3-235b, the same family as P1's candidates | wrong on 25 of its 31 flags; the family rule now flags it (#43) | E3: the same cases checked by another family |
 | Judge | grades where code cannot | DeepSeek V4.1 Flash first; V4 Pro only where replies cannot instruct it | J1 | injection resistance in the bar (#41) |
@@ -334,8 +335,9 @@ loop. May a 4B model act alone on a medication order, and where must it hand off
 findings face fresh, held-back families in 0.0.7, and 0.0.8 delivers the reliance dossier on about 500 cases, with
 the dataset and one write-up of what changed in our understanding. About 500 is a planned budget, not a guarantee:
 on the confidence sequence the loop stops by, refuting a key question takes at least 33 independent cases even with
-no failures (22 on fixed intervals), P1's tree has twelve, and a question whose failure rate sits near the line can
-take hundreds of cases or stay insufficient.
+no failures (22 on fixed intervals), and a question whose failure rate sits near the line can take hundreds of cases
+or stay insufficient. At about twice the fixed-interval cost per question (`docs/methodology.md`), 500 cases settle
+roughly half of a twelve-question tree like P1's, which is why the plan favours fewer and deeper key questions.
 
 | Release | The question | The work |
 | --- | --- | --- |
@@ -382,7 +384,7 @@ Honest gaps, as of 2026-11-01, each with the work that closes it:
 | --- | --- | --- |
 | Every result is on cases we wrote | a model can pass written cases and fail on real traffic | V1 against MedCalc-Bench's real notes (0.0.4), then the transfer study on real complaints (#28) |
 | One person set the clinical truth | a planted answer is only as right as its author | no reviewer is available, so each planted answer is checked by a second, independent implementation and against published reference values, and each family gets a second writer (0.0.7) |
-| Nothing has been confirmed | every claim so far is exploratory | the confirm round on fresh dose families (0.0.7, #10) |
+| Nothing has been confirmed | every claim so far is exploratory | the confirm round on fresh, held-back families for every finding the dossier relies on, dose first (0.0.7, #10) |
 | The loop does not close | each study ran its own script, and no result chooses the next cases; sending cases where a verdict is closest has been tested only on simulated models (B1) | the loop runner (0.0.6) |
 | Studies are small, and rewordings add little | P1 settles one or two of twelve key questions per model; its two wordings agreed on 51 to 53 of 53 cases | new scenarios from family specs instead of rewordings (#22) and cases sent where a verdict is closest, both in the loop (0.0.6); fewer and deeper key questions |
 | Reports and docs can drift from the data | I1's report could not be rebuilt from its script, and the docs overstated B1 | every report rebuilt from its recorded runs, six of the seven in CI and I1's at the release gate, and the numbers checked (0.0.5) |
